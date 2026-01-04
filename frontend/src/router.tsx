@@ -1,12 +1,21 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { DashboardPage } from '@/pages/DashboardPage';
-import { LoginPage } from '@/pages/LoginPage';
+import { SignInPage } from '@/pages/SignInPage';
+import { SignUpPage } from '@/pages/SignUpPage';
 
 export const router = createBrowserRouter([
 	{
+		path: '/signin',
+		element: <SignInPage />,
+	},
+	{
+		path: '/signup',
+		element: <SignUpPage />,
+	},
+	{
 		path: '/login',
-		element: <LoginPage />,
+		element: <Navigate to="/signin" replace />,
 	},
 	{
 		path: '/',

@@ -12,6 +12,7 @@ interface AuthState {
 	token: string | null;
 	isAuthenticated: boolean;
 	login: (email: string, _password: string) => Promise<void>;
+	signup: (name: string, email: string, password: string) => Promise<void>;
 	logout: () => void;
 	setToken: (token: string) => void;
 	setUser: (user: User) => void;
@@ -32,6 +33,23 @@ export const useAuthStore = create<AuthState>()(
 					id: '1',
 					email,
 					name: email.split('@')[0],
+				};
+
+				set({
+					user: mockUser,
+					token: mockToken,
+					isAuthenticated: true,
+				});
+			},
+
+			signup: async (name: string, email: string, _password: string) => {
+				// TODO: Replace with actual API call when backend is ready
+				// Mock signup - simulates JWT response
+				const mockToken = `mock-jwt-token-${Date.now()}`;
+				const mockUser: User = {
+					id: `${Date.now()}`,
+					email,
+					name,
 				};
 
 				set({

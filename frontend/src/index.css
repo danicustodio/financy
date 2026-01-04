@@ -2,16 +2,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
 	font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
 
-	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	color-scheme: light;
+	color: #213547;
+	background-color: #ffffff;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -50,35 +48,47 @@
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
 
-	/* Financy Style Guide - Gray Colors */
-	--gray-100: #e1e1e6;
-	--gray-200: #c4c4cc;
-	--gray-300: #8d8d99;
-	--gray-400: #7c7c8a;
-	--gray-500: #505059;
-	--gray-600: #323238;
-	--gray-700: #29292e;
-	--gray-800: #202024;
-	--gray-900: #121214;
+	/* Financy Style Guide */
+	--gray-100: #f8f9fa;
+	--gray-200: #e5e7eb;
+	--gray-300: #d1d5db;
+	--gray-400: #9ca3af;
+	--gray-500: #6b7280;
+	--gray-600: #4b5563;
+	--gray-700: #374151;
+	--gray-800: #111827;
 
-	/* Financy Style Guide - Green (Brand) Colors */
-	--green-300: #00b37e;
-	--green-500: #00875f;
-	--green-700: #015f43;
+	--green-brand-dark: #124b2b;
+	--green-brand-base: #1f6f43;
+	--green-feed-success: #19ad70;
+	--green-dark: #15803d;
+	--green-base: #16a34a;
+	--green-light: #e0fae9;
 
-	/* Financy Style Guide - Red Colors */
-	--red-300: #f75a68;
-	--red-500: #ab222e;
-	--red-700: #7a1921;
-}
+	--red-feed-danger: #ef4444;
+	--red-dark: #b91c1c;
+	--red-base: #dc2626;
+	--red-light: #fee2e2;
 
-a {
-	font-weight: 500;
-	color: #646cff;
-	text-decoration: inherit;
-}
-a:hover {
-	color: #535bf2;
+	--blue-dark: #1d4ed8;
+	--blue-base: #2563eb;
+	--blue-light: #dbeafe;
+
+	--purple-dark: #7e22ce;
+	--purple-base: #9333ea;
+	--purple-light: #f3e8ff;
+
+	--pink-dark: #be185d;
+	--pink-base: #db2777;
+	--pink-light: #fce7f3;
+
+	--orange-dark: #c2410c;
+	--orange-base: #ea580c;
+	--orange-light: #ffedd5;
+
+	--yellow-dark: #a16207;
+	--yellow-base: #ca8a04;
+	--yellow-light: #f7f3ca;
 }
 
 body {
@@ -89,28 +99,8 @@ body {
 	min-height: 100vh;
 }
 
-h1 {
-	font-size: 3.2em;
-	line-height: 1.1;
-}
-
-button {
-	border-radius: 8px;
-	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #1a1a1a;
-	cursor: pointer;
-	transition: border-color 0.25s;
-}
-button:hover {
-	border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
+#root {
+	width: 100%;
 }
 
 @media (prefers-color-scheme: light) {
@@ -175,49 +165,42 @@ button:focus-visible {
 	--color-financy-gray-600: var(--gray-600);
 	--color-financy-gray-700: var(--gray-700);
 	--color-financy-gray-800: var(--gray-800);
-	--color-financy-gray-900: var(--gray-900);
 
-	--color-financy-green-300: var(--green-300);
-	--color-financy-green-500: var(--green-500);
-	--color-financy-green-700: var(--green-700);
+	--color-financy-brand-dark: var(--green-brand-dark);
+	--color-financy-brand-base: var(--green-brand-base);
 
-	--color-financy-red-300: var(--red-300);
-	--color-financy-red-500: var(--red-500);
-	--color-financy-red-700: var(--red-700);
-}
+	--color-financy-white: var(--color-white);
+	--color-financy-black: var(--color-black);
+	--color-financy-danger: var(--red-feed-danger);
+	--color-financy-success: var(--green-feed-success);
 
-.dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
-	--chart-1: oklch(0.488 0.243 264.376);
-	--chart-2: oklch(0.696 0.17 162.48);
-	--chart-3: oklch(0.769 0.188 70.08);
-	--chart-4: oklch(0.627 0.265 303.9);
-	--chart-5: oklch(0.645 0.246 16.439);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+	--color-financy-blue-dark: var(--blue-dark);
+	--color-financy-blue-base: var(--blue-base);
+	--color-financy-blue-light: var(--blue-light);
+
+	--color-financy-purple-dark: var(--purple-dark);
+	--color-financy-purple-base: var(--purple-base);
+	--color-financy-purple-light: var(--purple-light);
+
+	--color-financy-green-dark: var(--green-dark);
+	--color-financy-green-base: var(--green-base);
+	--color-financy-green-light: var(--green-light);
+
+	--color-financy-red-dark: var(--red-dark);
+	--color-financy-red-base: var(--red-base);
+	--color-financy-red-light: var(--red-light);
+
+	--color-financy-pink-dark: var(--pink-dark);
+	--color-financy-pink-base: var(--pink-base);
+	--color-financy-pink-light: var(--pink-light);
+
+	--color-financy-orange-dark: var(--orange-dark);
+	--color-financy-orange-base: var(--orange-base);
+	--color-financy-orange-light: var(--orange-light);
+
+	--color-financy-yellow-dark: var(--yellow-dark);
+	--color-financy-yellow-base: var(--yellow-base);
+	--color-financy-yellow-light: var(--yellow-light);
 }
 
 @layer base {
