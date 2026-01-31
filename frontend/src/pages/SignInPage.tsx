@@ -1,8 +1,8 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
-import { LabelButton, Link } from '@/components/ui';
+import { LabelButton } from '@/components/label-button';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SignInFormData {
@@ -105,7 +105,6 @@ export function SignInPage() {
 
 						<LabelButton
 							type="submit"
-							variant="filled"
 							size="md"
 							disabled={isSubmitting}
 							className="w-full"
@@ -125,12 +124,11 @@ export function SignInPage() {
 							Ainda não tem uma conta?
 						</p>
 						<LabelButton
-							variant="outlined"
-							size="md"
+							variant="outline"
 							className="w-full"
 							onClick={() => navigate('/signup')}
+							icon={<UserRoundPlus size={18} />}
 						>
-							<UserRoundPlus />
 							Criar conta
 						</LabelButton>
 					</div>
