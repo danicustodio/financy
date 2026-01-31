@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { Input } from '@/components/ui/input';
+import { Input } from './input.component';
 
 describe('Input', () => {
 	it('renders with label', () => {
@@ -18,7 +18,7 @@ describe('Input', () => {
 	});
 
 	it('renders error state', () => {
-		render(<Input label="Email" error="Invalid email address" />);
+		render(<Input label="Email" error helper="Invalid email address" />);
 		expect(screen.getByText('Invalid email address')).toBeInTheDocument();
 	});
 
@@ -37,16 +37,6 @@ describe('Input', () => {
 		expect(screen.getByTestId('prefix-icon')).toBeInTheDocument();
 	});
 
-	it('renders with suffix icon', () => {
-		render(
-			<Input
-				label="Password"
-				suffix={<span data-testid="suffix-icon">👁</span>}
-			/>,
-		);
-		expect(screen.getByTestId('suffix-icon')).toBeInTheDocument();
-	});
-
 	it('allows user input', async () => {
 		const user = userEvent.setup();
 		render(<Input label="Name" placeholder="Enter name" />);
@@ -59,11 +49,5 @@ describe('Input', () => {
 		render(<Input id="email-input" label="Email" />);
 		const label = screen.getByText('Email');
 		expect(label).toHaveAttribute('for', 'email-input');
-	});
-
-	it('error takes precedence over helper text display', () => {
-		render(<Input label="Email" helper="Helper text" error="Error message" />);
-		expect(screen.getByText('Error message')).toBeInTheDocument();
-		expect(screen.queryByText('Helper text')).not.toBeInTheDocument();
 	});
 });

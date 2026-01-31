@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Input, LabelButton } from '@/components/ui';
+import { Input } from '@/components/input';
+import { LabelButton } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SignUpFormData {

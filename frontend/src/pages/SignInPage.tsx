@@ -1,7 +1,8 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Input, LabelButton, Link } from '@/components/ui';
+import { Input } from '@/components/input';
+import { LabelButton, Link } from '@/components/ui';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SignInFormData {
@@ -56,9 +57,10 @@ export function SignInPage() {
 							id="email"
 							label="E-mail"
 							type="email"
-							placeholder="seu@exemplo.com"
+							placeholder="mail@exemplo.com"
 							prefix={<Mail />}
-							error={errors.email?.message}
+							error={!!errors.email}
+							helper={errors.email?.message}
 							{...register('email', {
 								required: 'E-mail é obrigatório',
 								pattern: {
@@ -73,8 +75,9 @@ export function SignInPage() {
 							label="Senha"
 							type="password"
 							placeholder="Digite sua senha"
-							prefix={<Lock/>}
-							error={errors.password?.message}
+							prefix={<Lock />}
+							error={!!errors.password}
+							helper={errors.password?.message}
 							{...register('password', {
 								required: 'Senha é obrigatória',
 								minLength: {
