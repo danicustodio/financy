@@ -1,8 +1,10 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
+import { Link } from '@/components/link';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SignInFormData {
@@ -88,19 +90,11 @@ export function SignInPage() {
 						/>
 
 						<div className="flex items-center justify-between">
-							<label className="flex items-center gap-2 cursor-pointer">
-								<input
-									type="checkbox"
-									className="w-4 h-4 rounded border-financy-gray-300 focus:ring-financy-brand-base"
-									{...register('rememberMe')}
-								/>
-								<span className="text-financy-gray-700 text-sm">
-									Lembrar-me
-								</span>
-							</label>
-							<Link href="#" variant="default">
-								Recuperar senha
-							</Link>
+							<div className="flex items-center gap-2">
+								<Checkbox id="remember-me" name="remember-me" />
+								<p className="text-financy-gray-700 text-sm">Lembrar-me</p>
+							</div>
+							<Link href="#">Recuperar senha</Link>
 						</div>
 
 						<LabelButton
@@ -114,13 +108,13 @@ export function SignInPage() {
 					</form>
 
 					<div className="flex items-center gap-4">
-						<div className="flex-1 h-px bg-financy-gray-200" />
-						<span className="text-financy-gray-400 text-sm">ou</span>
-						<div className="flex-1 h-px bg-financy-gray-200" />
+						<div className="flex-1 h-px bg-financy-gray-300" />
+						<span className="text-financy-gray-500 text-sm">ou</span>
+						<div className="flex-1 h-px bg-financy-gray-300" />
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
-						<p className="text-financy-gray-400 text-sm">
+						<p className="text-financy-gray-600 text-sm">
 							Ainda não tem uma conta?
 						</p>
 						<LabelButton

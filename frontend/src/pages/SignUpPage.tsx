@@ -1,7 +1,8 @@
+import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
-import { LabelButton } from '@/components/ui';
+import { LabelButton } from '@/components/label-button';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SignUpFormData {
@@ -30,41 +31,20 @@ export function SignUpPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-financy-gray-800 p-4">
-			<div className="w-full max-w-[400px] flex flex-col items-center gap-10">
-				{/* Logo */}
-				<div className="flex items-center gap-2">
-					<svg
-						width="32"
-						height="32"
-						viewBox="0 0 32 32"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						className="text-financy-green-500"
-					>
-						<path
-							d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 4a10 10 0 110 20 10 10 0 010-20zm-2 4v8h4v-8h-4zm0 10v2h4v-2h-4z"
-							fill="currentColor"
-						/>
-					</svg>
-					<span className="text-financy-green-500 text-2xl font-bold tracking-tight uppercase">
-						Financy
-					</span>
-				</div>
+		<div className="min-h-screen w-full flex items-center justify-center bg-white p-4 md:p-8">
+			<div className="w-full max-w-md flex flex-col items-center gap-10">
+				<img src="/logo.svg" alt="Financy" className="h-8" />
 
-				{/* White Card */}
-				<div className="w-full bg-white rounded-lg p-8 flex flex-col gap-6">
-					{/* Header */}
+				<div className="w-full bg-white rounded-[12px] p-4 md:p-8 flex flex-col gap-6 border border-financy-gray-200">
 					<div className="flex flex-col items-center gap-2">
 						<h1 className="text-financy-gray-800 text-xl font-bold">
 							Criar conta
 						</h1>
-						<p className="text-financy-gray-400 text-sm">
+						<p className="text-financy-gray-600 text-sm">
 							Comece a controlar suas finanças ainda hoje
 						</p>
 					</div>
 
-					{/* Form */}
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className="w-full flex flex-col gap-4"
@@ -74,21 +54,9 @@ export function SignUpPage() {
 							label="Nome completo"
 							type="text"
 							placeholder="Seu nome completo"
-							prefix={
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M10 2a4 4 0 100 8 4 4 0 000-8zM4 18a6 6 0 1112 0H4z"
-										fill="currentColor"
-									/>
-								</svg>
-							}
-							error={errors.name?.message}
+							prefix={<UserRound size={16} />}
+							error={!!errors.name}
+							helper={errors.name?.message}
 							{...register('name', {
 								required: 'Nome é obrigatório',
 								minLength: {
@@ -103,21 +71,9 @@ export function SignUpPage() {
 							label="E-mail"
 							type="email"
 							placeholder="seu@exemplo.com"
-							prefix={
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M3 4h14a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V5a1 1 0 011-1zm7 6.5L4 6v9h12V6l-6 4.5z"
-										fill="currentColor"
-									/>
-								</svg>
-							}
-							error={errors.email?.message}
+							prefix={<Mail size={16} />}
+							error={!!errors.email}
+							helper={errors.email?.message}
 							{...register('email', {
 								required: 'E-mail é obrigatório',
 								pattern: {
@@ -133,37 +89,24 @@ export function SignUpPage() {
 								label="Senha"
 								type="password"
 								placeholder="Digite sua senha"
-								prefix={
-									<svg
-										width="20"
-										height="20"
-										viewBox="0 0 20 20"
-										fill="none"
-										xmlns="http://www.w3.org/2000/svg"
-									>
-										<path
-											d="M10 2a4 4 0 00-4 4v2H5a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1V9a1 1 0 00-1-1h-1V6a4 4 0 00-4-4zm-2 6V6a2 2 0 114 0v2H8z"
-											fill="currentColor"
-										/>
-									</svg>
+								prefix={<Lock size={16} />}
+								error={!!errors.password}
+								helper={
+									errors.password?.message ??
+									'A senha deve ter pelo menos 8 caracteres'
 								}
-								error={errors.password?.message}
 								{...register('password', {
 									required: 'Senha é obrigatória',
 									minLength: {
-										value: 6,
-										message: 'Senha deve ter no mínimo 6 caracteres',
+										value: 8,
+										message: 'Senha deve ter no mínimo 8 caracteres',
 									},
 								})}
 							/>
-							<span className="text-financy-gray-400 text-xs">
-								A senha deve ter pelo menos 6 caracteres
-							</span>
 						</div>
 
 						<LabelButton
 							type="submit"
-							variant="filled"
 							size="md"
 							disabled={isSubmitting}
 							className="w-full"
@@ -172,35 +115,21 @@ export function SignUpPage() {
 						</LabelButton>
 					</form>
 
-					{/* Divider */}
 					<div className="flex items-center gap-4">
-						<div className="flex-1 h-px bg-financy-gray-200" />
-						<span className="text-financy-gray-400 text-sm">ou</span>
-						<div className="flex-1 h-px bg-financy-gray-200" />
+						<div className="flex-1 h-px bg-financy-gray-300" />
+						<span className="text-financy-gray-500 text-sm">ou</span>
+						<div className="flex-1 h-px bg-financy-gray-300" />
 					</div>
 
-					{/* Sign in section */}
 					<div className="flex flex-col items-center gap-4">
-						<p className="text-financy-gray-400 text-sm">Já tem uma conta?</p>
+						<p className="text-financy-gray-600 text-sm">Já tem uma conta?</p>
 						<LabelButton
-							variant="outlined"
+							variant="outline"
 							size="md"
 							className="w-full"
+							icon={<LogIn size={18} />}
 							onClick={() => navigate('/signin')}
 						>
-							<svg
-								width="20"
-								height="20"
-								viewBox="0 0 20 20"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								className="mr-2"
-							>
-								<path
-									d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 4v3h3v2h-3v3H9v-3H6V9h3V6h2z"
-									fill="currentColor"
-								/>
-							</svg>
 							Fazer login
 						</LabelButton>
 					</div>
