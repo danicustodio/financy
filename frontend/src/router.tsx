@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { CategoriesPage } from '@/pages/CategoriesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
+import { ProfilePage } from '@/pages/ProfilePage';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpPage } from '@/pages/SignUpPage';
 import { TransactionsPage } from '@/pages/TransactionsPage';
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
 			{
 				path: 'categories',
 				element: <CategoriesPage />,
+			},
+			{
+				path: 'profile',
+				element: <ProfilePage />,
 			},
 		],
 	},
