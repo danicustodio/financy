@@ -1,7 +1,7 @@
 import type { TagVariants } from './tag.variants';
 
 export interface TagProps
-	extends React.HTMLAttributes<HTMLSpanElement>,
+	extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
 		TagVariants {
 	children: React.ReactNode;
 }
