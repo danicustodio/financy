@@ -1,3 +1,3 @@
-import type { AnchorHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes } from 'react';
 
-export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement>{}
+export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}

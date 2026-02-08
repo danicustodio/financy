@@ -9,12 +9,16 @@ describe('LabelButton', () => {
 	describe('rendering', () => {
 		it('renders children text', () => {
 			render(<LabelButton>Click me</LabelButton>);
-			expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+			expect(
+				screen.getByRole('button', { name: 'Click me' }),
+			).toBeInTheDocument();
 		});
 
 		it('renders with icon and children', () => {
 			render(<LabelButton icon={<TestIcon />}>Submit</LabelButton>);
-			expect(screen.getByRole('button', { name: /Submit/ })).toBeInTheDocument();
+			expect(
+				screen.getByRole('button', { name: /Submit/ }),
+			).toBeInTheDocument();
 			expect(screen.getByTestId('test-icon')).toBeInTheDocument();
 		});
 
@@ -98,7 +102,10 @@ describe('LabelButton', () => {
 		it('applies disabled styles', () => {
 			render(<LabelButton disabled>Disabled</LabelButton>);
 			const button = screen.getByRole('button', { name: 'Disabled' });
-			expect(button).toHaveClass('disabled:pointer-events-none', 'disabled:opacity-50');
+			expect(button).toHaveClass(
+				'disabled:pointer-events-none',
+				'disabled:opacity-50',
+			);
 		});
 	});
 

@@ -6,5 +6,5 @@ export interface InputProps
 	active?: boolean;
 	error?: boolean;
 	helper?: string;
-	prefix?: ReactNode
+	prefix?: ReactNode;
 }

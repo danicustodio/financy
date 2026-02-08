@@ -34,7 +34,11 @@ describe('Link', () => {
 
 	it('forwards anchor attributes', () => {
 		render(
-			<Link href="https://example.com" target="_blank" rel="noopener noreferrer">
+			<Link
+				href="https://example.com"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				External
 			</Link>,
 		);
@@ -49,6 +53,8 @@ describe('Link', () => {
 				⚙️
 			</Link>,
 		);
-		expect(screen.getByRole('link', { name: 'Go to settings' })).toBeInTheDocument();
+		expect(
+			screen.getByRole('link', { name: 'Go to settings' }),
+		).toBeInTheDocument();
 	});
 });

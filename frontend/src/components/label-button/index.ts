@@ -1,1 +1,1 @@
-export {LabelButton} from './label-button.component'
+export { LabelButton } from './label-button.component';
