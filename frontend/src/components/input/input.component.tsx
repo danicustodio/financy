@@ -1,8 +1,11 @@
+import { useState } from 'react';
+import { Eye, EyeClosed } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { InputProps } from './input.types';
 import {
 	inputFieldVariants,
 	labelVariants,
+	passwordToggleVariants,
 	prefixVariants,
 } from './input.variants';
 
@@ -18,6 +21,9 @@ export const Input = ({
 	helper,
 	...props
 }: InputProps) => {
+	const [showPassword, setShowPassword] = useState(false);
+	const isPasswordType = type === 'password';
+
 	function getCurrentVariant() {
 		if (disabled) return 'disabled';
 		if (error) return 'error';
@@ -27,6 +33,14 @@ export const Input = ({
 	}
 
 	const variant = getCurrentVariant();
+
+	const togglePasswordVisibility = () => {
+		if (!disabled) {
+			setShowPassword((prev) => !prev);
+		}
+	};
+
+	const inputType = isPasswordType && showPassword ? 'text' : type;
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -49,7 +63,7 @@ export const Input = ({
 				)}
 
 				<input
-					type={type}
+					type={inputType}
 					className={cn(
 						inputFieldVariants({
 							state: variant,
@@ -57,6 +71,18 @@ export const Input = ({
 					)}
 					{...props}
 				/>
+
+				{isPasswordType && (
+					<button
+						type="button"
+						onClick={togglePasswordVisibility}
+						disabled={disabled}
+						className={cn(passwordToggleVariants({ state: variant }))}
+						aria-label={showPassword ? 'Hide password' : 'Show password'}
+					>
+						{showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+					</button>
+				)}
 			</div>
 
 			{helper && <p className="text-xs text-financy-gray-500">{helper}</p>}

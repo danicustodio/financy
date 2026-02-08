@@ -33,14 +33,32 @@ export const labelVariants = cva('font-medium text-sm', {
 export const prefixVariants = cva('w-4 h-4 flex items-center justify-center shrink-0', {
   variants: {
     state: {
-      default: 'text-financy-gray-700',
+      default: 'text-financy-gray-400',
       active: 'text-financy-green-base',
-      filled: 'text-financy-gray-700',
+      filled: 'text-financy-gray-800',
       error: 'text-financy-danger',
-      disabled: 'text-financy-gray-700'
+      disabled: 'text-financy-black'
     }
   },
   defaultVariants: {
     state: 'default'
   }
 })
+
+export const passwordToggleVariants = cva(
+  'w-5 h-5 flex items-center justify-center shrink-0 cursor-pointer',
+  {
+    variants: {
+      state: {
+        default: 'text-financy-gray-700',
+        active: 'text-financy-green-base',
+        filled: 'text-financy-gray-800',
+        error: 'text-financy-danger',
+        disabled: 'text-financy-black cursor-not-allowed'
+      }
+    },
+    defaultVariants: {
+      state: 'default'
+    }
+  }
+)
