@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { CategoriesPage } from '@/pages/CategoriesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { SignInPage } from '@/pages/SignInPage';
 import { SignUpPage } from '@/pages/SignUpPage';
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
 			{
 				path: 'transactions',
 				element: <TransactionsPage />,
+			},
+			{
+				path: 'categories',
+				element: <CategoriesPage />,
 			},
 		],
 	},

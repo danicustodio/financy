@@ -11,6 +11,7 @@ export const tagVariants = cva(
 				orange: 'bg-financy-orange-light text-financy-orange-dark',
 				pink: 'bg-financy-pink-light text-financy-pink-dark',
 				yellow: 'bg-financy-yellow-light text-financy-yellow-dark',
+				red: 'bg-financy-red-light text-financy-red-dark',
 			},
 		},
 		defaultVariants: {
