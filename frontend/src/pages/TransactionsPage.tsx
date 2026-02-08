@@ -2,6 +2,7 @@ import { ChevronDown, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 import { LabelButton } from '@/components/label-button';
 import { Navbar } from '@/components/navbar';
+import { NewTransactionModal } from '@/components/new-transaction-modal';
 import {
 	type TransactionData,
 	TransactionsTable,
@@ -101,6 +102,8 @@ export function TransactionsPage() {
 		setCurrentPage(page);
 	};
 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	return (
 		<div className="min-h-screen bg-financy-gray-100">
 			<Navbar />
@@ -120,6 +123,7 @@ export function TransactionsPage() {
 						variant="default"
 						size="sm"
 						icon={<Plus className="w-4 h-4" />}
+						onClick={() => setIsModalOpen(true)}
 					>
 						Nova transação
 					</LabelButton>
@@ -201,6 +205,11 @@ export function TransactionsPage() {
 					onPageChange={handlePageChange}
 				/>
 			</main>
+
+			<NewTransactionModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+			/>
 		</div>
 	);
 }
