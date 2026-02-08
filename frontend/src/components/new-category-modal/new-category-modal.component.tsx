@@ -1,0 +1,239 @@
+import {
+	BookOpen,
+	Briefcase,
+	CarFront,
+	Dumbbell,
+	Gift,
+	HeartPulse,
+	House,
+	Mailbox,
+	PawPrint,
+	PiggyBank,
+	ReceiptText,
+	ShoppingCart,
+	Tag,
+	Ticket,
+	Utensils,
+	Wrench,
+	X,
+} from 'lucide-react';
+import { useState } from 'react';
+import { IconButton } from '@/components/icon-button';
+import { Input } from '@/components/input';
+import { LabelButton } from '@/components/label-button';
+import { cn } from '@/lib/utils';
+import type {
+	CategoryColor,
+	CategoryFormData,
+	CategoryIcon,
+	NewCategoryModalProps,
+} from './new-category-modal.types';
+
+const CATEGORY_ICONS: { id: CategoryIcon; icon: React.ReactNode }[] = [
+	{ id: 'utensils', icon: <Utensils size={20} /> },
+	{ id: 'car-front', icon: <CarFront size={20} /> },
+	{ id: 'briefcase-business', icon: <Briefcase size={20} /> },
+	{ id: 'ticket', icon: <Ticket size={20} /> },
+	{ id: 'piggy-bank', icon: <PiggyBank size={20} /> },
+	{ id: 'shopping-cart', icon: <ShoppingCart size={20} /> },
+	{ id: 'heart-pulse', icon: <HeartPulse size={20} /> },
+	{ id: 'tag', icon: <Tag size={20} /> },
+	{ id: 'tool-case', icon: <Wrench size={20} /> },
+	{ id: 'paw-print', icon: <PawPrint size={20} /> },
+	{ id: 'house', icon: <House size={20} /> },
+	{ id: 'gift', icon: <Gift size={20} /> },
+	{ id: 'dumbbell', icon: <Dumbbell size={20} /> },
+	{ id: 'book-open', icon: <BookOpen size={20} /> },
+	{ id: 'receipt-text', icon: <ReceiptText size={20} /> },
+	{ id: 'mailbox', icon: <Mailbox size={20} /> },
+];
+
+const CATEGORY_COLORS: {
+	id: CategoryColor;
+	bgClass: string;
+	borderClass: string;
+}[] = [
+	{
+		id: 'blue',
+		bgClass: 'bg-financy-blue-light',
+		borderClass: 'border-financy-blue-base',
+	},
+	{
+		id: 'purple',
+		bgClass: 'bg-financy-purple-light',
+		borderClass: 'border-financy-purple-base',
+	},
+	{
+		id: 'yellow',
+		bgClass: 'bg-financy-yellow-light',
+		borderClass: 'border-financy-yellow-base',
+	},
+	{
+		id: 'pink',
+		bgClass: 'bg-financy-pink-light',
+		borderClass: 'border-financy-pink-base',
+	},
+	{
+		id: 'green',
+		bgClass: 'bg-financy-green-light',
+		borderClass: 'border-financy-green-base',
+	},
+	{
+		id: 'orange',
+		bgClass: 'bg-financy-orange-light',
+		borderClass: 'border-financy-orange-base',
+	},
+	{
+		id: 'red',
+		bgClass: 'bg-financy-red-light',
+		borderClass: 'border-financy-red-base',
+	},
+];
+
+export const NewCategoryModal = ({
+	isOpen,
+	onClose,
+	onSubmit,
+}: NewCategoryModalProps) => {
+	const [formData, setFormData] = useState<CategoryFormData>({
+		title: '',
+		description: '',
+		icon: 'utensils',
+		color: 'blue',
+	});
+
+	if (!isOpen) return null;
+
+	const handleInputChange = (field: keyof CategoryFormData, value: string) => {
+		setFormData((prev) => ({ ...prev, [field]: value }));
+	};
+
+	const handleIconSelect = (icon: CategoryIcon) => {
+		setFormData((prev) => ({ ...prev, icon }));
+	};
+
+	const handleColorSelect = (color: CategoryColor) => {
+		setFormData((prev) => ({ ...prev, color }));
+	};
+
+	const handleSubmit = () => {
+		onSubmit?.(formData);
+	};
+
+	return (
+		<div
+			className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="modal-title"
+		>
+			{/* biome-ignore lint/a11y/useKeyWithClickEvents: Overlay close on click outside */}
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: Overlay backdrop */}
+			<div className="absolute inset-0" onClick={onClose} />
+			<div className="relative w-full max-w-md bg-white border border-financy-gray-200 rounded-xl p-6 flex flex-col gap-6">
+				{/* Header */}
+				<div className="flex items-start justify-between gap-4">
+					<div className="flex flex-col gap-0.5 flex-1">
+						<h2
+							id="modal-title"
+							className="text-lg font-semibold text-financy-gray-800"
+						>
+							Nova categoria
+						</h2>
+						<p className="text-sm text-financy-gray-600">
+							Organize suas transações com categorias
+						</p>
+					</div>
+					<IconButton
+						icon={<X size={16} />}
+						variant="outline"
+						size="sm"
+						onClick={onClose}
+						aria-label="Fechar modal"
+					/>
+				</div>
+
+				{/* Form */}
+				<div className="flex flex-col gap-4">
+					<Input
+						id="title"
+						label="Título"
+						placeholder="Ex. Alimentação"
+						value={formData.title}
+						onChange={(e) => handleInputChange('title', e.target.value)}
+					/>
+
+					<div className="flex flex-col gap-2">
+						<Input
+							id="description"
+							label="Descrição"
+							placeholder="Descrição da categoria"
+							value={formData.description}
+							onChange={(e) => handleInputChange('description', e.target.value)}
+						/>
+						<span className="text-xs text-financy-gray-500">Opcional</span>
+					</div>
+
+					{/* Icon Picker */}
+					<div className="flex flex-col gap-2">
+						<span className="text-sm font-medium text-financy-gray-700">
+							Ícone
+						</span>
+						<div className="flex flex-wrap gap-2">
+							{CATEGORY_ICONS.map(({ id, icon }) => (
+								<button
+									key={id}
+									type="button"
+									onClick={() => handleIconSelect(id)}
+									className={cn(
+										'flex items-center justify-center w-[42px] h-[42px] rounded-lg border transition-colors',
+										formData.icon === id
+											? 'border-financy-brand-base bg-financy-gray-100 text-financy-brand-base'
+											: 'border-financy-gray-300 bg-white text-financy-gray-600 hover:border-financy-gray-400',
+									)}
+									aria-label={`Selecionar ícone ${id}`}
+								>
+									{icon}
+								</button>
+							))}
+						</div>
+					</div>
+
+					{/* Color Picker */}
+					<div className="flex flex-col gap-2">
+						<span className="text-sm font-medium text-financy-gray-700">
+							Cor
+						</span>
+						<div className="flex gap-2">
+							{CATEGORY_COLORS.map(({ id, bgClass }) => (
+								<button
+									key={id}
+									type="button"
+									onClick={() => handleColorSelect(id)}
+									className={cn(
+										'flex-1 h-5 rounded border-2 transition-all',
+										bgClass,
+										formData.color === id
+											? 'border-financy-gray-800 ring-2 ring-financy-gray-300'
+											: 'border-transparent hover:border-financy-gray-300',
+									)}
+									aria-label={`Selecionar cor ${id}`}
+								/>
+							))}
+						</div>
+					</div>
+				</div>
+
+				{/* Submit Button */}
+				<LabelButton
+					variant="default"
+					size="md"
+					className="w-full"
+					onClick={handleSubmit}
+				>
+					Salvar
+				</LabelButton>
+			</div>
+		</div>
+	);
+};

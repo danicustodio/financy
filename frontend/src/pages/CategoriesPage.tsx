@@ -1,7 +1,9 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
+import { useState } from 'react';
 import { CategoryCard, type CategoryColor } from '@/components/categories';
 import { LabelButton } from '@/components/label-button';
 import { Navbar } from '@/components/navbar';
+import { NewCategoryModal } from '@/components/new-category-modal';
 
 // Sample data for categories
 const categories: {
@@ -79,6 +81,8 @@ const categories: {
 ];
 
 export function CategoriesPage() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const totalCategories = categories.length;
 	const totalTransactions = categories.reduce(
 		(sum, cat) => sum + cat.itemCount,
@@ -107,6 +111,7 @@ export function CategoriesPage() {
 						variant="default"
 						size="sm"
 						icon={<Plus className="w-4 h-4" />}
+						onClick={() => setIsModalOpen(true)}
 					>
 						Nova categoria
 					</LabelButton>
@@ -175,6 +180,15 @@ export function CategoriesPage() {
 					))}
 				</div>
 			</main>
+
+			<NewCategoryModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSubmit={(data) => {
+					console.log('New category:', data);
+					setIsModalOpen(false);
+				}}
+			/>
 		</div>
 	);
 }
