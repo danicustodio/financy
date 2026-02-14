@@ -34,7 +34,7 @@ export const labelVariants = cva('font-medium text-sm', {
 });
 
 export const prefixVariants = cva(
-	'w-4 h-4 flex items-center justify-center shrink-0',
+	'flex h-4 w-4 shrink-0 items-center justify-center',
 	{
 		variants: {
 			state: {
@@ -52,7 +52,7 @@ export const prefixVariants = cva(
 );
 
 export const passwordToggleVariants = cva(
-	'w-5 h-5 flex items-center justify-center shrink-0 cursor-pointer',
+	'flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center',
 	{
 		variants: {
 			state: {
@@ -60,7 +60,7 @@ export const passwordToggleVariants = cva(
 				active: 'text-financy-green-base',
 				filled: 'text-financy-gray-800',
 				error: 'text-financy-danger',
-				disabled: 'text-financy-black cursor-not-allowed',
+				disabled: 'cursor-not-allowed text-financy-black',
 			},
 		},
 		defaultVariants: {

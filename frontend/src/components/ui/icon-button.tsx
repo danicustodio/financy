@@ -13,13 +13,13 @@ const iconButtonVariants = cva(
 		variants: {
 			variant: {
 				default: [
-					'border-financy-gray-200 text-financy-gray-400 bg-white',
-					'hover:bg-financy-gray-100 hover:border-financy-gray-300',
+					'border-financy-gray-200 bg-white text-financy-gray-400',
+					'hover:border-financy-gray-300 hover:bg-financy-gray-100',
 					'focus-visible:ring-financy-gray-400',
 				].join(' '),
 				danger: [
-					'border-financy-red-300 text-financy-red-300 bg-white',
-					'hover:bg-red-50 hover:border-financy-red-500 hover:text-financy-red-500',
+					'border-financy-red-300 bg-white text-financy-red-300',
+					'hover:border-financy-red-500 hover:bg-red-50 hover:text-financy-red-500',
 					'focus-visible:ring-financy-red-300',
 				].join(' '),
 			},

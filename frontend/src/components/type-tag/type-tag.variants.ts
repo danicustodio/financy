@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const typeTagVariants = cva(
-	'inline-flex items-center gap-2 text-sm font-medium',
+	'inline-flex items-center gap-2 font-medium text-sm',
 	{
 		variants: {
 			type: {

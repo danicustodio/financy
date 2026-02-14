@@ -52,8 +52,8 @@ export const Input = ({
 
 			<div
 				className={cn(
-					'flex items-center gap-3 p-3 py-3.5 w-full rounded-md',
-					'bg-financy-white, border border-financy-gray-300',
+					'flex w-full items-center gap-3 rounded-md p-3 py-3.5',
+					'border border-financy-gray-300 bg-financy-white,',
 				)}
 			>
 				{prefix && (
@@ -85,7 +85,7 @@ export const Input = ({
 				)}
 			</div>
 
-			{helper && <p className="text-xs text-financy-gray-500">{helper}</p>}
+			{helper && <p className="text-financy-gray-500 text-xs">{helper}</p>}
 		</div>
 	);
 };

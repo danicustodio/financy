@@ -24,36 +24,36 @@ export const TransactionsTable = ({
 	onDelete,
 }: TransactionsTableProps) => {
 	return (
-		<div className="bg-white border border-financy-gray-200 rounded-xl overflow-hidden">
+		<div className="overflow-hidden rounded-xl border border-financy-gray-200 bg-white">
 			{/* Table Header */}
-			<div className="flex items-center border-b border-financy-gray-200">
+			<div className="flex items-center border-financy-gray-200 border-b">
 				<div className="flex-1 px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Descrição
 					</span>
 				</div>
-				<div className="flex items-center justify-center w-28 px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+				<div className="flex w-28 items-center justify-center px-6 py-5">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Data
 					</span>
 				</div>
-				<div className="flex items-center justify-center w-[200px] px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+				<div className="flex w-[200px] items-center justify-center px-6 py-5">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Categoria
 					</span>
 				</div>
-				<div className="flex items-center justify-center w-[136px] px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+				<div className="flex w-[136px] items-center justify-center px-6 py-5">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Tipo
 					</span>
 				</div>
-				<div className="flex items-center justify-end w-[200px] px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+				<div className="flex w-[200px] items-center justify-end px-6 py-5">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Valor
 					</span>
 				</div>
-				<div className="flex items-center justify-end w-[120px] px-6 py-5">
-					<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+				<div className="flex w-[120px] items-center justify-end px-6 py-5">
+					<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 						Ações
 					</span>
 				</div>

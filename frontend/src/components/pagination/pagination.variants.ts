@@ -1,12 +1,12 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const paginationButtonVariants = cva(
-	'inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer',
+	'inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg font-medium text-sm transition-colors',
 	{
 		variants: {
 			state: {
 				default:
-					'bg-financy-white border border-financy-gray-300 text-financy-gray-700 hover:bg-financy-gray-100',
+					'border border-financy-gray-300 bg-financy-white text-financy-gray-700 hover:bg-financy-gray-100',
 				active: 'bg-financy-brand-base text-white',
 			},
 		},

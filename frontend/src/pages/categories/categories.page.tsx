@@ -1,6 +1,7 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
 import { useState } from 'react';
 import { CategoryCard } from '@/components/categories';
+import { IconTile } from '@/components/icon-tile';
 import { LabelButton } from '@/components/label-button';
 import { NewCategoryModal } from '@/components/new-category-modal';
 import { MOCK_CATEGORIES } from './categories.mock';
@@ -19,11 +20,11 @@ export function Categories() {
 
 	return (
 		<>
-			<main className="p-12 flex flex-col gap-8">
+			<main className="flex flex-col gap-8 p-12">
 				{/* Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-0.5">
-						<h1 className="text-2xl font-bold text-financy-gray-800">
+						<h1 className="font-bold text-2xl text-financy-gray-800">
 							Categorias
 						</h1>
 						<p className="text-base text-financy-gray-600">
@@ -33,7 +34,7 @@ export function Categories() {
 					<LabelButton
 						variant="default"
 						size="sm"
-						icon={<Plus className="w-4 h-4" />}
+						icon={<Plus className="h-4 w-4" />}
 						onClick={() => setIsModalOpen(true)}
 					>
 						Nova categoria
@@ -43,46 +44,48 @@ export function Categories() {
 				{/* Summary Cards */}
 				<div className="flex gap-6">
 					{/* Total Categories Card */}
-					<div className="flex gap-4 bg-white border border-financy-gray-200 rounded-xl p-6 flex-1">
-						<div className="flex items-center justify-center w-8 h-8">
-							<Tag className="w-6 h-6 text-financy-brand-base" />
+					<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
+						<div className="flex h-8 w-8 items-center justify-center">
+							<Tag className="h-6 w-6 text-financy-brand-base" />
 						</div>
 						<div className="flex flex-col gap-2">
-							<span className="text-[28px] font-bold text-financy-gray-800">
+							<span className="font-bold text-[28px] text-financy-gray-800">
 								{totalCategories}
 							</span>
-							<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+							<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 								total de categorias
 							</span>
 						</div>
 					</div>
 
 					{/* Total Transactions Card */}
-					<div className="flex gap-4 bg-white border border-financy-gray-200 rounded-xl p-6 flex-1">
-						<div className="flex items-center justify-center w-8 h-8">
-							<ArrowUpDown className="w-6 h-6 text-financy-brand-base" />
+					<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
+						<div className="flex h-8 w-8 items-center justify-center">
+							<ArrowUpDown className="h-6 w-6 text-financy-brand-base" />
 						</div>
 						<div className="flex flex-col gap-2">
-							<span className="text-[28px] font-bold text-financy-gray-800">
+							<span className="font-bold text-[28px] text-financy-gray-800">
 								{totalTransactions}
 							</span>
-							<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+							<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 								total de transações
 							</span>
 						</div>
 					</div>
 
 					{/* Most Used Category Card */}
-					<div className="flex gap-4 bg-white border border-financy-gray-200 rounded-xl p-6 flex-1">
-						<div
-							className="flex items-center justify-center w-8 h-8 rounded-full"
-							style={{ backgroundColor: mostUsedCategory.headerBgColor }}
+					<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
+						<IconTile
+							icon={Tag}
+							color={mostUsedCategory.color}
+							className="h-8 w-8 rounded-full [&_svg]:h-5 [&_svg]:w-5"
+							aria-label={`Ícone da categoria ${mostUsedCategory.name}`}
 						/>
 						<div className="flex flex-col gap-2">
-							<span className="text-[28px] font-bold text-financy-gray-800">
+							<span className="font-bold text-[28px] text-financy-gray-800">
 								{mostUsedCategory.name}
 							</span>
-							<span className="text-xs font-medium uppercase tracking-wider text-financy-gray-500">
+							<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 								categoria mais utilizada
 							</span>
 						</div>
@@ -98,7 +101,6 @@ export function Categories() {
 							description={category.description}
 							color={category.color}
 							itemCount={category.itemCount}
-							headerBgColor={category.headerBgColor}
 						/>
 					))}
 				</div>

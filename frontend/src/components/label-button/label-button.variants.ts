@@ -15,7 +15,7 @@ export const buttonVariants = cva(
 					'hover:bg-financy-brand-dark',
 				].join(' '),
 				outline: [
-					'bg-transparent text-financy-gray-700 border border-financy-gray-300',
+					'border border-financy-gray-300 bg-transparent text-financy-gray-700',
 					'hover:bg-financy-gray-200',
 				].join(' '),
 			},
@@ -31,15 +31,15 @@ export const buttonVariants = cva(
 	},
 );
 
-export const iconVariants = cva('flex items-center justify-center shrink-0', {
+export const iconVariants = cva('flex shrink-0 items-center justify-center', {
 	variants: {
 		variant: {
 			default: 'text-financy-gray-100',
 			outline: 'text-financy-gray-700',
 		},
 		size: {
-			md: 'w-4.5 h-4.5',
-			sm: 'w-4 h-4',
+			md: 'h-4.5 w-4.5',
+			sm: 'h-4 w-4',
 		},
 	},
 	defaultVariants: {

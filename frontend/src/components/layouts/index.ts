@@ -1,2 +1,2 @@
 export { LoggedLayout } from './logged-layout.component';
-export {ProtectedRoute} from './protected-route.component'
+export { ProtectedRoute } from './protected-route.component';

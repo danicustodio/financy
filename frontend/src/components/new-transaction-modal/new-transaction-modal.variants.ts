@@ -2,7 +2,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
 export const transactionTypeButtonVariants = cva(
-	'flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium text-sm cursor-pointer transition-colors flex-1',
+	'flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium text-sm transition-colors',
 	{
 		variants: {
 			type: {
@@ -19,13 +19,13 @@ export const transactionTypeButtonVariants = cva(
 				type: 'expense',
 				active: true,
 				className:
-					'bg-financy-gray-100 border border-financy-red-base text-financy-gray-800',
+					'border border-financy-red-base bg-financy-gray-100 text-financy-gray-800',
 			},
 			{
 				type: 'income',
 				active: true,
 				className:
-					'bg-financy-gray-100 border border-financy-green-base text-financy-gray-800',
+					'border border-financy-green-base bg-financy-gray-100 text-financy-gray-800',
 			},
 			{
 				type: 'expense',

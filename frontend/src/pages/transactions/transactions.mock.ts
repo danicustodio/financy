@@ -1,4 +1,4 @@
-import type { TransactionData } from "@/components/transactions";
+import type { TransactionData } from '@/components/transactions';
 
 // Sample data for transactions
 export const MOCK_TRANSACTIONS: TransactionData[] = [

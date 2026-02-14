@@ -22,7 +22,7 @@ export const Navbar = () => {
 		: 'CT';
 
 	return (
-		<nav className="flex items-center justify-between bg-white border-b border-financy-gray-200 px-12 py-4">
+		<nav className="flex items-center justify-between border-financy-gray-200 border-b bg-white px-12 py-4">
 			{/* Logo */}
 			<div className="flex items-center gap-2">
 				<img src="/logo.svg" alt="Financy" className="h-6" />
@@ -51,8 +51,8 @@ export const Navbar = () => {
 
 			{/* User Avatar */}
 			<RouterLink to="/profile" className="flex items-center gap-3">
-				<div className="flex items-center justify-center w-9 h-9 rounded-full bg-financy-gray-300 cursor-pointer hover:bg-financy-gray-400 transition-colors">
-					<span className="text-sm font-medium text-financy-gray-800">
+				<div className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-financy-gray-300 transition-colors hover:bg-financy-gray-400">
+					<span className="font-medium text-financy-gray-800 text-sm">
 						{initials}
 					</span>
 				</div>

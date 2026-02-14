@@ -19,11 +19,11 @@ export function Transactions() {
 
 	return (
 		<>
-			<main className="p-12 flex flex-col gap-8">
+			<main className="flex flex-col gap-8 p-12">
 				{/* Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-0.5">
-						<h1 className="text-2xl font-bold text-financy-gray-800">
+						<h1 className="font-bold text-2xl text-financy-gray-800">
 							Transações
 						</h1>
 						<p className="text-base text-financy-gray-600">
@@ -33,7 +33,7 @@ export function Transactions() {
 					<LabelButton
 						variant="default"
 						size="sm"
-						icon={<Plus className="w-4 h-4" />}
+						icon={<Plus className="h-4 w-4" />}
 						onClick={() => setIsModalOpen(true)}
 					>
 						Nova transação
@@ -41,67 +41,67 @@ export function Transactions() {
 				</div>
 
 				{/* Filters Section */}
-				<div className="flex gap-4 bg-white border border-financy-gray-200 rounded-xl p-5 px-6">
+				<div className="flex gap-4 rounded-xl border border-financy-gray-200 bg-white p-5 px-6">
 					{/* Search Input */}
-					<div className="flex flex-col gap-2 flex-1">
+					<div className="flex flex-1 flex-col gap-2">
 						<label
 							htmlFor="search"
-							className="text-sm font-medium text-financy-gray-700"
+							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Buscar
 						</label>
-						<div className="flex items-center gap-3 p-3 py-3.5 w-full rounded-lg bg-financy-white border border-financy-gray-300">
-							<Search className="w-4 h-4 text-financy-gray-400" />
+						<div className="flex w-full items-center gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
+							<Search className="h-4 w-4 text-financy-gray-400" />
 							<input
 								type="text"
 								id="search"
 								placeholder="Buscar por descrição"
-								className="flex-1 text-base bg-transparent outline-none placeholder:text-financy-gray-400"
+								className="flex-1 bg-transparent text-base outline-none placeholder:text-financy-gray-400"
 							/>
 						</div>
 					</div>
 
 					{/* Type Select */}
-					<div className="flex flex-col gap-2 flex-1">
+					<div className="flex flex-1 flex-col gap-2">
 						<label
 							htmlFor="type"
-							className="text-sm font-medium text-financy-gray-700"
+							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Tipo
 						</label>
-						<div className="flex items-center justify-between gap-3 p-3 py-3.5 w-full rounded-lg bg-financy-white border border-financy-gray-300 cursor-pointer">
+						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
 							<span className="text-base text-financy-gray-800">Todos</span>
-							<ChevronDown className="w-4 h-4 text-financy-gray-400" />
+							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
 						</div>
 					</div>
 
 					{/* Category Select */}
-					<div className="flex flex-col gap-2 flex-1">
+					<div className="flex flex-1 flex-col gap-2">
 						<label
 							htmlFor="category"
-							className="text-sm font-medium text-financy-gray-700"
+							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Categoria
 						</label>
-						<div className="flex items-center justify-between gap-3 p-3 py-3.5 w-full rounded-lg bg-financy-white border border-financy-gray-300 cursor-pointer">
+						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
 							<span className="text-base text-financy-gray-800">Todas</span>
-							<ChevronDown className="w-4 h-4 text-financy-gray-400" />
+							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
 						</div>
 					</div>
 
 					{/* Period Select */}
-					<div className="flex flex-col gap-2 flex-1">
+					<div className="flex flex-1 flex-col gap-2">
 						<label
 							htmlFor="period"
-							className="text-sm font-medium text-financy-gray-700"
+							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Período
 						</label>
-						<div className="flex items-center justify-between gap-3 p-3 py-3.5 w-full rounded-lg bg-financy-white border border-financy-gray-300 cursor-pointer">
+						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
 							<span className="text-base text-financy-gray-800">
 								Novembro / 2025
 							</span>
-							<ChevronDown className="w-4 h-4 text-financy-gray-400" />
+							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
 						</div>
 					</div>
 				</div>

@@ -54,17 +54,17 @@ export const NewTransactionModal = ({
 			{/* biome-ignore lint/a11y/useKeyWithClickEvents: Overlay close on click outside */}
 			{/* biome-ignore lint/a11y/noStaticElementInteractions: Overlay backdrop */}
 			<div className="absolute inset-0" onClick={onClose} />
-			<div className="relative w-full max-w-md bg-white border border-financy-gray-200 rounded-xl p-6 flex flex-col gap-6">
+			<div className="relative flex w-full max-w-md flex-col gap-6 rounded-xl border border-financy-gray-200 bg-white p-6">
 				{/* Header */}
 				<div className="flex items-start justify-between">
 					<div className="flex flex-col gap-1">
 						<h2
 							id="modal-title"
-							className="text-lg font-semibold text-financy-gray-800"
+							className="font-semibold text-financy-gray-800 text-lg"
 						>
 							Nova transação
 						</h2>
-						<p className="text-sm text-financy-gray-600">
+						<p className="text-financy-gray-600 text-sm">
 							Registre sua despesa ou receita
 						</p>
 					</div>
@@ -78,7 +78,7 @@ export const NewTransactionModal = ({
 				</div>
 
 				{/* Transaction Type Toggle */}
-				<div className="flex border border-financy-gray-200 rounded-xl p-1">
+				<div className="flex rounded-xl border border-financy-gray-200 p-1">
 					<button
 						type="button"
 						className={cn(

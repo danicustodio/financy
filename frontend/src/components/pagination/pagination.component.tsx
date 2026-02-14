@@ -51,13 +51,13 @@ export const Pagination = ({
 
 	return (
 		<div className="flex items-center justify-between px-6 py-5">
-			<span className="text-sm text-financy-gray-700">
+			<span className="text-financy-gray-700 text-sm">
 				{startItem} a {endItem} | {totalResults} resultados
 			</span>
 
 			<div className="flex items-center gap-2">
 				<IconButton
-					icon={<ChevronLeft className="w-4 h-4" />}
+					icon={<ChevronLeft className="h-4 w-4" />}
 					variant="outline"
 					onClick={handlePrevious}
 					disabled={currentPage === 1}
@@ -80,7 +80,7 @@ export const Pagination = ({
 				))}
 
 				<IconButton
-					icon={<ChevronRight className="w-4 h-4" />}
+					icon={<ChevronRight className="h-4 w-4" />}
 					variant="outline"
 					onClick={handleNext}
 					disabled={currentPage === totalPages}

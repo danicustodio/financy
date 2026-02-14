@@ -6,19 +6,19 @@ export function Profile() {
 	return (
 		<main className="flex justify-center p-12">
 			{/* Profile Card Container */}
-			<div className="w-[448px] bg-white border border-financy-gray-200 rounded-xl p-8 flex flex-col gap-8">
+			<div className="flex w-[448px] flex-col gap-8 rounded-xl border border-financy-gray-200 bg-white p-8">
 				{/* Header Section */}
 				<div className="flex flex-col items-center gap-6">
 					{/* Profile Avatar */}
-					<div className="w-16 h-16 rounded-full bg-financy-gray-300 flex items-center justify-center">
-						<span className="text-2xl font-medium text-financy-gray-800">
+					<div className="flex h-16 w-16 items-center justify-center rounded-full bg-financy-gray-300">
+						<span className="font-medium text-2xl text-financy-gray-800">
 							CT
 						</span>
 					</div>
 
 					{/* User Info */}
 					<div className="flex flex-col items-center gap-0.5">
-						<h1 className="text-xl font-semibold text-financy-gray-800">
+						<h1 className="font-semibold text-financy-gray-800 text-xl">
 							Conta teste
 						</h1>
 						<p className="text-base text-financy-gray-500">conta@teste.com</p>

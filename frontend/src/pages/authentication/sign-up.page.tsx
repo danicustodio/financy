@@ -31,13 +31,13 @@ export function SignUp() {
 	};
 
 	return (
-		<div className="min-h-screen w-full flex items-center justify-center bg-white p-4 md:p-8">
-			<div className="w-full max-w-md flex flex-col items-center gap-10">
+		<div className="flex min-h-screen w-full items-center justify-center bg-white p-4 md:p-8">
+			<div className="flex w-full max-w-md flex-col items-center gap-10">
 				<img src="/logo.svg" alt="Financy" className="h-8" />
 
-				<div className="w-full bg-white rounded-[12px] p-4 md:p-8 flex flex-col gap-6 border border-financy-gray-200">
+				<div className="flex w-full flex-col gap-6 rounded-[12px] border border-financy-gray-200 bg-white p-4 md:p-8">
 					<div className="flex flex-col items-center gap-2">
-						<h1 className="text-financy-gray-800 text-xl font-bold">
+						<h1 className="font-bold text-financy-gray-800 text-xl">
 							Criar conta
 						</h1>
 						<p className="text-financy-gray-600 text-sm">
@@ -47,7 +47,7 @@ export function SignUp() {
 
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className="w-full flex flex-col gap-4"
+						className="flex w-full flex-col gap-4"
 					>
 						<Input
 							id="name"
@@ -116,9 +116,9 @@ export function SignUp() {
 					</form>
 
 					<div className="flex items-center gap-4">
-						<div className="flex-1 h-px bg-financy-gray-300" />
+						<div className="h-px flex-1 bg-financy-gray-300" />
 						<span className="text-financy-gray-500 text-sm">ou</span>
-						<div className="flex-1 h-px bg-financy-gray-300" />
+						<div className="h-px flex-1 bg-financy-gray-300" />
 					</div>
 
 					<div className="flex flex-col items-center gap-4">

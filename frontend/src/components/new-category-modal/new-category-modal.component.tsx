@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { IconButton } from '@/components/icon-button';
+import { IconTile } from '@/components/icon-tile';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import { cn } from '@/lib/utils';
@@ -120,6 +121,10 @@ export const NewCategoryModal = ({
 		onSubmit?.(formData);
 	};
 
+	const selectedIcon = CATEGORY_ICONS.find(
+		({ id }) => id === formData.icon,
+	)?.icon;
+
 	return (
 		<div
 			className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
@@ -130,17 +135,17 @@ export const NewCategoryModal = ({
 			{/* biome-ignore lint/a11y/useKeyWithClickEvents: Overlay close on click outside */}
 			{/* biome-ignore lint/a11y/noStaticElementInteractions: Overlay backdrop */}
 			<div className="absolute inset-0" onClick={onClose} />
-			<div className="relative w-full max-w-md bg-white border border-financy-gray-200 rounded-xl p-6 flex flex-col gap-6">
+			<div className="relative flex w-full max-w-md flex-col gap-6 rounded-xl border border-financy-gray-200 bg-white p-6">
 				{/* Header */}
 				<div className="flex items-start justify-between gap-4">
-					<div className="flex flex-col gap-0.5 flex-1">
+					<div className="flex flex-1 flex-col gap-0.5">
 						<h2
 							id="modal-title"
-							className="text-lg font-semibold text-financy-gray-800"
+							className="font-semibold text-financy-gray-800 text-lg"
 						>
 							Nova categoria
 						</h2>
-						<p className="text-sm text-financy-gray-600">
+						<p className="text-financy-gray-600 text-sm">
 							Organize suas transações com categorias
 						</p>
 					</div>
@@ -171,12 +176,25 @@ export const NewCategoryModal = ({
 							value={formData.description}
 							onChange={(e) => handleInputChange('description', e.target.value)}
 						/>
-						<span className="text-xs text-financy-gray-500">Opcional</span>
+						<span className="text-financy-gray-500 text-xs">Opcional</span>
+					</div>
+
+					<div className="flex flex-col gap-2">
+						<span className="font-medium text-financy-gray-700 text-sm">
+							Pré-visualização
+						</span>
+						<div className="flex items-center justify-center rounded-xl bg-financy-gray-100 p-4">
+							<IconTile
+								icon={selectedIcon}
+								color={formData.color}
+								aria-label="Pré-visualização da categoria"
+							/>
+						</div>
 					</div>
 
 					{/* Icon Picker */}
 					<div className="flex flex-col gap-2">
-						<span className="text-sm font-medium text-financy-gray-700">
+						<span className="font-medium text-financy-gray-700 text-sm">
 							Ícone
 						</span>
 						<div className="flex flex-wrap gap-2">
@@ -186,7 +204,7 @@ export const NewCategoryModal = ({
 									type="button"
 									onClick={() => handleIconSelect(id)}
 									className={cn(
-										'flex items-center justify-center w-[42px] h-[42px] rounded-lg border transition-colors',
+										'flex h-[42px] w-[42px] items-center justify-center rounded-lg border transition-colors',
 										formData.icon === id
 											? 'border-financy-brand-base bg-financy-gray-100 text-financy-brand-base'
 											: 'border-financy-gray-300 bg-white text-financy-gray-600 hover:border-financy-gray-400',
@@ -201,7 +219,7 @@ export const NewCategoryModal = ({
 
 					{/* Color Picker */}
 					<div className="flex flex-col gap-2">
-						<span className="text-sm font-medium text-financy-gray-700">
+						<span className="font-medium text-financy-gray-700 text-sm">
 							Cor
 						</span>
 						<div className="flex gap-2">
@@ -211,7 +229,7 @@ export const NewCategoryModal = ({
 									type="button"
 									onClick={() => handleColorSelect(id)}
 									className={cn(
-										'flex-1 h-5 rounded border-2 transition-all',
+										'h-5 flex-1 rounded border-2 transition-all',
 										bgClass,
 										formData.color === id
 											? 'border-financy-gray-800 ring-2 ring-financy-gray-300'

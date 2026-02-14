@@ -10,7 +10,7 @@ export const TypeTag = ({ type = 'expense', className }: TypeTagProps) => {
 
 	return (
 		<span className={cn(typeTagVariants({ type }), className)}>
-			<Icon className="w-4 h-4" />
+			<Icon className="h-4 w-4" />
 			{label}
 		</span>
 	);
