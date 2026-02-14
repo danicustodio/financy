@@ -1,20 +1,20 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { CategoriesPage } from '@/pages/CategoriesPage';
-import { DashboardPage } from '@/pages/DashboardPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { SignInPage } from '@/pages/SignInPage';
-import { SignUpPage } from '@/pages/SignUpPage';
-import { TransactionsPage } from '@/pages/TransactionsPage';
+import { LoggedLayout, ProtectedRoute } from '@/components/layouts';
+import { SignIn } from '@/pages/authentication/sign-in.page';
+import { SignUp } from '@/pages/authentication/sign-up.page';
+import { Dashboard } from '@/pages/dashboard/dashboard.page';
+import { Transactions } from '@/pages/transactions/transactions.page';
+import { Categories } from './pages/categories/categories.page';
+import { Profile } from './pages/profile/profile.page';
 
 export const router = createBrowserRouter([
 	{
 		path: '/signin',
-		element: <SignInPage />,
+		element: <SignIn />,
 	},
 	{
 		path: '/signup',
-		element: <SignUpPage />,
+		element: <SignUp />,
 	},
 	{
 		path: '/login',
@@ -25,24 +25,29 @@ export const router = createBrowserRouter([
 		element: <ProtectedRoute />,
 		children: [
 			{
-				index: true,
-				element: <Navigate to="/dashboard" replace />,
-			},
-			{
-				path: 'dashboard',
-				element: <DashboardPage />,
-			},
-			{
-				path: 'transactions',
-				element: <TransactionsPage />,
-			},
-			{
-				path: 'categories',
-				element: <CategoriesPage />,
-			},
-			{
-				path: 'profile',
-				element: <ProfilePage />,
+				element: <LoggedLayout />,
+				children: [
+					{
+						index: true,
+						element: <Navigate to="/dashboard" replace />,
+					},
+					{
+						path: 'dashboard',
+						element: <Dashboard />,
+					},
+					{
+						path: 'transactions',
+						element: <Transactions />,
+					},
+					{
+						path: 'categories',
+						element: <Categories />,
+					},
+					{
+						path: 'profile',
+						element: <Profile />,
+					},
+				],
 			},
 		],
 	},

@@ -1,32 +1,38 @@
-import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
+import { Lock, Mail, UserRoundPlus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
+import { Link } from '@/components/link';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuthStore } from '@/stores/authStore';
 
-interface SignUpFormData {
-	name: string;
+interface SignInFormData {
 	email: string;
 	password: string;
+	rememberMe: boolean;
 }
 
-export function SignUpPage() {
+export function SignIn() {
 	const navigate = useNavigate();
-	const signup = useAuthStore((state) => state.signup);
+	const login = useAuthStore((state) => state.login);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignUpFormData>();
+	} = useForm<SignInFormData>({
+		defaultValues: {
+			rememberMe: false,
+		},
+	});
 
-	const onSubmit = async (data: SignUpFormData) => {
+	const onSubmit = async (data: SignInFormData) => {
 		try {
-			await signup(data.name, data.email, data.password);
+			await login(data.email, data.password);
 			navigate('/dashboard');
 		} catch (error) {
-			console.error('Sign up failed:', error);
+			console.error('Sign in failed:', error);
 		}
 	};
 
@@ -38,10 +44,10 @@ export function SignUpPage() {
 				<div className="w-full bg-white rounded-[12px] p-4 md:p-8 flex flex-col gap-6 border border-financy-gray-200">
 					<div className="flex flex-col items-center gap-2">
 						<h1 className="text-financy-gray-800 text-xl font-bold">
-							Criar conta
+							Fazer login
 						</h1>
 						<p className="text-financy-gray-600 text-sm">
-							Comece a controlar suas finanças ainda hoje
+							Entre na sua conta para continuar
 						</p>
 					</div>
 
@@ -50,28 +56,11 @@ export function SignUpPage() {
 						className="w-full flex flex-col gap-4"
 					>
 						<Input
-							id="name"
-							label="Nome completo"
-							type="text"
-							placeholder="Seu nome completo"
-							prefix={<UserRound size={16} />}
-							error={!!errors.name}
-							helper={errors.name?.message}
-							{...register('name', {
-								required: 'Nome é obrigatório',
-								minLength: {
-									value: 2,
-									message: 'Nome deve ter no mínimo 2 caracteres',
-								},
-							})}
-						/>
-
-						<Input
 							id="email"
 							label="E-mail"
 							type="email"
-							placeholder="seu@exemplo.com"
-							prefix={<Mail size={16} />}
+							placeholder="mail@exemplo.com"
+							prefix={<Mail />}
 							error={!!errors.email}
 							helper={errors.email?.message}
 							{...register('email', {
@@ -83,26 +72,29 @@ export function SignUpPage() {
 							})}
 						/>
 
-						<div className="flex flex-col gap-1">
-							<Input
-								id="password"
-								label="Senha"
-								type="password"
-								placeholder="Digite sua senha"
-								prefix={<Lock size={16} />}
-								error={!!errors.password}
-								helper={
-									errors.password?.message ??
-									'A senha deve ter pelo menos 8 caracteres'
-								}
-								{...register('password', {
-									required: 'Senha é obrigatória',
-									minLength: {
-										value: 8,
-										message: 'Senha deve ter no mínimo 8 caracteres',
-									},
-								})}
-							/>
+						<Input
+							id="password"
+							label="Senha"
+							type="password"
+							placeholder="Digite sua senha"
+							prefix={<Lock />}
+							error={!!errors.password}
+							helper={errors.password?.message}
+							{...register('password', {
+								required: 'Senha é obrigatória',
+								minLength: {
+									value: 6,
+									message: 'Senha deve ter no mínimo 6 caracteres',
+								},
+							})}
+						/>
+
+						<div className="flex items-center justify-between">
+							<div className="flex items-center gap-2">
+								<Checkbox id="remember-me" name="remember-me" />
+								<p className="text-financy-gray-700 text-sm">Lembrar-me</p>
+							</div>
+							<Link href="#">Recuperar senha</Link>
 						</div>
 
 						<LabelButton
@@ -111,7 +103,7 @@ export function SignUpPage() {
 							disabled={isSubmitting}
 							className="w-full"
 						>
-							{isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
+							{isSubmitting ? 'Entrando...' : 'Entrar'}
 						</LabelButton>
 					</form>
 
@@ -122,15 +114,16 @@ export function SignUpPage() {
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
-						<p className="text-financy-gray-600 text-sm">Já tem uma conta?</p>
+						<p className="text-financy-gray-600 text-sm">
+							Ainda não tem uma conta?
+						</p>
 						<LabelButton
 							variant="outline"
-							size="md"
 							className="w-full"
-							icon={<LogIn size={18} />}
-							onClick={() => navigate('/signin')}
+							onClick={() => navigate('/signup')}
+							icon={<UserRoundPlus size={18} />}
 						>
-							Fazer login
+							Criar conta
 						</LabelButton>
 					</div>
 				</div>

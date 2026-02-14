@@ -1,98 +1,11 @@
 import { ChevronDown, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 import { LabelButton } from '@/components/label-button';
-import { Navbar } from '@/components/navbar';
 import { NewTransactionModal } from '@/components/new-transaction-modal';
-import {
-	type TransactionData,
-	TransactionsTable,
-} from '@/components/transactions';
+import { TransactionsTable } from '@/components/transactions';
+import { MOCK_TRANSACTIONS } from './transactions.mock';
 
-// Sample data for transactions
-const sampleTransactions: TransactionData[] = [
-	{
-		id: 1,
-		description: 'Jantar no Restaurante',
-		date: '30/11/25',
-		category: 'Alimentação',
-		categoryColor: 'blue',
-		amount: 'R$ 89,50',
-		type: 'expense',
-		iconBgColor: '#DBEAFE',
-	},
-	{
-		id: 2,
-		description: 'Posto de Gasolina',
-		date: '29/11/25',
-		category: 'Transporte',
-		categoryColor: 'purple',
-		amount: 'R$ 100,00',
-		type: 'expense',
-		iconBgColor: '#F3E8FF',
-	},
-	{
-		id: 3,
-		description: 'Compras no Mercado',
-		date: '28/11/25',
-		category: 'Mercado',
-		categoryColor: 'orange',
-		amount: 'R$ 156,80',
-		type: 'expense',
-		iconBgColor: '#FFEDD5',
-	},
-	{
-		id: 4,
-		description: 'Retorno de Investimento',
-		date: '26/11/25',
-		category: 'Investimento',
-		categoryColor: 'green',
-		amount: 'R$ 340,25',
-		type: 'income',
-		iconBgColor: '#E0FAE9',
-	},
-	{
-		id: 5,
-		description: 'Aluguel',
-		date: '26/11/25',
-		category: 'Utilidades',
-		categoryColor: 'yellow',
-		amount: 'R$ 1.700,00',
-		type: 'expense',
-		iconBgColor: '#F7F3CA',
-	},
-	{
-		id: 6,
-		description: 'Freelance',
-		date: '24/11/25',
-		category: 'Salário',
-		categoryColor: 'green',
-		amount: 'R$ 2.500,00',
-		type: 'income',
-		iconBgColor: '#E0FAE9',
-	},
-	{
-		id: 7,
-		description: 'Compras Jantar',
-		date: '22/11/25',
-		category: 'Mercado',
-		categoryColor: 'orange',
-		amount: 'R$ 150,00',
-		type: 'expense',
-		iconBgColor: '#FFEDD5',
-	},
-	{
-		id: 8,
-		description: 'Cinema',
-		date: '18/12/25',
-		category: 'Entretenimento',
-		categoryColor: 'pink',
-		amount: 'R$ 88,00',
-		type: 'expense',
-		iconBgColor: '#FCE7F3',
-	},
-];
-
-export function TransactionsPage() {
+export function Transactions() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const pageSize = 10;
 	const totalResults = 27;
@@ -105,9 +18,7 @@ export function TransactionsPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	return (
-		<div className="min-h-screen bg-financy-gray-100">
-			<Navbar />
-
+		<>
 			<main className="p-12 flex flex-col gap-8">
 				{/* Header */}
 				<div className="flex items-center justify-between">
@@ -197,7 +108,7 @@ export function TransactionsPage() {
 
 				{/* Transactions Table */}
 				<TransactionsTable
-					transactions={sampleTransactions}
+					transactions={MOCK_TRANSACTIONS}
 					currentPage={currentPage}
 					totalPages={totalPages}
 					totalResults={totalResults}
@@ -210,6 +121,6 @@ export function TransactionsPage() {
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 			/>
-		</div>
+		</>
 	);
 }

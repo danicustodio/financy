@@ -1,38 +1,32 @@
-import { Lock, Mail, UserRoundPlus } from 'lucide-react';
+import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
-import { Link } from '@/components/link';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useAuthStore } from '@/stores/authStore';
 
-interface SignInFormData {
+interface SignUpFormData {
+	name: string;
 	email: string;
 	password: string;
-	rememberMe: boolean;
 }
 
-export function SignInPage() {
+export function SignUp() {
 	const navigate = useNavigate();
-	const login = useAuthStore((state) => state.login);
+	const signup = useAuthStore((state) => state.signup);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<SignInFormData>({
-		defaultValues: {
-			rememberMe: false,
-		},
-	});
+	} = useForm<SignUpFormData>();
 
-	const onSubmit = async (data: SignInFormData) => {
+	const onSubmit = async (data: SignUpFormData) => {
 		try {
-			await login(data.email, data.password);
+			await signup(data.name, data.email, data.password);
 			navigate('/dashboard');
 		} catch (error) {
-			console.error('Sign in failed:', error);
+			console.error('Sign up failed:', error);
 		}
 	};
 
@@ -44,10 +38,10 @@ export function SignInPage() {
 				<div className="w-full bg-white rounded-[12px] p-4 md:p-8 flex flex-col gap-6 border border-financy-gray-200">
 					<div className="flex flex-col items-center gap-2">
 						<h1 className="text-financy-gray-800 text-xl font-bold">
-							Fazer login
+							Criar conta
 						</h1>
 						<p className="text-financy-gray-600 text-sm">
-							Entre na sua conta para continuar
+							Comece a controlar suas finanças ainda hoje
 						</p>
 					</div>
 
@@ -56,11 +50,28 @@ export function SignInPage() {
 						className="w-full flex flex-col gap-4"
 					>
 						<Input
+							id="name"
+							label="Nome completo"
+							type="text"
+							placeholder="Seu nome completo"
+							prefix={<UserRound size={16} />}
+							error={!!errors.name}
+							helper={errors.name?.message}
+							{...register('name', {
+								required: 'Nome é obrigatório',
+								minLength: {
+									value: 2,
+									message: 'Nome deve ter no mínimo 2 caracteres',
+								},
+							})}
+						/>
+
+						<Input
 							id="email"
 							label="E-mail"
 							type="email"
-							placeholder="mail@exemplo.com"
-							prefix={<Mail />}
+							placeholder="seu@exemplo.com"
+							prefix={<Mail size={16} />}
 							error={!!errors.email}
 							helper={errors.email?.message}
 							{...register('email', {
@@ -72,29 +83,26 @@ export function SignInPage() {
 							})}
 						/>
 
-						<Input
-							id="password"
-							label="Senha"
-							type="password"
-							placeholder="Digite sua senha"
-							prefix={<Lock />}
-							error={!!errors.password}
-							helper={errors.password?.message}
-							{...register('password', {
-								required: 'Senha é obrigatória',
-								minLength: {
-									value: 6,
-									message: 'Senha deve ter no mínimo 6 caracteres',
-								},
-							})}
-						/>
-
-						<div className="flex items-center justify-between">
-							<div className="flex items-center gap-2">
-								<Checkbox id="remember-me" name="remember-me" />
-								<p className="text-financy-gray-700 text-sm">Lembrar-me</p>
-							</div>
-							<Link href="#">Recuperar senha</Link>
+						<div className="flex flex-col gap-1">
+							<Input
+								id="password"
+								label="Senha"
+								type="password"
+								placeholder="Digite sua senha"
+								prefix={<Lock size={16} />}
+								error={!!errors.password}
+								helper={
+									errors.password?.message ??
+									'A senha deve ter pelo menos 8 caracteres'
+								}
+								{...register('password', {
+									required: 'Senha é obrigatória',
+									minLength: {
+										value: 8,
+										message: 'Senha deve ter no mínimo 8 caracteres',
+									},
+								})}
+							/>
 						</div>
 
 						<LabelButton
@@ -103,7 +111,7 @@ export function SignInPage() {
 							disabled={isSubmitting}
 							className="w-full"
 						>
-							{isSubmitting ? 'Entrando...' : 'Entrar'}
+							{isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
 						</LabelButton>
 					</form>
 
@@ -114,16 +122,15 @@ export function SignInPage() {
 					</div>
 
 					<div className="flex flex-col items-center gap-4">
-						<p className="text-financy-gray-600 text-sm">
-							Ainda não tem uma conta?
-						</p>
+						<p className="text-financy-gray-600 text-sm">Já tem uma conta?</p>
 						<LabelButton
 							variant="outline"
+							size="md"
 							className="w-full"
-							onClick={() => navigate('/signup')}
-							icon={<UserRoundPlus size={18} />}
+							icon={<LogIn size={18} />}
+							onClick={() => navigate('/signin')}
 						>
-							Criar conta
+							Fazer login
 						</LabelButton>
 					</div>
 				</div>

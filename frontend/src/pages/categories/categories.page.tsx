@@ -1,101 +1,24 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
 import { useState } from 'react';
-import { CategoryCard, type CategoryColor } from '@/components/categories';
+import { CategoryCard } from '@/components/categories';
 import { LabelButton } from '@/components/label-button';
-import { Navbar } from '@/components/navbar';
 import { NewCategoryModal } from '@/components/new-category-modal';
+import { MOCK_CATEGORIES } from './categories.mock';
 
-// Sample data for categories
-const categories: {
-	id: number;
-	name: string;
-	description: string;
-	color: CategoryColor;
-	itemCount: number;
-	headerBgColor: string;
-}[] = [
-	{
-		id: 1,
-		name: 'Alimentação',
-		description: 'Restaurantes, delivery e refeições',
-		color: 'blue',
-		itemCount: 12,
-		headerBgColor: '#DBEAFE',
-	},
-	{
-		id: 2,
-		name: 'Transporte',
-		description: 'Gasolina, transporte público e viagens',
-		color: 'purple',
-		itemCount: 8,
-		headerBgColor: '#F3E8FF',
-	},
-	{
-		id: 3,
-		name: 'Utilidades',
-		description: 'Energia, água, internet e telefone',
-		color: 'yellow',
-		itemCount: 7,
-		headerBgColor: '#F7F3CA',
-	},
-	{
-		id: 4,
-		name: 'Entretenimento',
-		description: 'Cinema, jogos e lazer',
-		color: 'pink',
-		itemCount: 2,
-		headerBgColor: '#FCE7F3',
-	},
-	{
-		id: 5,
-		name: 'Investimento',
-		description: 'Aplicações e retornos financeiros',
-		color: 'green',
-		itemCount: 1,
-		headerBgColor: '#E0FAE9',
-	},
-	{
-		id: 6,
-		name: 'Mercado',
-		description: 'Compras de supermercado e mantimentos',
-		color: 'orange',
-		itemCount: 3,
-		headerBgColor: '#FFEDD5',
-	},
-	{
-		id: 7,
-		name: 'Salário',
-		description: 'Renda mensal e bonificações',
-		color: 'green',
-		itemCount: 3,
-		headerBgColor: '#E0FAE9',
-	},
-	{
-		id: 8,
-		name: 'Saúde',
-		description: 'Medicamentos, consultas e exames',
-		color: 'red',
-		itemCount: 0,
-		headerBgColor: '#FEE2E2',
-	},
-];
-
-export function CategoriesPage() {
+export function Categories() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const totalCategories = categories.length;
-	const totalTransactions = categories.reduce(
+	const totalCategories = MOCK_CATEGORIES.length;
+	const totalTransactions = MOCK_CATEGORIES.reduce(
 		(sum, cat) => sum + cat.itemCount,
 		0,
 	);
-	const mostUsedCategory = categories.reduce((prev, current) =>
+	const mostUsedCategory = MOCK_CATEGORIES.reduce((prev, current) =>
 		current.itemCount > prev.itemCount ? current : prev,
 	);
 
 	return (
-		<div className="min-h-screen bg-financy-gray-100">
-			<Navbar />
-
+		<>
 			<main className="p-12 flex flex-col gap-8">
 				{/* Header */}
 				<div className="flex items-center justify-between">
@@ -168,7 +91,7 @@ export function CategoriesPage() {
 
 				{/* Categories Grid */}
 				<div className="grid grid-cols-4 gap-6">
-					{categories.map((category) => (
+					{MOCK_CATEGORIES.map((category) => (
 						<CategoryCard
 							key={category.id}
 							name={category.name}
@@ -189,6 +112,6 @@ export function CategoriesPage() {
 					setIsModalOpen(false);
 				}}
 			/>
-		</div>
+		</>
 	);
 }
