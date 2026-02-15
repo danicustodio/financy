@@ -21,6 +21,7 @@
 		"@types/bcryptjs": "^3.0.0",
 		"@types/node": "^25.2.3",
 		"prisma": "^7.4.0",
+		"tsup": "^8.5.1",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3"
 	},
@@ -35,13 +36,14 @@
 	"name": "@financy/backend",
 	"packageManager": "pnpm@10.27.0",
 	"scripts": {
-		"build": "tsc",
-		"dev": "tsx watch src/server.ts",
+		"build": "tsup",
+		"dev": "tsx watch --env-file .env src/server.ts",
 		"lint": "biome check --write",
 		"prisma:generate": "prisma generate",
 		"prisma:migrate": "prisma migrate dev",
 		"prisma:studio": "prisma studio",
-		"start": "node dist/server.js"
+		"start": "node dist/server.js",
+		"typecheck": "tsc"
 	},
 	"type": "module",
 	"version": "1.0.0"

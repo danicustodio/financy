@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { z } from 'zod/v4';
-import { builder } from '../builder.js';
+import { builder } from '../builder';
 
 const SignUpInput = builder.inputType('SignUpInput', {
 	fields: (t) => ({

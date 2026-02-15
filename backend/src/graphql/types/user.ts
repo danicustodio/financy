@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { builder } from '../builder.js';
+import { builder } from '../builder';
 
 // --- User Object Type (auto from Prisma) ---
 builder.prismaObject('User', {
