@@ -1,6 +1,5 @@
 import Fastify from 'fastify';
 import mercurius from 'mercurius';
-import { resolvers } from './graphql/resolvers.js';
 import { schema } from './graphql/schema.js';
 import prismaPlugin from './plugins/prisma.js';
 
@@ -23,12 +22,14 @@ async function bootstrap() {
 	// Register Prisma plugin
 	await app.register(prismaPlugin);
 
-	// Register Mercurius (GraphQL)
+	// Register Mercurius (GraphQL) with Pothos-built schema
 	await app.register(mercurius, {
 		schema,
-		resolvers,
-		graphiql: true, // GraphiQL playground at /graphiql
-	});
+		graphiql: true,
+		context: (request) => ({
+			prisma: request.server.prisma,
+		})
+	})
 
 	// Health check route
 	app.get('/health', async () => {

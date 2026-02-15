@@ -1,20 +1,7 @@
-export const schema = `
-  type User {
-    id: Int!
-    name: String!
-    email: String!
-    createdAt: String!
-    updatedAt: String!
-  }
+import { builder } from './builder.js';
 
-  type Query {
-    users: [User!]!
-    user(id: Int!): User
-  }
+// Import all type definitions (side-effect imports)
+import './types/user.js';
 
-  type Mutation {
-    createUser(name: String!, email: String!): User!
-    updateUser(id: Int!, name: String, email: String): User
-    deleteUser(id: Int!): User
-  }
-`;
+// Build and export the executable schema
+export const schema = builder.toSchema();

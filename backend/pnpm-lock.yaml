@@ -8,6 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@pothos/core':
+        specifier: ^4.12.0
+        version: 4.12.0(graphql@16.12.0)
+      '@pothos/plugin-prisma':
+        specifier: ^4.14.2
+        version: 4.14.2(@pothos/core@4.12.0(graphql@16.12.0))(@prisma/client@7.4.0(prisma@7.4.0(@types/react@19.2.14)(better-sqlite3@12.6.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(graphql@16.12.0)(typescript@5.9.3)
+      '@pothos/plugin-validation':
+        specifier: ^4.2.0
+        version: 4.2.0(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)
       '@prisma/adapter-better-sqlite3':
         specifier: ^7.4.0
         version: 7.4.0
@@ -29,6 +38,9 @@ importers:
       pino-pretty:
         specifier: ^13.1.3
         version: 13.1.3
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@biomejs/biome':
         specifier: 2.3.15
@@ -342,6 +354,26 @@ packages:
   '@pinojs/redact@0.4.0':
     resolution: {integrity: sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg==}
 
+  '@pothos/core@4.12.0':
+    resolution: {integrity: sha512-PeiODrj3GjQ7Nbs/5p65DEyBWZTSGGjgGO/BgaMEqS1jBNX/2zJTEQJA9zM5uPmCHUCDjE7Qn2U7lOi0ALp/8A==}
+    peerDependencies:
+      graphql: ^16.10.0
+
+  '@pothos/plugin-prisma@4.14.2':
+    resolution: {integrity: sha512-GZ/AFKS1HmV1Oz+7Bl/7A5j3JpKryiL9hsgj8djyBHb1glS3NnDnmGT9iiwvazUe6WHbwC2HhatLH3EWYsdQTQ==}
+    hasBin: true
+    peerDependencies:
+      '@pothos/core': '*'
+      '@prisma/client': '*'
+      graphql: ^16.10.0
+      typescript: '>=4.7.2'
+
+  '@pothos/plugin-validation@4.2.0':
+    resolution: {integrity: sha512-iqqlNzHGhTbWIf6dfouMjJfh72gOQEft7gp0Bl0vhW8WNWuOwVmrXrXtF+Lu3hyZuBY7WfQ44jQ41hXjYmqx0g==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: ^16.10.0
+
   '@prisma/adapter-better-sqlite3@7.4.0':
     resolution: {integrity: sha512-oQbd9oI1t1q0DXpxZKlRPehxTKSEYYureTQC0pNS/5tV4xBFYk2meWBiSPOp3Gd8ErkWc5Iy4ENI0aZ+KSsCxg==}
 
@@ -372,6 +404,9 @@ packages:
   '@prisma/dev@0.20.0':
     resolution: {integrity: sha512-ovlBYwWor0OzG+yH4J3Ot+AneD818BttLA+Ii7wjbcLHUrnC4tbUPVGyNd3c/+71KETPKZfjhkTSpdS15dmXNQ==}
 
+  '@prisma/dmmf@7.4.0':
+    resolution: {integrity: sha512-x+XFbRYNkQz2dZMChlomcQqvfelit87NFIYviLALibpaPmEIDWf4I85ZxrvyY9kYCQkVQUUxOoj7T2k2P61gYQ==}
+
   '@prisma/driver-adapter-utils@7.4.0':
     resolution: {integrity: sha512-jEyE5LkqZ27Ba/DIOfCGOQl6nKMLxuwJNRceCfh7/LRs46UkIKn3bmkI97MEH2t7zkYV3PGBrUr+6sMJaHvc0A==}
 
@@ -383,6 +418,12 @@ packages:
 
   '@prisma/fetch-engine@7.4.0':
     resolution: {integrity: sha512-IXPOYskT89UTVsntuSnMTiKRWCuTg5JMWflgEDV1OSKFpuhwP5vqbfF01/iwo9y6rCjR0sDIO+jdV5kq38/hgA==}
+
+  '@prisma/generator-helper@7.4.0':
+    resolution: {integrity: sha512-EQ6DUyl4seLWT5gaRhXON683id2fv/3zJ37O84iUR6TnUXvvEL1WcO1PUQo6cec7oSRgcwJd4xSIJW0IDnntMA==}
+
+  '@prisma/generator@7.4.0':
+    resolution: {integrity: sha512-z4aHrQQlWm+MRtGIb7Afege1ze/XCOoLmdHFdmrvTXoqqTL8iNMFdkaXhOTG4EWnzf6/SPiiaBrn9ySvWz2vJQ==}
 
   '@prisma/get-platform@7.2.0':
     resolution: {integrity: sha512-k1V0l0Td1732EHpAfi2eySTezyllok9dXb6UQanajkJQzPUGi3vO2z7jdkz67SypFTdmbnyGYxvEvYZdZsMAVA==}
@@ -1174,6 +1215,9 @@ packages:
   zeptomatch@2.1.0:
     resolution: {integrity: sha512-KiGErG2J0G82LSpniV0CtIzjlJ10E04j02VOudJsPyPwNZgGnRKQy7I1R7GMyg/QswnE4l7ohSGrQbQbjXPPDA==}
 
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
 snapshots:
 
   '@biomejs/biome@2.3.15':
@@ -1388,6 +1432,23 @@ snapshots:
 
   '@pinojs/redact@0.4.0': {}
 
+  '@pothos/core@4.12.0(graphql@16.12.0)':
+    dependencies:
+      graphql: 16.12.0
+
+  '@pothos/plugin-prisma@4.14.2(@pothos/core@4.12.0(graphql@16.12.0))(@prisma/client@7.4.0(prisma@7.4.0(@types/react@19.2.14)(better-sqlite3@12.6.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(graphql@16.12.0)(typescript@5.9.3)':
+    dependencies:
+      '@pothos/core': 4.12.0(graphql@16.12.0)
+      '@prisma/client': 7.4.0(prisma@7.4.0(@types/react@19.2.14)(better-sqlite3@12.6.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/generator-helper': 7.4.0
+      graphql: 16.12.0
+      typescript: 5.9.3
+
+  '@pothos/plugin-validation@4.2.0(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)':
+    dependencies:
+      '@pothos/core': 4.12.0(graphql@16.12.0)
+      graphql: 16.12.0
+
   '@prisma/adapter-better-sqlite3@7.4.0':
     dependencies:
       '@prisma/driver-adapter-utils': 7.4.0
@@ -1437,6 +1498,8 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@prisma/dmmf@7.4.0': {}
+
   '@prisma/driver-adapter-utils@7.4.0':
     dependencies:
       '@prisma/debug': 7.4.0
@@ -1455,6 +1518,14 @@ snapshots:
       '@prisma/debug': 7.4.0
       '@prisma/engines-version': 7.4.0-20.ab56fe763f921d033a6c195e7ddeb3e255bdbb57
       '@prisma/get-platform': 7.4.0
+
+  '@prisma/generator-helper@7.4.0':
+    dependencies:
+      '@prisma/debug': 7.4.0
+      '@prisma/dmmf': 7.4.0
+      '@prisma/generator': 7.4.0
+
+  '@prisma/generator@7.4.0': {}
 
   '@prisma/get-platform@7.2.0':
     dependencies:
@@ -2263,3 +2334,5 @@ snapshots:
     dependencies:
       grammex: 3.1.12
       graphmatch: 1.1.1
+
+  zod@4.3.6: {}
