@@ -4,7 +4,7 @@ import { builder } from '../builder.js';
 // --- User Object Type (auto from Prisma) ---
 builder.prismaObject('User', {
 	fields: (t) => ({
-		id: t.exposeInt('id'),
+		id: t.exposeID('id'),
 		name: t.exposeString('name'),
 		email: t.exposeString('email'),
 		createdAt: t.expose('createdAt', { type: 'DateTime' }),
@@ -22,26 +22,13 @@ builder.scalarType('DateTime', {
 });
 
 // --- Input Types ---
-const CreateUserInput = builder.inputType('CreateUserInput', {
-	fields: (t) => ({
-		name: t.string({
-			required: true,
-			validate: z.string().min(2, 'Name must be at least 2 characters'),
-		}),
-		email: t.string({
-			required: true,
-			validate: z.string().email('Invalid email address'),
-		}),
-	}),
-});
-
 const UpdateUserInput = builder.inputType('UpdateUserInput', {
 	fields: (t) => ({
 		name: t.string({
 			validate: z.string().min(2, 'Name must be at least 2 characters'),
 		}),
 		email: t.string({
-			validate: z.string().email('Invalid email address'),
+			validate: z.email('Invalid email address'),
 		}),
 	}),
 });
@@ -59,7 +46,7 @@ builder.queryFields((t) => ({
 		type: 'User',
 		nullable: true,
 		args: {
-			id: t.arg.int({ required: true }),
+			id: t.arg.id({ required: true }),
 		},
 		resolve: async (query, _root, args, ctx) => {
 			return ctx.prisma.user.findUnique({
@@ -72,27 +59,11 @@ builder.queryFields((t) => ({
 
 // --- Mutations ---
 builder.mutationFields((t) => ({
-	createUser: t.prismaField({
-		type: 'User',
-		args: {
-			input: t.arg({ type: CreateUserInput, required: true }),
-		},
-		resolve: async (query, _root, args, ctx) => {
-			return ctx.prisma.user.create({
-				...query,
-				data: {
-					name: args.input.name,
-					email: args.input.email,
-				},
-			});
-		},
-	}),
-
 	updateUser: t.prismaField({
 		type: 'User',
 		nullable: true,
 		args: {
-			id: t.arg.int({ required: true }),
+			id: t.arg.id({ required: true }),
 			input: t.arg({ type: UpdateUserInput, required: true }),
 		},
 		resolve: async (query, _root, args, ctx) => {
@@ -111,7 +82,7 @@ builder.mutationFields((t) => ({
 		type: 'User',
 		nullable: true,
 		args: {
-			id: t.arg.int({ required: true }),
+			id: t.arg.id({ required: true }),
 		},
 		resolve: async (query, _root, args, ctx) => {
 			return ctx.prisma.user.delete({

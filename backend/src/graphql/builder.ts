@@ -1,13 +1,10 @@
 import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import ValidationPlugin from '@pothos/plugin-validation';
-import type { PrismaClient } from '@prisma/client';
+import { env } from '../env.js';
 import type PrismaTypes from '../generated/prisma-pothos-types.js';
 import { getDatamodel } from '../generated/prisma-pothos-types.js';
-
-export interface Context {
-	prisma: PrismaClient;
-}
+import type { Context } from './context.js';
 
 export const builder = new SchemaBuilder<{
 	Context: Context;
@@ -23,7 +20,7 @@ export const builder = new SchemaBuilder<{
 	prisma: {
 		client: (ctx) => ctx.prisma,
 		dmmf: getDatamodel(),
-		onUnusedQuery: process.env.NODE_ENV === 'production' ? null : 'warn',
+		onUnusedQuery: env.NODE_ENV === 'production' ? null : 'warn',
 	},
 });
 
