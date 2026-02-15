@@ -1,3 +1,4 @@
+import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import mercurius from 'mercurius';
 import { env } from './env';
@@ -17,6 +18,12 @@ async function bootstrap() {
 				},
 			},
 		},
+	});
+
+	await app.register(cors, {
+		origin: '*',
+		credentials: true,
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 	});
 
 	await app.register(prismaPlugin);
