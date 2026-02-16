@@ -17,15 +17,14 @@ import {
 	Wrench,
 	X,
 } from 'lucide-react';
-import { useState } from 'react';
 import { IconButton } from '@/components/icon-button';
 import { IconTile } from '@/components/icon-tile';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
+import { createCategoryFormRules } from '@/features/categories/create-category';
 import { cn } from '@/lib/utils';
 import type {
 	CategoryColor,
-	CategoryFormData,
 	CategoryIcon,
 	NewCategoryModalProps,
 } from './new-category-modal.types';
@@ -94,35 +93,19 @@ const CATEGORY_COLORS: {
 export const NewCategoryModal = ({
 	isOpen,
 	onClose,
+	form,
+	formError,
+	isSubmitting,
 	onSubmit,
 }: NewCategoryModalProps) => {
-	const [formData, setFormData] = useState<CategoryFormData>({
-		title: '',
-		description: '',
-		icon: 'utensils',
-		color: 'blue',
-	});
-
 	if (!isOpen) return null;
 
-	const handleInputChange = (field: keyof CategoryFormData, value: string) => {
-		setFormData((prev) => ({ ...prev, [field]: value }));
-	};
+	const selectedIcon = form.watch('icon');
+	const selectedColor = form.watch('color');
+	const nameError = form.formState.errors.name?.message;
 
-	const handleIconSelect = (icon: CategoryIcon) => {
-		setFormData((prev) => ({ ...prev, icon }));
-	};
-
-	const handleColorSelect = (color: CategoryColor) => {
-		setFormData((prev) => ({ ...prev, color }));
-	};
-
-	const handleSubmit = () => {
-		onSubmit?.(formData);
-	};
-
-	const selectedIcon = CATEGORY_ICONS.find(
-		({ id }) => id === formData.icon,
+	const previewIcon = CATEGORY_ICONS.find(
+		({ id }) => id === selectedIcon,
 	)?.icon;
 
 	return (
@@ -159,13 +142,14 @@ export const NewCategoryModal = ({
 				</div>
 
 				{/* Form */}
-				<div className="flex flex-col gap-4">
+				<form onSubmit={onSubmit} className="flex flex-col gap-4">
 					<Input
-						id="title"
+						id="name"
 						label="Título"
 						placeholder="Ex. Alimentação"
-						value={formData.title}
-						onChange={(e) => handleInputChange('title', e.target.value)}
+						error={!!nameError}
+						helper={nameError}
+						{...form.register('name', createCategoryFormRules.name)}
 					/>
 
 					<div className="flex flex-col gap-2">
@@ -173,8 +157,7 @@ export const NewCategoryModal = ({
 							id="description"
 							label="Descrição"
 							placeholder="Descrição da categoria"
-							value={formData.description}
-							onChange={(e) => handleInputChange('description', e.target.value)}
+							{...form.register('description')}
 						/>
 						<span className="text-financy-gray-500 text-xs">Opcional</span>
 					</div>
@@ -185,8 +168,8 @@ export const NewCategoryModal = ({
 						</span>
 						<div className="flex items-center justify-center rounded-xl bg-financy-gray-100 p-4">
 							<IconTile
-								icon={selectedIcon}
-								color={formData.color}
+								icon={previewIcon}
+								color={selectedColor}
 								aria-label="Pré-visualização da categoria"
 							/>
 						</div>
@@ -202,10 +185,10 @@ export const NewCategoryModal = ({
 								<button
 									key={id}
 									type="button"
-									onClick={() => handleIconSelect(id)}
+									onClick={() => form.setValue('icon', id)}
 									className={cn(
 										'flex h-[42px] w-[42px] items-center justify-center rounded-lg border transition-colors',
-										formData.icon === id
+										selectedIcon === id
 											? 'border-financy-brand-base bg-financy-gray-100 text-financy-brand-base'
 											: 'border-financy-gray-300 bg-white text-financy-gray-600 hover:border-financy-gray-400',
 									)}
@@ -227,11 +210,11 @@ export const NewCategoryModal = ({
 								<button
 									key={id}
 									type="button"
-									onClick={() => handleColorSelect(id)}
+									onClick={() => form.setValue('color', id)}
 									className={cn(
 										'h-5 flex-1 rounded border-2 transition-all',
 										bgClass,
-										formData.color === id
+										selectedColor === id
 											? 'border-financy-gray-800 ring-2 ring-financy-gray-300'
 											: 'border-transparent hover:border-financy-gray-300',
 									)}
@@ -240,17 +223,25 @@ export const NewCategoryModal = ({
 							))}
 						</div>
 					</div>
-				</div>
 
-				{/* Submit Button */}
-				<LabelButton
-					variant="default"
-					size="md"
-					className="w-full"
-					onClick={handleSubmit}
-				>
-					Salvar
-				</LabelButton>
+					{/* API Error Banner */}
+					{formError && (
+						<div className="rounded-lg bg-red-50 px-4 py-3 text-red-700 text-sm">
+							{formError}
+						</div>
+					)}
+
+					{/* Submit Button */}
+					<LabelButton
+						type="submit"
+						variant="default"
+						size="md"
+						className="w-full"
+						disabled={isSubmitting}
+					>
+						{isSubmitting ? 'Salvando...' : 'Salvar'}
+					</LabelButton>
+				</form>
 			</div>
 		</div>
 	);

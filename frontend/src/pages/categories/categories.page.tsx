@@ -4,10 +4,23 @@ import { CategoryCard } from '@/components/categories';
 import { IconTile } from '@/components/icon-tile';
 import { LabelButton } from '@/components/label-button';
 import { NewCategoryModal } from '@/components/new-category-modal';
+import { useCreateCategoryForm } from '@/features/categories/create-category';
 import { MOCK_CATEGORIES } from './categories.mock';
 
 export function Categories() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const { form, formError, isSubmitting, onSubmit } = useCreateCategoryForm(
+		() => {
+			setIsModalOpen(false);
+			form.reset();
+		},
+	);
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+		form.reset();
+	};
 
 	const totalCategories = MOCK_CATEGORIES.length;
 	const totalTransactions = MOCK_CATEGORIES.reduce(
@@ -108,11 +121,11 @@ export function Categories() {
 
 			<NewCategoryModal
 				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-				onSubmit={(data) => {
-					console.log('New category:', data);
-					setIsModalOpen(false);
-				}}
+				onClose={handleCloseModal}
+				form={form}
+				formError={formError}
+				isSubmitting={isSubmitting}
+				onSubmit={onSubmit}
 			/>
 		</>
 	);

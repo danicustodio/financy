@@ -1,14 +1,13 @@
+import type { UseFormReturn } from 'react-hook-form';
+import type { CreateCategoryFormData } from '@/features/categories/create-category';
+
 export interface NewCategoryModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	onSubmit?: (data: CategoryFormData) => void;
-}
-
-export interface CategoryFormData {
-	title: string;
-	description: string;
-	icon: CategoryIcon;
-	color: CategoryColor;
+	form: UseFormReturn<CreateCategoryFormData>;
+	formError: string | null;
+	isSubmitting: boolean;
+	onSubmit: () => void;
 }
 
 export type CategoryColor =
