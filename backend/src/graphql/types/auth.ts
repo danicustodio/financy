@@ -33,7 +33,44 @@ const AuthPayload = builder.objectType(
 	},
 );
 
+const LoginInput = builder.inputType('LoginInput', {
+	fields: (t) => ({
+		email: t.string({
+			required: true,
+			validate: z.email('Invalid email address'),
+		}),
+		password: t.string({
+			required: true,
+		}),
+	}),
+});
+
 builder.mutationFields((t) => ({
+	login: t.field({
+		type: AuthPayload,
+		args: {
+			input: t.arg({ type: LoginInput, required: true }),
+		},
+		resolve: async (_root, args, ctx) => {
+			const user = await ctx.prisma.user.findUnique({
+				where: { email: args.input.email },
+			});
+
+			if (!user) {
+				throw new Error('E-mail ou senha inválidos');
+			}
+
+			const valid = await bcrypt.compare(args.input.password, user.passwordHash);
+
+			if (!valid) {
+				throw new Error('E-mail ou senha inválidos');
+			}
+
+			const token = ctx.request.server.jwt.sign({ sub: user.id });
+			return { token, user };
+		},
+	}),
+
 	signUp: t.field({
 		type: AuthPayload,
 		args: {
