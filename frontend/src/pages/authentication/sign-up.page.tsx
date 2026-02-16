@@ -1,34 +1,20 @@
 import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
-import { useAuthStore } from '@/stores/authStore';
-
-interface SignUpFormData {
-	name: string;
-	email: string;
-	password: string;
-}
+import { signUpFormRules } from '@/features/auth/sign-up/sign-up.schema';
+import { useSignUpForm } from '@/features/auth/sign-up/use-sign-up-form';
 
 export function SignUp() {
 	const navigate = useNavigate();
-	const signup = useAuthStore((state) => state.signup);
-
 	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<SignUpFormData>();
-
-	const onSubmit = async (data: SignUpFormData) => {
-		try {
-			await signup(data.name, data.email, data.password);
-			navigate('/dashboard');
-		} catch (error) {
-			console.error('Sign up failed:', error);
-		}
-	};
+		form: {
+			register,
+			formState: { errors, isSubmitting },
+		},
+		formError,
+		onSubmit,
+	} = useSignUpForm();
 
 	return (
 		<div className="flex min-h-screen w-full items-center justify-center bg-white p-4 md:p-8">
@@ -45,10 +31,7 @@ export function SignUp() {
 						</p>
 					</div>
 
-					<form
-						onSubmit={handleSubmit(onSubmit)}
-						className="flex w-full flex-col gap-4"
-					>
+					<form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
 						<Input
 							id="name"
 							label="Nome completo"
@@ -57,13 +40,7 @@ export function SignUp() {
 							prefix={<UserRound size={16} />}
 							error={!!errors.name}
 							helper={errors.name?.message}
-							{...register('name', {
-								required: 'Nome é obrigatório',
-								minLength: {
-									value: 2,
-									message: 'Nome deve ter no mínimo 2 caracteres',
-								},
-							})}
+							{...register('name', signUpFormRules.name)}
 						/>
 
 						<Input
@@ -74,13 +51,7 @@ export function SignUp() {
 							prefix={<Mail size={16} />}
 							error={!!errors.email}
 							helper={errors.email?.message}
-							{...register('email', {
-								required: 'E-mail é obrigatório',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: 'E-mail inválido',
-								},
-							})}
+							{...register('email', signUpFormRules.email)}
 						/>
 
 						<div className="flex flex-col gap-1">
@@ -95,15 +66,15 @@ export function SignUp() {
 									errors.password?.message ??
 									'A senha deve ter pelo menos 8 caracteres'
 								}
-								{...register('password', {
-									required: 'Senha é obrigatória',
-									minLength: {
-										value: 8,
-										message: 'Senha deve ter no mínimo 8 caracteres',
-									},
-								})}
+								{...register('password', signUpFormRules.password)}
 							/>
 						</div>
+
+						{formError && (
+							<p className="rounded-md bg-red-50 px-3 py-2 text-center text-red-600 text-sm">
+								{formError}
+							</p>
+						)}
 
 						<LabelButton
 							type="submit"

@@ -1,5 +1,21 @@
+import { GraphQLClient } from 'graphql-request';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+const gqlClient = new GraphQLClient(import.meta.env.VITE_API_URL);
+
+const SIGN_UP_MUTATION = /* GraphQL */ `
+	mutation SignUp($input: SignUpInput!) {
+		signUp(input: $input) {
+			token
+			user {
+				id
+				name
+				email
+			}
+		}
+	}
+`;
 
 interface User {
 	id: string;
@@ -7,11 +23,18 @@ interface User {
 	name: string;
 }
 
+interface SignUpResponse {
+	signUp: {
+		token: string;
+		user: User;
+	};
+}
+
 interface AuthState {
 	user: User | null;
 	token: string | null;
 	isAuthenticated: boolean;
-	login: (email: string, _password: string) => Promise<void>;
+	login: (email: string, password: string) => Promise<void>;
 	signup: (name: string, email: string, password: string) => Promise<void>;
 	logout: () => void;
 	setToken: (token: string) => void;
@@ -25,36 +48,20 @@ export const useAuthStore = create<AuthState>()(
 			token: null,
 			isAuthenticated: false,
 
-			login: async (email: string, _password: string) => {
-				// TODO: Replace with actual API call when backend is ready
-				// Mock login - simulates JWT response
-				const mockToken = `mock-jwt-token-${Date.now()}`;
-				const mockUser: User = {
-					id: '1',
-					email,
-					name: email.split('@')[0],
-				};
-
-				set({
-					user: mockUser,
-					token: mockToken,
-					isAuthenticated: true,
-				});
+			login: async (_email: string, _password: string) => {
+				// TODO: Implement when backend login mutation is available
+				throw new Error('Login is not yet implemented');
 			},
 
-			signup: async (name: string, email: string, _password: string) => {
-				// TODO: Replace with actual API call when backend is ready
-				// Mock signup - simulates JWT response
-				const mockToken = `mock-jwt-token-${Date.now()}`;
-				const mockUser: User = {
-					id: `${Date.now()}`,
-					email,
-					name,
-				};
+			signup: async (name: string, email: string, password: string) => {
+				const data = await gqlClient.request<SignUpResponse>(
+					SIGN_UP_MUTATION,
+					{ input: { name, email, password } },
+				);
 
 				set({
-					user: mockUser,
-					token: mockToken,
+					user: data.signUp.user,
+					token: data.signUp.token,
 					isAuthenticated: true,
 				});
 			},
