@@ -2,11 +2,12 @@ import { ClientError } from 'graphql-request';
 
 export function mapCreateCategoryError(error: unknown): string {
 	if (error instanceof ClientError) {
+		const code = error.response.errors?.[0]?.extensions?.code;
 		const gqlMessage = error.response.errors?.[0]?.message;
+		if (code === 'UNAUTHENTICATED') {
+			return 'Sua sessão expirou. Faça login novamente.';
+		}
 		if (gqlMessage) {
-			if (gqlMessage.includes('Não autenticado')) {
-				return 'Sua sessão expirou. Faça login novamente.';
-			}
 			if (
 				gqlMessage.includes('Unique constraint') ||
 				gqlMessage.includes('unique')

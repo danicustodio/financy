@@ -2,24 +2,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
-import { graphqlRequest } from '@/lib/graphql-client';
+import { CREATE_CATEGORY_MUTATION } from '@/lib/graphql';
+import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
 import { mapCreateCategoryError } from './create-category.mapper';
 import type {
 	CreateCategoryFormData,
 	CreateCategoryResponse,
 } from './create-category.types';
-
-const CREATE_CATEGORY_MUTATION = `
-  mutation CreateCategory($input: CreateCategoryInput!) {
-    createCategory(input: $input) {
-      id
-      name
-      icon
-      description
-      color
-    }
-  }
-`;
 
 export function useCreateCategoryForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
@@ -38,7 +27,7 @@ export function useCreateCategoryForm(onSuccess?: () => void) {
 		setFormError(null);
 
 		try {
-			await graphqlRequest<
+			await authGraphqlRequest<
 				CreateCategoryResponse,
 				{ input: CreateCategoryFormData }
 			>(CREATE_CATEGORY_MUTATION, {

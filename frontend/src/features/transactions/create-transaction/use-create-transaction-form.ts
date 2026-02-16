@@ -3,21 +3,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
 import { LIST_TRANSACTIONS_QUERY_KEY } from '@/features/transactions/list-transactions';
-import { graphqlRequest } from '@/lib/graphql-client';
+import { CREATE_TRANSACTION_MUTATION } from '@/lib/graphql';
+import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
 import { mapCreateTransactionError } from './create-transaction.mapper';
 import type {
 	CreateTransactionFormData,
 	CreateTransactionResponse,
 } from './create-transaction.types';
 import { parseAmountToCents } from './create-transaction.utils';
-
-const CREATE_TRANSACTION_MUTATION = `
-  mutation CreateTransaction($input: CreateTransactionInput!) {
-    createTransaction(input: $input) {
-      id
-    }
-  }
-`;
 
 export function useCreateTransactionForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
@@ -33,7 +26,7 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 		setFormError(null);
 
 		try {
-			await graphqlRequest<
+			await authGraphqlRequest<
 				CreateTransactionResponse,
 				{ input: Record<string, unknown> }
 			>(CREATE_TRANSACTION_MUTATION, {

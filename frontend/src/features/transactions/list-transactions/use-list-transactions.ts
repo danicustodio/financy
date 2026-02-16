@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { graphqlRequest } from '@/lib/graphql-client';
+import { LIST_TRANSACTIONS_QUERY } from '@/lib/graphql';
+import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
 
 export interface ListedTransaction {
 	id: string;
@@ -18,29 +19,12 @@ interface ListTransactionsResponse {
 	transactions: ListedTransaction[];
 }
 
-const LIST_TRANSACTIONS_QUERY = `
-  query ListTransactions {
-    transactions {
-      id
-      description
-      amountCents
-      type
-      date
-      category {
-        id
-        name
-        color
-      }
-    }
-  }
-`;
-
 export const LIST_TRANSACTIONS_QUERY_KEY = ['transactions'] as const;
 
 export function useListTransactions() {
 	return useQuery({
 		queryKey: LIST_TRANSACTIONS_QUERY_KEY,
-		queryFn: graphqlRequest<ListTransactionsResponse, undefined>(
+		queryFn: authGraphqlRequest<ListTransactionsResponse, undefined>(
 			LIST_TRANSACTIONS_QUERY,
 		),
 		select: (data) => data.transactions,

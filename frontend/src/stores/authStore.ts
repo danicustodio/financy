@@ -1,34 +1,7 @@
-import { GraphQLClient } from 'graphql-request';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-const gqlClient = new GraphQLClient(import.meta.env.VITE_API_URL);
-
-const SIGN_UP_MUTATION = /* GraphQL */ `
-	mutation SignUp($input: SignUpInput!) {
-		signUp(input: $input) {
-			token
-			user {
-				id
-				name
-				email
-			}
-		}
-	}
-`;
-
-const LOGIN_MUTATION = /* GraphQL */ `
-	mutation Login($input: LoginInput!) {
-		login(input: $input) {
-			token
-			user {
-				id
-				name
-				email
-			}
-		}
-	}
-`;
+import { LOGIN_MUTATION, SIGN_UP_MUTATION } from '@/lib/graphql';
+import { publicGraphqlRequest } from '@/lib/graphql/graphql-client';
 
 interface User {
 	id: string;
@@ -53,11 +26,10 @@ interface LoginResponse {
 interface AuthState {
 	user: User | null;
 	token: string | null;
-	isAuthenticated: boolean;
 	login: (email: string, password: string) => Promise<void>;
 	signup: (name: string, email: string, password: string) => Promise<void>;
 	logout: () => void;
-	setToken: (token: string) => void;
+	setToken: (token: string | null) => void;
 	setUser: (user: User) => void;
 }
 
@@ -66,31 +38,28 @@ export const useAuthStore = create<AuthState>()(
 		(set) => ({
 			user: null,
 			token: null,
-			isAuthenticated: false,
 
 			login: async (email: string, password: string) => {
-				const data = await gqlClient.request<LoginResponse>(
-					LOGIN_MUTATION,
-					{ input: { email, password } },
-				);
+				const data = await publicGraphqlRequest<
+					LoginResponse,
+					{ input: { email: string; password: string } }
+				>(LOGIN_MUTATION, { input: { email, password } })();
 
 				set({
 					user: data.login.user,
 					token: data.login.token,
-					isAuthenticated: true,
 				});
 			},
 
 			signup: async (name: string, email: string, password: string) => {
-				const data = await gqlClient.request<SignUpResponse>(
-					SIGN_UP_MUTATION,
-					{ input: { name, email, password } },
-				);
+				const data = await publicGraphqlRequest<
+					SignUpResponse,
+					{ input: { name: string; email: string; password: string } }
+				>(SIGN_UP_MUTATION, { input: { name, email, password } })();
 
 				set({
 					user: data.signUp.user,
 					token: data.signUp.token,
-					isAuthenticated: true,
 				});
 			},
 
@@ -98,12 +67,16 @@ export const useAuthStore = create<AuthState>()(
 				set({
 					user: null,
 					token: null,
-					isAuthenticated: false,
 				});
 			},
 
-			setToken: (token: string) => {
-				set({ token, isAuthenticated: true });
+			setToken: (token: string | null) => {
+				if (!token) {
+					set({ user: null, token: null });
+					return;
+				}
+
+				set({ token });
 			},
 
 			setUser: (user: User) => {
@@ -115,7 +88,6 @@ export const useAuthStore = create<AuthState>()(
 			partialize: (state) => ({
 				user: state.user,
 				token: state.token,
-				isAuthenticated: state.isAuthenticated,
 			}),
 		},
 	),
