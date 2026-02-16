@@ -1,5 +1,6 @@
 import { z } from 'zod/v4';
 import { builder } from '../builder';
+import { unauthenticatedError } from '../errors';
 
 builder.prismaObject('Category', {
 	fields: (t) => ({
@@ -62,7 +63,7 @@ builder.queryFields((t) => ({
 	categories: t.prismaField({
 		type: ['Category'],
 		resolve: async (query, _root, _args, ctx) => {
-			if (!ctx.currentUser) throw new Error('Não autenticado');
+			if (!ctx.currentUser) throw unauthenticatedError();
 
 			return ctx.prisma.category.findMany({
 				...query,
@@ -80,7 +81,7 @@ builder.mutationFields((t) => ({
 			input: t.arg({ type: CreateCategoryInput, required: true }),
 		},
 		resolve: async (query, _root, args, ctx) => {
-			if (!ctx.currentUser) throw new Error('Não autenticado');
+			if (!ctx.currentUser) throw unauthenticatedError();
 
 			return ctx.prisma.category.create({
 				...query,
