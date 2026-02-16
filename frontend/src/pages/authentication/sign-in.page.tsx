@@ -1,40 +1,22 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import { Link } from '@/components/link';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useAuthStore } from '@/stores/authStore';
-
-interface SignInFormData {
-	email: string;
-	password: string;
-	rememberMe: boolean;
-}
+import { signInFormRules } from '@/features/auth/sign-in/sign-in.schema';
+import { useSignInForm } from '@/features/auth/sign-in/use-sign-in-form';
 
 export function SignIn() {
 	const navigate = useNavigate();
-	const login = useAuthStore((state) => state.login);
-
 	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<SignInFormData>({
-		defaultValues: {
-			rememberMe: false,
+		form: {
+			register,
+			formState: { errors, isSubmitting },
 		},
-	});
-
-	const onSubmit = async (data: SignInFormData) => {
-		try {
-			await login(data.email, data.password);
-			navigate('/dashboard');
-		} catch (error) {
-			console.error('Sign in failed:', error);
-		}
-	};
+		formError,
+		onSubmit,
+	} = useSignInForm();
 
 	return (
 		<div className="flex min-h-screen w-full items-center justify-center bg-white p-4 md:p-8">
@@ -52,7 +34,7 @@ export function SignIn() {
 					</div>
 
 					<form
-						onSubmit={handleSubmit(onSubmit)}
+						onSubmit={onSubmit}
 						className="flex w-full flex-col gap-4"
 					>
 						<Input
@@ -63,13 +45,7 @@ export function SignIn() {
 							prefix={<Mail />}
 							error={!!errors.email}
 							helper={errors.email?.message}
-							{...register('email', {
-								required: 'E-mail é obrigatório',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: 'E-mail inválido',
-								},
-							})}
+							{...register('email', signInFormRules.email)}
 						/>
 
 						<Input
@@ -80,13 +56,7 @@ export function SignIn() {
 							prefix={<Lock />}
 							error={!!errors.password}
 							helper={errors.password?.message}
-							{...register('password', {
-								required: 'Senha é obrigatória',
-								minLength: {
-									value: 6,
-									message: 'Senha deve ter no mínimo 6 caracteres',
-								},
-							})}
+							{...register('password', signInFormRules.password)}
 						/>
 
 						<div className="flex items-center justify-between">
@@ -96,6 +66,12 @@ export function SignIn() {
 							</div>
 							<Link href="#">Recuperar senha</Link>
 						</div>
+
+						{formError && (
+							<p className="rounded-md bg-red-50 px-3 py-2 text-center text-red-600 text-sm">
+								{formError}
+							</p>
+						)}
 
 						<LabelButton
 							type="submit"

@@ -17,6 +17,19 @@ const SIGN_UP_MUTATION = /* GraphQL */ `
 	}
 `;
 
+const LOGIN_MUTATION = /* GraphQL */ `
+	mutation Login($input: LoginInput!) {
+		login(input: $input) {
+			token
+			user {
+				id
+				name
+				email
+			}
+		}
+	}
+`;
+
 interface User {
 	id: string;
 	email: string;
@@ -25,6 +38,13 @@ interface User {
 
 interface SignUpResponse {
 	signUp: {
+		token: string;
+		user: User;
+	};
+}
+
+interface LoginResponse {
+	login: {
 		token: string;
 		user: User;
 	};
@@ -48,9 +68,17 @@ export const useAuthStore = create<AuthState>()(
 			token: null,
 			isAuthenticated: false,
 
-			login: async (_email: string, _password: string) => {
-				// TODO: Implement when backend login mutation is available
-				throw new Error('Login is not yet implemented');
+			login: async (email: string, password: string) => {
+				const data = await gqlClient.request<LoginResponse>(
+					LOGIN_MUTATION,
+					{ input: { email, password } },
+				);
+
+				set({
+					user: data.login.user,
+					token: data.login.token,
+					isAuthenticated: true,
+				});
 			},
 
 			signup: async (name: string, email: string, password: string) => {
