@@ -1,6 +1,7 @@
 import { CircleArrowDown, CircleArrowUp, Wallet } from 'lucide-react';
 import { useMemo } from 'react';
 import { useListCategories } from '@/features/categories/list-categories';
+import { useDashboardSummary } from '@/features/dashboard/dashboard-summary';
 import {
 	formatAmountFromCents,
 	formatDate,
@@ -14,46 +15,7 @@ import { SummaryCard } from './components/summary-card.component';
 export function Dashboard() {
 	const { data: categories = [] } = useListCategories();
 	const { data: transactions = [], isLoading } = useListTransactions();
-
-	const now = new Date();
-	const currentMonth = now.getMonth();
-	const currentYear = now.getFullYear();
-
-	const monthTransactions = useMemo(
-		() =>
-			transactions.filter((transaction) => {
-				const date = new Date(transaction.date);
-				return (
-					date.getMonth() === currentMonth && date.getFullYear() === currentYear
-				);
-			}),
-		[transactions, currentMonth, currentYear],
-	);
-
-	const totalBalanceCents = useMemo(
-		() =>
-			transactions.reduce((acc, transaction) => {
-				const amount = transaction.amountCents;
-				return transaction.type === 'income' ? acc + amount : acc - amount;
-			}, 0),
-		[transactions],
-	);
-
-	const monthlyIncomeCents = useMemo(
-		() =>
-			monthTransactions
-				.filter((transaction) => transaction.type === 'income')
-				.reduce((acc, transaction) => acc + transaction.amountCents, 0),
-		[monthTransactions],
-	);
-
-	const monthlyExpenseCents = useMemo(
-		() =>
-			monthTransactions
-				.filter((transaction) => transaction.type === 'expense')
-				.reduce((acc, transaction) => acc + transaction.amountCents, 0),
-		[monthTransactions],
-	);
+	const { data: summary } = useDashboardSummary();
 
 	const recentTransactions = useMemo(
 		() =>
@@ -112,19 +74,19 @@ export function Dashboard() {
 				<SummaryCard
 					icon={Wallet}
 					label="Saldo total"
-					value={formatAmountFromCents(totalBalanceCents)}
+					value={formatAmountFromCents(summary?.totalBalanceCents ?? 0)}
 					accentClassName="text-financy-purple-base"
 				/>
 				<SummaryCard
 					icon={CircleArrowUp}
 					label="Receitas do mês"
-					value={formatAmountFromCents(monthlyIncomeCents)}
+					value={formatAmountFromCents(summary?.monthlyIncomeCents ?? 0)}
 					accentClassName="text-financy-brand-base"
 				/>
 				<SummaryCard
 					icon={CircleArrowDown}
 					label="Despesas do mês"
-					value={formatAmountFromCents(monthlyExpenseCents)}
+					value={formatAmountFromCents(summary?.monthlyExpenseCents ?? 0)}
 					accentClassName="text-financy-red-base"
 				/>
 			</div>

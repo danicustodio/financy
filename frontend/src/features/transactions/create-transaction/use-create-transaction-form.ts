@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
+import { DASHBOARD_SUMMARY_QUERY_KEY } from '@/features/dashboard/dashboard-summary';
 import { LIST_TRANSACTIONS_QUERY_KEY } from '@/features/transactions/list-transactions';
 import { CREATE_TRANSACTION_MUTATION } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
@@ -43,6 +44,9 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 					queryKey: LIST_TRANSACTIONS_QUERY_KEY,
 				}),
 				queryClient.invalidateQueries({ queryKey: LIST_CATEGORIES_QUERY_KEY }),
+				queryClient.invalidateQueries({
+					queryKey: DASHBOARD_SUMMARY_QUERY_KEY,
+				}),
 			]);
 
 			onSuccess?.();
