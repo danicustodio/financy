@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { LabelButton } from '@/components/label-button';
 import { NewTransactionModal } from '@/components/new-transaction-modal';
 import { TransactionsTable } from '@/components/transactions';
+import {
+	useCategories,
+	useCreateTransactionForm,
+} from '@/features/transactions/create-transaction';
 import { MOCK_TRANSACTIONS } from './transactions.mock';
 
 export function Transactions() {
@@ -16,6 +20,14 @@ export function Transactions() {
 	};
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const { categories } = useCategories();
+	const { form, formError, isSubmitting, onSubmit } = useCreateTransactionForm(
+		() => {
+			setIsModalOpen(false);
+			form.reset();
+		},
+	);
 
 	return (
 		<>
@@ -120,6 +132,11 @@ export function Transactions() {
 			<NewTransactionModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
+				form={form}
+				categories={categories}
+				formError={formError}
+				isSubmitting={isSubmitting}
+				onSubmit={onSubmit}
 			/>
 		</>
 	);

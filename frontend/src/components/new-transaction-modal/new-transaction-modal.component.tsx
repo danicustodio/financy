@@ -1,47 +1,34 @@
 import { CircleArrowDown, CircleArrowUp, X } from 'lucide-react';
-import { useState } from 'react';
 import { IconButton } from '@/components/icon-button';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
+import { createTransactionFormRules } from '@/features/transactions/create-transaction';
 import { cn } from '@/lib/utils';
-import type {
-	NewTransactionModalProps,
-	TransactionFormData,
-} from './new-transaction-modal.types';
+import type { NewTransactionModalProps } from './new-transaction-modal.types';
 import { transactionTypeButtonVariants } from './new-transaction-modal.variants';
 
 export const NewTransactionModal = ({
 	isOpen,
 	onClose,
+	form,
+	categories,
+	formError,
+	isSubmitting,
 	onSubmit,
 }: NewTransactionModalProps) => {
-	const [transactionType, setTransactionType] = useState<'expense' | 'income'>(
-		'expense',
-	);
-	const [formData, setFormData] = useState<TransactionFormData>({
-		description: '',
-		date: '',
-		amount: '0,00',
-		category: '',
-		type: 'expense',
-	});
+	const {
+		register,
+		setValue,
+		watch,
+		formState: { errors },
+	} = form;
+
+	const transactionType = watch('type') ?? 'expense';
 
 	if (!isOpen) return null;
 
 	const handleTypeChange = (type: 'expense' | 'income') => {
-		setTransactionType(type);
-		setFormData((prev) => ({ ...prev, type }));
-	};
-
-	const handleInputChange = (
-		field: keyof TransactionFormData,
-		value: string,
-	) => {
-		setFormData((prev) => ({ ...prev, [field]: value }));
-	};
-
-	const handleSubmit = () => {
-		onSubmit?.(formData);
+		setValue('type', type);
 	};
 
 	return (
@@ -122,13 +109,14 @@ export const NewTransactionModal = ({
 				</div>
 
 				{/* Form */}
-				<div className="flex flex-col gap-4">
+				<form onSubmit={onSubmit} className="flex flex-col gap-4">
 					<Input
 						id="description"
 						label="Descrição"
 						placeholder="Ex. Almoço no restaurante"
-						value={formData.description}
-						onChange={(e) => handleInputChange('description', e.target.value)}
+						error={!!errors.description}
+						helper={errors.description?.message}
+						{...register('description', createTransactionFormRules.description)}
 					/>
 
 					<div className="flex gap-4">
@@ -138,8 +126,9 @@ export const NewTransactionModal = ({
 								label="Data"
 								type="date"
 								placeholder="Selecione"
-								value={formData.date}
-								onChange={(e) => handleInputChange('date', e.target.value)}
+								error={!!errors.date}
+								helper={errors.date?.message}
+								{...register('date', createTransactionFormRules.date)}
 							/>
 						</div>
 						<div className="flex-1">
@@ -148,30 +137,61 @@ export const NewTransactionModal = ({
 								label="Valor"
 								prefix="R$"
 								placeholder="0,00"
-								value={formData.amount}
-								onChange={(e) => handleInputChange('amount', e.target.value)}
+								error={!!errors.amount}
+								helper={errors.amount?.message}
+								{...register('amount', createTransactionFormRules.amount)}
 							/>
 						</div>
 					</div>
 
-					<Input
-						id="category"
-						label="Categoria"
-						placeholder="Selecione"
-						value={formData.category}
-						onChange={(e) => handleInputChange('category', e.target.value)}
-					/>
-				</div>
+					<div className="flex flex-col gap-2">
+						<label
+							htmlFor="categoryId"
+							className="font-medium text-financy-gray-700 text-sm"
+						>
+							Categoria
+						</label>
+						<select
+							id="categoryId"
+							className={cn(
+								'w-full rounded-md border p-3 py-3.5 text-base outline-none',
+								errors.categoryId
+									? 'border-financy-red-base'
+									: 'border-financy-gray-300',
+								'bg-financy-white text-financy-gray-800',
+							)}
+							{...register('categoryId', createTransactionFormRules.categoryId)}
+						>
+							<option value="">Selecione</option>
+							{categories.map((cat) => (
+								<option key={cat.id} value={cat.id}>
+									{cat.name}
+								</option>
+							))}
+						</select>
+						{errors.categoryId && (
+							<p className="text-financy-red-base text-xs">
+								{errors.categoryId.message}
+							</p>
+						)}
+					</div>
 
-				{/* Submit Button */}
-				<LabelButton
-					variant="default"
-					size="md"
-					className="w-full"
-					onClick={handleSubmit}
-				>
-					Salvar
-				</LabelButton>
+					{formError && (
+						<p className="rounded-md bg-red-50 p-3 text-center text-financy-red-base text-sm">
+							{formError}
+						</p>
+					)}
+
+					<LabelButton
+						variant="default"
+						size="md"
+						className="w-full"
+						type="submit"
+						disabled={isSubmitting}
+					>
+						{isSubmitting ? 'Salvando...' : 'Salvar'}
+					</LabelButton>
+				</form>
 			</div>
 		</div>
 	);
