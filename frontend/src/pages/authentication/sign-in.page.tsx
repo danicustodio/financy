@@ -67,10 +67,10 @@ export function SignIn() {
 						<LabelButton
 							type="submit"
 							size="md"
-							disabled={isSubmitting}
+							loading={isSubmitting}
 							className="w-full"
 						>
-							{isSubmitting ? 'Entrando...' : 'Entrar'}
+							Entrar
 						</LabelButton>
 					</form>
 

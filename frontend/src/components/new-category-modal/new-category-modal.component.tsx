@@ -237,9 +237,9 @@ export const NewCategoryModal = ({
 						variant="default"
 						size="md"
 						className="w-full"
-						disabled={isSubmitting}
+						loading={isSubmitting}
 					>
-						{isSubmitting ? 'Salvando...' : 'Salvar'}
+						Salvar
 					</LabelButton>
 				</form>
 			</div>

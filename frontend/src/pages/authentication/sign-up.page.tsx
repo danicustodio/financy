@@ -79,10 +79,10 @@ export function SignUp() {
 						<LabelButton
 							type="submit"
 							size="md"
-							disabled={isSubmitting}
+							loading={isSubmitting}
 							className="w-full"
 						>
-							{isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
+							Cadastrar
 						</LabelButton>
 					</form>
 

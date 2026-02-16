@@ -187,9 +187,9 @@ export const NewTransactionModal = ({
 						size="md"
 						className="w-full"
 						type="submit"
-						disabled={isSubmitting}
+						loading={isSubmitting}
 					>
-						{isSubmitting ? 'Salvando...' : 'Salvar'}
+						Salvar
 					</LabelButton>
 				</form>
 			</div>
