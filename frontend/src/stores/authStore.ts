@@ -1,36 +1,19 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { LOGIN_MUTATION, SIGN_UP_MUTATION } from '@/lib/graphql';
-import { publicGraphqlRequest } from '@/lib/graphql/graphql-client';
 
-interface User {
+export interface AuthUser {
 	id: string;
 	email: string;
 	name: string;
 }
 
-interface SignUpResponse {
-	signUp: {
-		token: string;
-		user: User;
-	};
-}
-
-interface LoginResponse {
-	login: {
-		token: string;
-		user: User;
-	};
-}
-
 interface AuthState {
-	user: User | null;
+	user: AuthUser | null;
 	token: string | null;
-	login: (email: string, password: string) => Promise<void>;
-	signup: (name: string, email: string, password: string) => Promise<void>;
+	setSession: (user: AuthUser, token: string) => void;
 	logout: () => void;
 	setToken: (token: string | null) => void;
-	setUser: (user: User) => void;
+	setUser: (user: AuthUser) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -39,27 +22,10 @@ export const useAuthStore = create<AuthState>()(
 			user: null,
 			token: null,
 
-			login: async (email: string, password: string) => {
-				const data = await publicGraphqlRequest<
-					LoginResponse,
-					{ input: { email: string; password: string } }
-				>(LOGIN_MUTATION, { input: { email, password } })();
-
+			setSession: (user: AuthUser, token: string) => {
 				set({
-					user: data.login.user,
-					token: data.login.token,
-				});
-			},
-
-			signup: async (name: string, email: string, password: string) => {
-				const data = await publicGraphqlRequest<
-					SignUpResponse,
-					{ input: { name: string; email: string; password: string } }
-				>(SIGN_UP_MUTATION, { input: { name, email, password } })();
-
-				set({
-					user: data.signUp.user,
-					token: data.signUp.token,
+					user,
+					token,
 				});
 			},
 
@@ -79,7 +45,7 @@ export const useAuthStore = create<AuthState>()(
 				set({ token });
 			},
 
-			setUser: (user: User) => {
+			setUser: (user: AuthUser) => {
 				set({ user });
 			},
 		}),

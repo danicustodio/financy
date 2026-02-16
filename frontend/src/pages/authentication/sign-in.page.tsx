@@ -12,9 +12,10 @@ export function SignIn() {
 	const {
 		form: {
 			register,
-			formState: { errors, isSubmitting },
+			formState: { errors },
 		},
 		formError,
+		isSubmitting,
 		onSubmit,
 	} = useSignInForm();
 
@@ -33,10 +34,7 @@ export function SignIn() {
 						</p>
 					</div>
 
-					<form
-						onSubmit={onSubmit}
-						className="flex w-full flex-col gap-4"
-					>
+					<form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
 						<Input
 							id="email"
 							label="E-mail"

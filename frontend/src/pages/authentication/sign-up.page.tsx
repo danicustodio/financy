@@ -10,9 +10,10 @@ export function SignUp() {
 	const {
 		form: {
 			register,
-			formState: { errors, isSubmitting },
+			formState: { errors },
 		},
 		formError,
+		isSubmitting,
 		onSubmit,
 	} = useSignUpForm();
 

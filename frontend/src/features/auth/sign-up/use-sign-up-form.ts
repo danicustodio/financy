@@ -1,31 +1,33 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
 import { mapSignUpError } from './sign-up.mapper';
 import type { SignUpFormData } from './sign-up.types';
+import { useSignUpMutation } from './use-sign-up-mutation';
 
 export function useSignUpForm() {
 	const navigate = useNavigate();
-	const signup = useAuthStore((state) => state.signup);
 	const [formError, setFormError] = useState<string | null>(null);
+	const signUpMutation = useSignUpMutation();
 
 	const form = useForm<SignUpFormData>();
 
-	const onSubmit = form.handleSubmit(async (data) => {
+	const onSubmit = form.handleSubmit((data) => {
 		setFormError(null);
-
-		try {
-			await signup(data.name, data.email, data.password);
-			navigate('/dashboard');
-		} catch (error) {
-			setFormError(mapSignUpError(error));
-		}
+		signUpMutation.mutate(data, {
+			onSuccess: () => {
+				navigate('/dashboard');
+			},
+			onError: (error) => {
+				setFormError(mapSignUpError(error));
+			},
+		});
 	});
 
 	return {
 		form,
 		formError,
+		isSubmitting: signUpMutation.isPending,
 		onSubmit,
 	};
 }
