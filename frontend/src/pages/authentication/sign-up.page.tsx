@@ -2,8 +2,7 @@ import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
-import { signUpFormRules } from '@/features/auth/sign-up/sign-up.schema';
-import { useSignUpForm } from '@/features/auth/sign-up/use-sign-up-form';
+import { signUpFormRules, useSignUpForm } from '@/hooks/forms/use-sign-up-form';
 
 export function SignUp() {
 	const navigate = useNavigate();
@@ -22,7 +21,7 @@ export function SignUp() {
 			<div className="flex w-full max-w-md flex-col items-center gap-10">
 				<img src="/logo.svg" alt="Financy" className="h-8" />
 
-				<div className="flex w-full flex-col gap-6 rounded-[12px] border border-financy-gray-200 bg-white p-4 md:p-8">
+				<div className="flex w-full flex-col gap-6 rounded-xl border border-financy-gray-200 bg-white p-4 md:p-8">
 					<div className="flex flex-col items-center gap-2">
 						<h1 className="font-bold text-financy-gray-800 text-xl">
 							Criar conta

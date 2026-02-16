@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
 import { LIST_TRANSACTIONS_QUERY_KEY } from '@/features/transactions/list-transactions';
-import { CREATE_TRANSACTION_MUTATION } from '@/lib/graphql';
-import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
+import { CREATE_TRANSACTION_MUTATION } from '@/graphql';
+import { authGraphqlRequest } from '@/graphql/graphql-client';
 import { mapCreateTransactionError } from './create-transaction.mapper';
 import type {
 	CreateTransactionFormData,

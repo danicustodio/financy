@@ -4,8 +4,7 @@ import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import { Link } from '@/components/link';
 import { Checkbox } from '@/components/ui/checkbox';
-import { signInFormRules } from '@/features/auth/sign-in/sign-in.schema';
-import { useSignInForm } from '@/features/auth/sign-in/use-sign-in-form';
+import { signInFormRules, useSignInForm } from '@/hooks/forms/use-sign-in-form';
 
 export function SignIn() {
 	const navigate = useNavigate();
@@ -24,7 +23,7 @@ export function SignIn() {
 			<div className="flex w-full max-w-md flex-col items-center gap-10">
 				<img src="/logo.svg" alt="Financy" className="h-8" />
 
-				<div className="flex w-full flex-col gap-6 rounded-[12px] border border-financy-gray-200 bg-white p-4 md:p-8">
+				<div className="flex w-full flex-col gap-6 rounded-xl border border-financy-gray-200 bg-white p-4 md:p-8">
 					<div className="flex flex-col items-center gap-2">
 						<h1 className="font-bold text-financy-gray-800 text-xl">
 							Fazer login
@@ -52,8 +51,8 @@ export function SignIn() {
 							type="password"
 							placeholder="Digite sua senha"
 							prefix={<Lock />}
-							error={!!errors.password}
-							helper={errors.password?.message}
+							error={!!errors.password || !!formError}
+							helper={errors.password?.message || (formError ?? undefined)}
 							{...register('password', signInFormRules.password)}
 						/>
 
@@ -64,12 +63,6 @@ export function SignIn() {
 							</div>
 							<Link href="#">Recuperar senha</Link>
 						</div>
-
-						{formError && (
-							<p className="rounded-md bg-red-50 px-3 py-2 text-center text-red-600 text-sm">
-								{formError}
-							</p>
-						)}
 
 						<LabelButton
 							type="submit"

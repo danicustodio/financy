@@ -2,8 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
-import { CREATE_CATEGORY_MUTATION } from '@/lib/graphql';
-import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
+import { CREATE_CATEGORY_MUTATION } from '@/graphql';
+import { authGraphqlRequest } from '@/graphql/graphql-client';
 import { mapCreateCategoryError } from './create-category.mapper';
 import type {
 	CreateCategoryFormData,

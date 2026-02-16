@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { LIST_TRANSACTIONS_QUERY } from '@/lib/graphql';
-import { authGraphqlRequest } from '@/lib/graphql/graphql-client';
+import { LIST_TRANSACTIONS_QUERY } from '@/graphql';
+import { authGraphqlRequest } from '@/graphql/graphql-client';
 
 export interface ListedTransaction {
 	id: string;
