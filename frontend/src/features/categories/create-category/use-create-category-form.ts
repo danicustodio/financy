@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { mapCreateCategoryError } from './create-category.mapper';
 import type {
@@ -21,6 +23,7 @@ const CREATE_CATEGORY_MUTATION = `
 
 export function useCreateCategoryForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
 
 	const form = useForm<CreateCategoryFormData>({
 		defaultValues: {
@@ -46,6 +49,9 @@ export function useCreateCategoryForm(onSuccess?: () => void) {
 					color: data.color,
 				},
 			})();
+			await queryClient.invalidateQueries({
+				queryKey: LIST_CATEGORIES_QUERY_KEY,
+			});
 
 			onSuccess?.();
 		} catch (error) {

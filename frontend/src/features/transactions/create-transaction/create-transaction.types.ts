@@ -17,7 +17,3 @@ export interface CreateTransactionResponse {
 		id: string;
 	};
 }
-
-export interface CategoriesResponse {
-	categories: CategoryOption[];
-}

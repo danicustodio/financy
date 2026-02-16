@@ -1,7 +1,7 @@
 import type { TagVariants } from '@/components/tag';
 
 export interface TransactionData {
-	id: number;
+	id: string;
 	description: string;
 	date: string;
 	category: string;

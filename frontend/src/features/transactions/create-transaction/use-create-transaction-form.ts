@@ -1,5 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { LIST_CATEGORIES_QUERY_KEY } from '@/features/categories/list-categories';
+import { LIST_TRANSACTIONS_QUERY_KEY } from '@/features/transactions/list-transactions';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { mapCreateTransactionError } from './create-transaction.mapper';
 import type {
@@ -18,6 +21,7 @@ const CREATE_TRANSACTION_MUTATION = `
 
 export function useCreateTransactionForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
 
 	const form = useForm<CreateTransactionFormData>({
 		defaultValues: {
@@ -41,6 +45,12 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 					categoryId: data.categoryId,
 				},
 			})();
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: LIST_TRANSACTIONS_QUERY_KEY,
+				}),
+				queryClient.invalidateQueries({ queryKey: LIST_CATEGORIES_QUERY_KEY }),
+			]);
 
 			onSuccess?.();
 		} catch (error) {

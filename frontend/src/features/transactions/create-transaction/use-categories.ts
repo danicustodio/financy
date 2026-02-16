@@ -1,40 +1,18 @@
-import { useEffect, useState } from 'react';
-import { graphqlRequest } from '@/lib/graphql-client';
-import type {
-	CategoriesResponse,
-	CategoryOption,
-} from './create-transaction.types';
-
-const CATEGORIES_QUERY = `
-  query Categories {
-    categories {
-      id
-      name
-      color
-    }
-  }
-`;
+import { useMemo } from 'react';
+import { useListCategories } from '@/features/categories/list-categories';
+import type { CategoryOption } from './create-transaction.types';
 
 export function useCategories() {
-	const [categories, setCategories] = useState<CategoryOption[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				const data = await graphqlRequest<CategoriesResponse, undefined>(
-					CATEGORIES_QUERY,
-				)();
-				setCategories(data.categories);
-			} catch {
-				setCategories([]);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchCategories();
-	}, []);
+	const { data = [], isLoading } = useListCategories();
+	const categories = useMemo<CategoryOption[]>(
+		() =>
+			data.map((category) => ({
+				id: category.id,
+				name: category.name,
+				color: category.color,
+			})),
+		[data],
+	);
 
 	return { categories, isLoading };
 }

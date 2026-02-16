@@ -1,15 +1,19 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CategoryCard } from '@/components/categories';
 import { IconTile } from '@/components/icon-tile';
 import { LabelButton } from '@/components/label-button';
 import { NewCategoryModal } from '@/components/new-category-modal';
 import { useCreateCategoryForm } from '@/features/categories/create-category';
-import { MOCK_CATEGORIES } from './categories.mock';
+import { useListCategories } from '@/features/categories/list-categories';
+import { toCategoryColor } from '@/features/listings/listing-presenter';
+import { useListTransactions } from '@/features/transactions/list-transactions';
 
 export function Categories() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const { data: categories = [], isLoading } = useListCategories();
+	const { data: transactions = [] } = useListTransactions();
 	const { form, formError, isSubmitting, onSubmit } = useCreateCategoryForm(
 		() => {
 			setIsModalOpen(false);
@@ -22,13 +26,42 @@ export function Categories() {
 		form.reset();
 	};
 
-	const totalCategories = MOCK_CATEGORIES.length;
-	const totalTransactions = MOCK_CATEGORIES.reduce(
-		(sum, cat) => sum + cat.itemCount,
+	const categoryCountById = useMemo(() => {
+		return transactions.reduce<Record<string, number>>((acc, transaction) => {
+			acc[transaction.category.id] = (acc[transaction.category.id] ?? 0) + 1;
+			return acc;
+		}, {});
+	}, [transactions]);
+
+	const categoriesWithCount = useMemo(
+		() =>
+			categories.map((category) => ({
+				...category,
+				itemCount: categoryCountById[category.id] ?? 0,
+				uiColor: toCategoryColor(category.color),
+			})),
+		[categories, categoryCountById],
+	);
+
+	const totalCategories = categoriesWithCount.length;
+	const totalTransactions = categoriesWithCount.reduce(
+		(sum, category) => sum + category.itemCount,
 		0,
 	);
-	const mostUsedCategory = MOCK_CATEGORIES.reduce((prev, current) =>
-		current.itemCount > prev.itemCount ? current : prev,
+
+	const mostUsedCategory = useMemo(
+		() =>
+			categoriesWithCount.reduce<(typeof categoriesWithCount)[number] | null>(
+				(prev, current) => {
+					if (!prev || current.itemCount > prev.itemCount) {
+						return current;
+					}
+
+					return prev;
+				},
+				null,
+			),
+		[categoriesWithCount],
 	);
 
 	return (
@@ -90,13 +123,13 @@ export function Categories() {
 					<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
 						<IconTile
 							icon={Tag}
-							color={mostUsedCategory.color}
+							color={mostUsedCategory?.uiColor ?? 'blue'}
 							className="h-8 w-8 rounded-full [&_svg]:h-5 [&_svg]:w-5"
-							aria-label={`Ícone da categoria ${mostUsedCategory.name}`}
+							aria-label="Categoria mais utilizada"
 						/>
 						<div className="flex flex-col gap-2">
 							<span className="font-bold text-[28px] text-financy-gray-800">
-								{mostUsedCategory.name}
+								{mostUsedCategory?.name ?? '-'}
 							</span>
 							<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 								categoria mais utilizada
@@ -106,17 +139,23 @@ export function Categories() {
 				</div>
 
 				{/* Categories Grid */}
-				<div className="grid grid-cols-4 gap-6">
-					{MOCK_CATEGORIES.map((category) => (
-						<CategoryCard
-							key={category.id}
-							name={category.name}
-							description={category.description}
-							color={category.color}
-							itemCount={category.itemCount}
-						/>
-					))}
-				</div>
+				{isLoading ? (
+					<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
+						Carregando categorias...
+					</div>
+				) : (
+					<div className="grid grid-cols-4 gap-6">
+						{categoriesWithCount.map((category) => (
+							<CategoryCard
+								key={category.id}
+								name={category.name}
+								description={category.description ?? ''}
+								color={category.uiColor}
+								itemCount={category.itemCount}
+							/>
+						))}
+					</div>
+				)}
 			</main>
 
 			<NewCategoryModal

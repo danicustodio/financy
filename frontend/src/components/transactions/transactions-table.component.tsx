@@ -9,8 +9,8 @@ interface TransactionsTableProps {
 	totalResults: number;
 	pageSize: number;
 	onPageChange?: (page: number) => void;
-	onEdit?: (id: number) => void;
-	onDelete?: (id: number) => void;
+	onEdit?: (id: string) => void;
+	onDelete?: (id: string) => void;
 }
 
 export const TransactionsTable = ({

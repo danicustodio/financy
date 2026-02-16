@@ -1,19 +1,26 @@
 import { ChevronDown, Plus, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LabelButton } from '@/components/label-button';
 import { NewTransactionModal } from '@/components/new-transaction-modal';
-import { TransactionsTable } from '@/components/transactions';
+import {
+	type TransactionData,
+	TransactionsTable,
+} from '@/components/transactions';
+import {
+	formatAmountFromCents,
+	formatDate,
+	iconBackgroundColor,
+	toCategoryColor,
+} from '@/features/listings/listing-presenter';
 import {
 	useCategories,
 	useCreateTransactionForm,
 } from '@/features/transactions/create-transaction';
-import { MOCK_TRANSACTIONS } from './transactions.mock';
+import { useListTransactions } from '@/features/transactions/list-transactions';
 
 export function Transactions() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const pageSize = 10;
-	const totalResults = 27;
-	const totalPages = Math.ceil(totalResults / pageSize);
 
 	const handlePageChange = (page: number) => {
 		setCurrentPage(page);
@@ -22,11 +29,39 @@ export function Transactions() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const { categories } = useCategories();
+	const { data: transactions = [], isLoading } = useListTransactions();
 	const { form, formError, isSubmitting, onSubmit } = useCreateTransactionForm(
 		() => {
 			setIsModalOpen(false);
 			form.reset();
 		},
+	);
+
+	const totalResults = transactions.length;
+	const totalPages = Math.max(1, Math.ceil(totalResults / pageSize));
+
+	const currentPageTransactions = useMemo(
+		() =>
+			transactions.slice(
+				(currentPage - 1) * pageSize,
+				(currentPage - 1) * pageSize + pageSize,
+			),
+		[transactions, currentPage],
+	);
+
+	const tableRows = useMemo<TransactionData[]>(
+		() =>
+			currentPageTransactions.map((transaction) => ({
+				id: transaction.id,
+				description: transaction.description,
+				date: formatDate(transaction.date),
+				category: transaction.category.name,
+				categoryColor: toCategoryColor(transaction.category.color),
+				amount: formatAmountFromCents(transaction.amountCents),
+				type: transaction.type,
+				iconBgColor: iconBackgroundColor(transaction.category.color),
+			})),
+		[currentPageTransactions],
 	);
 
 	return (
@@ -119,14 +154,20 @@ export function Transactions() {
 				</div>
 
 				{/* Transactions Table */}
-				<TransactionsTable
-					transactions={MOCK_TRANSACTIONS}
-					currentPage={currentPage}
-					totalPages={totalPages}
-					totalResults={totalResults}
-					pageSize={pageSize}
-					onPageChange={handlePageChange}
-				/>
+				{isLoading ? (
+					<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
+						Carregando transações...
+					</div>
+				) : (
+					<TransactionsTable
+						transactions={tableRows}
+						currentPage={currentPage}
+						totalPages={totalPages}
+						totalResults={totalResults}
+						pageSize={pageSize}
+						onPageChange={handlePageChange}
+					/>
+				)}
 			</main>
 
 			<NewTransactionModal

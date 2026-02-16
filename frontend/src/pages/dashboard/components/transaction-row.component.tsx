@@ -1,14 +1,26 @@
 import { BriefcaseBusiness } from 'lucide-react';
 import { IconTile } from '@/components/icon-tile';
+import type { TagVariants } from '@/components/tag';
 import { Tag } from '@/components/tag';
 import { AmountIndicator } from './amount-indicator.component';
 
 interface TransactionRowProps {
 	description: string;
 	date: string;
+	category: string;
+	categoryColor: NonNullable<TagVariants['color']>;
+	amount: string;
+	type: 'income' | 'expense';
 }
 
-export const TransactionRow = ({ description, date }: TransactionRowProps) => {
+export const TransactionRow = ({
+	description,
+	date,
+	category,
+	categoryColor,
+	amount,
+	type,
+}: TransactionRowProps) => {
 	return (
 		<div className="flex items-center justify-between gap-9 border-financy-gray-200 border-b px-6 py-4">
 			<div className="flex flex-1 gap-4">
@@ -22,10 +34,10 @@ export const TransactionRow = ({ description, date }: TransactionRowProps) => {
 			</div>
 
 			<div className="">
-				<Tag color="green">Receita</Tag>
+				<Tag color={categoryColor}>{category}</Tag>
 			</div>
 
-			<AmountIndicator amount="R$ 4.250,00" type="income" />
+			<AmountIndicator amount={amount} type={type} />
 		</div>
 	);
 };

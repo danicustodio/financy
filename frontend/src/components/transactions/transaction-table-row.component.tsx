@@ -6,8 +6,8 @@ import type { TransactionData } from './transactions.types';
 
 interface TransactionTableRowProps {
 	transaction: TransactionData;
-	onEdit?: (id: number) => void;
-	onDelete?: (id: number) => void;
+	onEdit?: (id: string) => void;
+	onDelete?: (id: string) => void;
 }
 
 export const TransactionTableRow = ({
