@@ -5,6 +5,8 @@ builder.prismaObject('Category', {
 	fields: (t) => ({
 		id: t.exposeID('id'),
 		name: t.exposeString('name'),
+		icon: t.exposeString('icon'),
+		description: t.exposeString('description', { nullable: true }),
 		color: t.exposeString('color'),
 		createdAt: t.expose('createdAt', { type: 'DateTime' }),
 	}),
@@ -15,6 +17,30 @@ const CreateCategoryInput = builder.inputType('CreateCategoryInput', {
 		name: t.string({
 			required: true,
 			validate: z.string().min(1, 'Nome é obrigatório'),
+		}),
+		icon: t.string({
+			required: true,
+			validate: z.enum([
+				'utensils',
+				'car-front',
+				'briefcase-business',
+				'ticket',
+				'piggy-bank',
+				'shopping-cart',
+				'heart-pulse',
+				'tag',
+				'tool-case',
+				'paw-print',
+				'house',
+				'gift',
+				'dumbbell',
+				'book-open',
+				'receipt-text',
+				'mailbox',
+			]),
+		}),
+		description: t.string({
+			required: false,
 		}),
 		color: t.string({
 			required: true,
@@ -60,6 +86,8 @@ builder.mutationFields((t) => ({
 				...query,
 				data: {
 					name: args.input.name,
+					icon: args.input.icon,
+					description: args.input.description,
 					color: args.input.color,
 					userId: ctx.currentUser.id,
 				},

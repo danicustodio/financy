@@ -26,6 +26,8 @@ model User {
 model Category {
   id           String        @id @default(uuid())
   name         String
+  icon         String
+  description  String?
   color        String
   userId       String
   user         User          @relation(fields: [userId], references: [id])
