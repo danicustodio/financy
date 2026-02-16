@@ -20,6 +20,9 @@ importers:
       '@pothos/plugin-prisma':
         specifier: ^4.14.2
         version: 4.14.2(@pothos/core@4.12.0(graphql@16.12.0))(@prisma/client@7.4.0(prisma@7.4.0(@types/react@19.2.14)(better-sqlite3@12.6.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(graphql@16.12.0)(typescript@5.9.3)
+      '@pothos/plugin-simple-objects':
+        specifier: ^4.1.3
+        version: 4.1.3(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)
       '@pothos/plugin-validation':
         specifier: ^4.2.0
         version: 4.2.0(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)
@@ -401,6 +404,12 @@ packages:
       '@prisma/client': '*'
       graphql: ^16.10.0
       typescript: '>=4.7.2'
+
+  '@pothos/plugin-simple-objects@4.1.3':
+    resolution: {integrity: sha512-D2JFecUY9a8VwplsNidEYlws2nYGjABIk8WNykHYuBoTPK6mngQfgY5Og8VL+a3sU/Z3pof5qz+Eg+6GJ4j7lw==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: ^16.10.0
 
   '@pothos/plugin-validation@4.2.0':
     resolution: {integrity: sha512-iqqlNzHGhTbWIf6dfouMjJfh72gOQEft7gp0Bl0vhW8WNWuOwVmrXrXtF+Lu3hyZuBY7WfQ44jQ41hXjYmqx0g==}
@@ -1838,6 +1847,11 @@ snapshots:
       '@prisma/generator-helper': 7.4.0
       graphql: 16.12.0
       typescript: 5.9.3
+
+  '@pothos/plugin-simple-objects@4.1.3(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)':
+    dependencies:
+      '@pothos/core': 4.12.0(graphql@16.12.0)
+      graphql: 16.12.0
 
   '@pothos/plugin-validation@4.2.0(@pothos/core@4.12.0(graphql@16.12.0))(graphql@16.12.0)':
     dependencies:

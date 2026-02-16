@@ -1,5 +1,6 @@
 import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
+import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
 import ValidationPlugin from '@pothos/plugin-validation';
 import { env } from '../env';
 import type PrismaTypes from '../generated/prisma-pothos-types';
@@ -16,7 +17,7 @@ export const builder = new SchemaBuilder<{
 		};
 	};
 }>({
-	plugins: [PrismaPlugin, ValidationPlugin],
+	plugins: [PrismaPlugin, SimpleObjectsPlugin, ValidationPlugin],
 	prisma: {
 		client: (ctx) => ctx.prisma,
 		dmmf: getDatamodel(),

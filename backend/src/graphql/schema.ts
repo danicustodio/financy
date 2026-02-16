@@ -3,6 +3,7 @@ import { builder } from './builder';
 // Import all type definitions (side-effect imports)
 import './types/auth';
 import './types/category';
+import './types/dashboard-summary';
 import './types/transaction';
 import './types/user';
 
