@@ -44,8 +44,14 @@
 		"prisma:generate": "prisma generate",
 		"prisma:migrate": "prisma migrate dev",
 		"prisma:studio": "prisma studio",
+		"prisma:seed": "prisma db seed",
+		"prisma:seed:direct": "tsx prisma/seed.ts",
+		"prisma:reset": "prisma migrate reset --force && pnpm prisma:seed",
 		"start": "node dist/server.js",
 		"typecheck": "tsc"
+	},
+	"prisma": {
+		"seed": "tsx prisma/seed.ts"
 	},
 	"type": "module",
 	"version": "1.0.0"
