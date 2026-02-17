@@ -5,9 +5,7 @@ export function toCreateCategoryInput(
 	form: CreateCategoryFormData,
 ): CreateCategoryInput {
 	return {
-		title: form.title,
+		...form,
 		description: form.description ?? '',
-		icon: form.icon,
-		color: form.color,
 	};
 }

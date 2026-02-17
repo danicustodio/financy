@@ -14,7 +14,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
-import { toTransactionTableView } from '@/mappers/listing.mapper';
+import { toTransactionTableView } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { TransactionsTable } from './transactions-table.component';
 
 export function Transactions() {

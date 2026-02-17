@@ -3,7 +3,11 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod/v4';
-import { mapSignUpError } from '@/mappers/sign-up.mapper';
+import {
+	AUTH_SIGN_UP_ERROR_FALLBACK,
+	AUTH_SIGN_UP_ERROR_RULES,
+} from '@/mappers/errors/graphql-error-rules';
+import { mapGraphQLError } from '@/mappers/errors/graphql-error.mapper';
 import type { SignUpInput } from '@/types/api/operations';
 import { useSignUpMutation } from '../mutations/use-sign-up-mutation';
 
@@ -31,7 +35,13 @@ export function useSignUpForm() {
 				navigate('/dashboard');
 			},
 			onError: (error) => {
-				setFormError(mapSignUpError(error));
+				setFormError(
+					mapGraphQLError(
+						error,
+						AUTH_SIGN_UP_ERROR_FALLBACK,
+						AUTH_SIGN_UP_ERROR_RULES,
+					),
+				);
 			},
 		});
 	});

@@ -6,7 +6,11 @@ import {
 	CATEGORY_COLOR_NAMES,
 	CATEGORY_ICON_NAMES,
 } from '@/constants/category';
-import { mapCreateCategoryError } from '@/mappers/create-category.mapper';
+import {
+	CREATE_CATEGORY_ERROR_FALLBACK,
+	CREATE_CATEGORY_ERROR_RULES,
+} from '@/mappers/errors/graphql-error-rules';
+import { mapGraphQLError } from '@/mappers/errors/graphql-error.mapper';
 import { toCreateCategoryInput } from '@/mappers/form-to-api/category.form-to-api.mapper';
 import type { CreateCategoryFormData } from '@/types/forms/categories';
 import { useCreateCategoryMutation } from '../mutations/use-create-category-mutation';
@@ -39,7 +43,13 @@ export function useCreateCategoryForm(onSuccess?: () => void) {
 			await createCategoryMutation.mutateAsync(toCreateCategoryInput(data));
 			onSuccess?.();
 		} catch (error) {
-			setFormError(mapCreateCategoryError(error));
+			setFormError(
+				mapGraphQLError(
+					error,
+					CREATE_CATEGORY_ERROR_FALLBACK,
+					CREATE_CATEGORY_ERROR_RULES,
+				),
+			);
 		}
 	});
 

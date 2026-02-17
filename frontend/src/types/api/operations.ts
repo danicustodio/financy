@@ -1,36 +1,25 @@
-import type {
-	Category,
-	CategoryColor,
-	CategoryIconName,
-} from '../domain/category';
-import type { TransactionType } from '../domain/transaction';
+import type { Category, CategorySummary } from '../domain/category';
+import type { Transaction, TransactionType } from '../domain/transaction';
 import type { UserProfile } from '../domain/user';
 import type { ISODateString } from '../primitives';
 
+type ApiCategory = Omit<Category, 'icon' | 'color'> & {
+	icon: string;
+	color: string;
+};
+type ApiCategorySummary = Omit<CategorySummary, 'icon' | 'color'> & {
+	icon: string;
+	color: string;
+};
+
 export interface ListTransactionsResponse {
-	transactions: {
-		id: string;
-		description: string;
-		amount: number;
-		type: TransactionType;
-		date: ISODateString;
-		category: {
-			id: string;
-			title: string;
-			icon: string;
-			color: string;
-		};
-	}[];
+	transactions: (Omit<Transaction, 'category'> & {
+		category: ApiCategorySummary;
+	})[];
 }
 
 export interface ListCategoriesResponse {
-	categories: {
-		id: string;
-		title: string;
-		icon: string;
-		description: string | null;
-		color: string;
-	}[];
+	categories: ApiCategory[];
 }
 
 export interface DashboardSummaryData {
@@ -48,18 +37,12 @@ export interface DashboardSummaryVariables {
 	year: number;
 }
 
-export interface CreateCategoryInput {
-	title: string;
+export type CreateCategoryInput = Omit<Category, 'id' | 'description'> & {
 	description: string;
-	icon: CategoryIconName;
-	color: CategoryColor;
-}
+};
 
 export interface CreateCategoryResponse {
-	createCategory: Pick<
-		Category,
-		'id' | 'title' | 'icon' | 'description' | 'color'
-	>;
+	createCategory: ApiCategory;
 }
 
 export interface CreateTransactionInput {

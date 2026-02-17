@@ -3,7 +3,11 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod/v4';
-import { mapSignInError } from '@/mappers/sign-in.mapper';
+import {
+	AUTH_SIGN_IN_ERROR_FALLBACK,
+	AUTH_SIGN_IN_ERROR_RULES,
+} from '@/mappers/errors/graphql-error-rules';
+import { mapGraphQLError } from '@/mappers/errors/graphql-error.mapper';
 import type { SignInInput } from '@/types/api/operations';
 import { useLoginMutation } from '../mutations/use-login-mutation';
 
@@ -30,7 +34,7 @@ export function useSignInForm() {
 				navigate('/dashboard');
 			},
 			onError: (error) => {
-				setFormError(mapSignInError(error));
+				setFormError(mapGraphQLError(error, AUTH_SIGN_IN_ERROR_FALLBACK, AUTH_SIGN_IN_ERROR_RULES));
 			},
 		});
 	});

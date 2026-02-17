@@ -6,7 +6,8 @@ import { PageHeader } from '@/components/page-header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
-import { toCategoryColor, toCategoryIcon } from '@/mappers/listing.mapper';
+import { toCategoryColor } from '@/mappers/api-to-domain/category.api-to-domain.mapper';
+import { toCategoryIcon } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { CategoryCard } from './components/category-card.component';
 import { CategorySummaryCard } from './components/category-summary-card.component';
 

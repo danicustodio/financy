@@ -65,7 +65,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 						id="title"
 						label="Título"
 						placeholder="Ex. Alimentação"
-						error={!!titleError}
+						error={!!titleError || !!formError}
 						helper={titleError ?? formError ?? undefined}
 						{...form.register('title')}
 					/>

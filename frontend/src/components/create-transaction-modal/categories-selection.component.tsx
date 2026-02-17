@@ -1,4 +1,5 @@
 import { CheckIcon, ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { Category } from '@/types/domain/category';
 import {
 	DropdownMenu,
@@ -30,7 +31,7 @@ export const CategoriesSelection = ({
 		<div className="flex flex-col gap-2">
 			<label
 				htmlFor="category"
-				className="font-medium text-financy-gray-800 text-sm"
+				className={cn('font-medium text-sm', errorMessage ? 'text-financy-danger' : 'text-financy-gray-800')}
 			>
 				Categoria
 			</label>
@@ -39,7 +40,10 @@ export const CategoriesSelection = ({
 					<button
 						type="button"
 						id="category"
-						className="flex w-full items-center justify-between rounded-md border border-financy-gray-300 bg-financy-white p-3 py-3.5 text-left text-sm"
+						className={cn(
+							'flex w-full items-center justify-between rounded-md border bg-financy-white p-3 py-3.5 text-left text-sm',
+							errorMessage ? 'border-financy-danger' : 'border-financy-gray-300',
+						)}
 					>
 						<span
 							className={
@@ -82,7 +86,7 @@ export const CategoriesSelection = ({
 				</DropdownMenuContent>
 			</DropdownMenu>
 			{errorMessage && (
-				<p className="text-financy-gray-500 text-xs">{errorMessage}</p>
+				<p className="text-financy-danger text-xs">{errorMessage}</p>
 			)}
 		</div>
 	);

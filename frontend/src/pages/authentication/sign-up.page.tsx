@@ -49,8 +49,8 @@ export function SignUp() {
 							type="email"
 							placeholder="seu@exemplo.com"
 							prefix={<Mail size={16} />}
-							error={!!errors.email}
-							helper={errors.email?.message}
+							error={!!errors.email || !!formError}
+							helper={errors.email?.message ?? formError ?? undefined}
 							{...register('email')}
 						/>
 
@@ -69,12 +69,6 @@ export function SignUp() {
 								{...register('password')}
 							/>
 						</div>
-
-						{formError && (
-							<p className="rounded-md bg-red-50 px-3 py-2 text-center text-red-600 text-sm">
-								{formError}
-							</p>
-						)}
 
 						<LabelButton
 							type="submit"

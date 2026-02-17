@@ -34,3 +34,5 @@ export interface Category {
 	description: string | null;
 	color: CategoryColor;
 }
+
+export type CategorySummary = Pick<Category, 'id' | 'title' | 'icon' | 'color'>;

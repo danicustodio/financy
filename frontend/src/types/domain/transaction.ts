@@ -1,5 +1,5 @@
 import type { CurrencyAmount, ID, ISODateString } from '../primitives';
-import type { Category } from './category';
+import type { CategorySummary } from './category';
 
 export type TransactionType = 'income' | 'expense';
 
@@ -9,5 +9,5 @@ export interface Transaction {
 	amount: CurrencyAmount;
 	type: TransactionType;
 	date: ISODateString;
-	category: Pick<Category, 'id' | 'title' | 'icon' | 'color'>;
+	category: CategorySummary;
 }

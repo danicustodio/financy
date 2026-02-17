@@ -4,7 +4,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
 import { TRANSACTION_TYPES } from '@/constants/transaction';
 import { parseAmount } from '@/mappers/amount.mapper';
-import { mapCreateTransactionError } from '@/mappers/create-transaction.mapper';
+import {
+	CREATE_TRANSACTION_ERROR_FALLBACK,
+	CREATE_TRANSACTION_ERROR_RULES,
+} from '@/mappers/errors/graphql-error-rules';
+import { mapGraphQLError } from '@/mappers/errors/graphql-error.mapper';
 import { toCreateTransactionInput } from '@/mappers/form-to-api/transaction.form-to-api.mapper';
 import type { CreateTransactionFormData } from '@/types/forms/transactions';
 import { useCreateTransactionMutation } from '../mutations/use-create-transaction-mutation';
@@ -49,7 +53,13 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 
 			onSuccess?.();
 		} catch (error) {
-			setFormError(mapCreateTransactionError(error));
+			setFormError(
+				mapGraphQLError(
+					error,
+					CREATE_TRANSACTION_ERROR_FALLBACK,
+					CREATE_TRANSACTION_ERROR_RULES,
+				),
+			);
 		}
 	});
 

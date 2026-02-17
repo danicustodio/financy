@@ -9,14 +9,9 @@ export function mapApiTransactionToDomain(
 	transaction: ListTransactionsResponse['transactions'][number],
 ): Transaction {
 	return {
-		id: transaction.id,
-		description: transaction.description,
-		amount: transaction.amount,
-		type: transaction.type,
-		date: transaction.date,
+		...transaction,
 		category: {
-			id: transaction.category.id,
-			title: transaction.category.title,
+			...transaction.category,
 			icon: toCategoryIconName(transaction.category.icon),
 			color: toCategoryColor(transaction.category.color),
 		},
