@@ -16,6 +16,33 @@ export const TransactionRef = builder.prismaObject('Transaction', {
 	}),
 });
 
+export const TransactionPageRef = builder.simpleObject('TransactionPage', {
+	fields: (t) => ({
+		items: t.field({ type: [TransactionRef] }),
+		totalCount: t.int(),
+	}),
+});
+
+export const TransactionFilterRef = builder.inputType('TransactionFilter', {
+	fields: (t) => ({
+		search: t.string({ required: false }),
+		type: t.string({ required: false }),
+		categoryId: t.id({ required: false }),
+		month: t.int({ required: false }),
+		year: t.int({ required: false }),
+	}),
+});
+
+export const TransactionPaginationRef = builder.inputType(
+	'TransactionPagination',
+	{
+		fields: (t) => ({
+			page: t.int({ required: true }),
+			pageSize: t.int({ required: true }),
+		}),
+	},
+);
+
 export const CreateTransactionInputRef = builder.inputType(
 	'CreateTransactionInput',
 	{

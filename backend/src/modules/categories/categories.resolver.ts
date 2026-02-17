@@ -1,6 +1,10 @@
 import { builder } from '../../graphql/builder';
 import { mapResolverError } from '../../shared/errors/graphql-error-mapper';
-import { CategoryRef, CreateCategoryInputRef } from './categories.schema';
+import {
+	CategoriesSummaryRef,
+	CategoryRef,
+	CreateCategoryInputRef,
+} from './categories.schema';
 import { createCategoryInputSchema } from './categories.validation';
 
 builder.queryFields((t) => ({
@@ -9,6 +13,13 @@ builder.queryFields((t) => ({
 		resolve: async (_root, _args, ctx) =>
 			mapResolverError(async () =>
 				ctx.services.categories.list(ctx.currentUser),
+			),
+	}),
+	categoriesSummary: t.field({
+		type: CategoriesSummaryRef,
+		resolve: async (_root, _args, ctx) =>
+			mapResolverError(async () =>
+				ctx.services.categories.summary(ctx.currentUser),
 			),
 	}),
 }));

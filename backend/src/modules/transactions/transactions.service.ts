@@ -4,7 +4,11 @@ import { AppError } from '../../shared/errors/app-error';
 import { errorCodes } from '../../shared/errors/error-codes';
 import type { CategoriesRepository } from '../categories/categories.repository';
 import type { TransactionsRepository } from './transactions.repository';
-import type { CreateTransactionInput } from './transactions.validation';
+import type {
+	CreateTransactionInput,
+	TransactionFilter,
+	TransactionPagination,
+} from './transactions.validation';
 
 export class TransactionsService {
 	constructor(
@@ -12,9 +16,13 @@ export class TransactionsService {
 		private readonly categoriesRepository: CategoriesRepository,
 	) {}
 
-	list(currentUser: User | null) {
+	list(
+		currentUser: User | null,
+		filter?: TransactionFilter | null,
+		pagination?: TransactionPagination | null,
+	) {
 		const user = requireAuth(currentUser);
-		return this.transactionsRepository.listByUserId(user.id);
+		return this.transactionsRepository.list(user.id, filter, pagination);
 	}
 
 	async create(currentUser: User | null, input: CreateTransactionInput) {

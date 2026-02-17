@@ -28,4 +28,37 @@ export class CategoriesRepository {
 			where: { id: categoryId, userId },
 		});
 	}
+
+	countAllByUserId(userId: string) {
+		return this.prisma.category.count({ where: { userId } });
+	}
+
+	countTransactionsByUserId(userId: string) {
+		return this.prisma.transaction.count({ where: { userId } });
+	}
+
+	async findMostUsedByUserId(userId: string) {
+		const [topGroup] = await this.prisma.transaction.groupBy({
+			by: ['categoryId'],
+			where: { userId },
+			_count: { id: true },
+			orderBy: [{ _count: { id: 'desc' } }, { categoryId: 'asc' }],
+			take: 1,
+		});
+
+		if (topGroup == null) {
+			return null;
+		}
+
+		const category = await this.prisma.category.findUnique({
+			where: { id: topGroup.categoryId },
+			select: { id: true, title: true, icon: true, color: true },
+		});
+
+		if (category == null) {
+			return null;
+		}
+
+		return { ...category, transactionCount: topGroup._count.id };
+	}
 }

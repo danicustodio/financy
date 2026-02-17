@@ -13,6 +13,19 @@ export class CategoriesService {
 		return this.categoriesRepository.listByUserId(user.id);
 	}
 
+	async summary(currentUser: User | null) {
+		const user = requireAuth(currentUser);
+
+		const [totalCategories, totalTransactions, mostUsedCategory] =
+			await Promise.all([
+				this.categoriesRepository.countAllByUserId(user.id),
+				this.categoriesRepository.countTransactionsByUserId(user.id),
+				this.categoriesRepository.findMostUsedByUserId(user.id),
+			]);
+
+		return { totalCategories, totalTransactions, mostUsedCategory };
+	}
+
 	async create(currentUser: User | null, input: CreateCategoryInput) {
 		const user = requireAuth(currentUser);
 

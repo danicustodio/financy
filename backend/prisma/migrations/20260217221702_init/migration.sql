@@ -11,7 +11,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Category" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
     "description" TEXT,
     "color" TEXT NOT NULL,
@@ -40,4 +40,4 @@ CREATE TABLE "Transaction" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Category_name_userId_key" ON "Category"("name", "userId");
+CREATE UNIQUE INDEX "Category_title_userId_key" ON "Category"("title", "userId");

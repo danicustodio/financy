@@ -12,7 +12,32 @@ export const CategoryRef = builder.prismaObject('Category', {
 		icon: t.exposeString('icon'),
 		description: t.exposeString('description', { nullable: true }),
 		color: t.exposeString('color'),
+		transactionCount: t.relationCount('transactions'),
 		createdAt: t.expose('createdAt', { type: 'DateTime' }),
+	}),
+});
+
+export const MostUsedCategorySummaryRef = builder.simpleObject(
+	'MostUsedCategorySummary',
+	{
+		fields: (t) => ({
+			id: t.id(),
+			title: t.string(),
+			icon: t.string(),
+			color: t.string(),
+			transactionCount: t.int(),
+		}),
+	},
+);
+
+export const CategoriesSummaryRef = builder.simpleObject('CategoriesSummary', {
+	fields: (t) => ({
+		totalCategories: t.int(),
+		totalTransactions: t.int(),
+		mostUsedCategory: t.field({
+			type: MostUsedCategorySummaryRef,
+			nullable: true,
+		}),
 	}),
 });
 
