@@ -4,15 +4,7 @@ import { IconButton } from '@/components/icon-button';
 import { IconTile } from '@/components/icon-tile';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-
-export type CategoryColor =
-	| 'blue'
-	| 'purple'
-	| 'yellow'
-	| 'pink'
-	| 'green'
-	| 'orange'
-	| 'red';
+import type { CategoryColor } from '@/types/domain/category';
 
 interface CategoryCardProps {
 	name: string;

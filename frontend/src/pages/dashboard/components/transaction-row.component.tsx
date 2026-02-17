@@ -3,7 +3,7 @@ import { AmountIndicator } from '@/components/amount-indicator';
 import { IconTile } from '@/components/icon-tile';
 import { Badge, type BadgeVariants } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import type { TransactionType } from '@/types/transaction';
+import type { TransactionType } from '@/types/domain/transaction';
 
 interface TransactionRowProps {
 	description: string;

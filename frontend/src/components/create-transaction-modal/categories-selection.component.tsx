@@ -1,4 +1,5 @@
 import { CheckIcon, ChevronDown } from 'lucide-react';
+import type { Category } from '@/types/domain/category';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -6,13 +7,8 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
-interface CategoryOption {
-	id: string;
-	name: string;
-}
-
 export interface CategoriesSelectionProps {
-	categories: CategoryOption[];
+	categories: Pick<Category, 'id' | 'name'>[];
 	selectedCategoryId?: string;
 	isLoading?: boolean;
 	errorMessage?: string;

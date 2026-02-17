@@ -2,23 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { SIGN_UP_MUTATION } from '@/graphql';
 import { publicGraphqlRequest } from '@/graphql/graphql-client';
 import { useAuthStore } from '@/stores/authStore';
-
-interface SignUpInput {
-	name: string;
-	email: string;
-	password: string;
-}
-
-interface SignUpResponse {
-	signUp: {
-		token: string;
-		user: {
-			id: string;
-			email: string;
-			name: string;
-		};
-	};
-}
+import type { SignUpInput, SignUpResponse } from '@/types/api/operations';
 
 export function useSignUpMutation() {
 	return useMutation({

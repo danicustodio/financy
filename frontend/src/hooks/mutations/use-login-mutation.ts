@@ -2,29 +2,14 @@ import { useMutation } from '@tanstack/react-query';
 import { LOGIN_MUTATION } from '@/graphql';
 import { publicGraphqlRequest } from '@/graphql/graphql-client';
 import { useAuthStore } from '@/stores/authStore';
-
-interface LoginInput {
-	email: string;
-	password: string;
-}
-
-interface LoginResponse {
-	login: {
-		token: string;
-		user: {
-			id: string;
-			email: string;
-			name: string;
-		};
-	};
-}
+import type { LoginResponse, SignInInput } from '@/types/api/operations';
 
 export function useLoginMutation() {
 	return useMutation({
-		mutationFn: async (input: LoginInput) => {
+		mutationFn: async (input: SignInInput) => {
 			const data = await publicGraphqlRequest<
 				LoginResponse,
-				{ input: LoginInput }
+				{ input: SignInInput }
 			>(LOGIN_MUTATION, { input })();
 
 			return data.login;

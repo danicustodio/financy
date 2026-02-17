@@ -1,21 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { DASHBOARD_SUMMARY_QUERY } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
-
-interface DashboardSummaryData {
-	totalBalance: number;
-	monthlyIncome: number;
-	monthlyExpense: number;
-}
-
-interface DashboardSummaryResponse {
-	dashboardSummary: DashboardSummaryData;
-}
-
-interface DashboardSummaryVariables {
-	month: number;
-	year: number;
-}
+import type {
+	DashboardSummaryResponse,
+	DashboardSummaryVariables,
+} from '@/types/api/operations';
 
 export const DASHBOARD_SUMMARY_QUERY_KEY = ['dashboardSummary'] as const;
 

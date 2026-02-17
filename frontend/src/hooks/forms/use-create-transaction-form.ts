@@ -1,9 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { TRANSACTION_TYPES } from '@/constants/transaction';
 import { parseAmount } from '@/mappers/amount.mapper';
 import { mapCreateTransactionError } from '@/mappers/create-transaction.mapper';
+import { toCreateTransactionInput } from '@/mappers/form-to-api/transaction.form-to-api.mapper';
+import type { CreateTransactionFormData } from '@/types/forms/transactions';
 import { useCreateTransactionMutation } from '../mutations/use-create-transaction-mutation';
 
 export const createTransactionSchema = z.object({
@@ -22,22 +25,8 @@ export const createTransactionSchema = z.object({
 			return !Number.isNaN(num) && num > 0;
 		}, 'Valor deve ser positivo'),
 	categoryId: z.string().min(1, 'Categoria é obrigatória'),
-	type: z.enum(['expense', 'income']),
+	type: z.enum(TRANSACTION_TYPES),
 });
-
-export type CreateTransactionFormData = z.infer<typeof createTransactionSchema>;
-
-export interface CategoryOption {
-	id: string;
-	name: string;
-	color: string;
-}
-
-export interface CreateTransactionResponse {
-	createTransaction: {
-		id: string;
-	};
-}
 
 export function useCreateTransactionForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
@@ -54,13 +43,9 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 		setFormError(null);
 
 		try {
-			await createTransactionMutation.mutateAsync({
-				description: data.description,
-				amount: parseAmount(data.amount),
-				type: data.type,
-				date: new Date(data.date).toISOString(),
-				categoryId: data.categoryId,
-			});
+			await createTransactionMutation.mutateAsync(
+				toCreateTransactionInput(data),
+			);
 
 			onSuccess?.();
 		} catch (error) {

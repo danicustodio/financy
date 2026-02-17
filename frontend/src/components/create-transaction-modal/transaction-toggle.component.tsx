@@ -1,4 +1,5 @@
 import { CircleArrowDown, CircleArrowUp } from 'lucide-react';
+import type { TransactionType } from '@/types/domain/transaction';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import {
 	transactionTypeGroupVariants,
@@ -6,8 +7,8 @@ import {
 } from './create-transaction-modal.variants';
 
 export interface TransactionToggleProps {
-	value: 'expense' | 'income';
-	onChange: (value: 'expense' | 'income') => void;
+	value: TransactionType;
+	onChange: (value: TransactionType) => void;
 }
 
 export const TransactionToggle = ({
@@ -19,8 +20,8 @@ export const TransactionToggle = ({
 			type="single"
 			value={value}
 			onValueChange={(nextValue) => {
-				if (nextValue) {
-					onChange(nextValue as 'expense' | 'income');
+				if (nextValue === 'expense' || nextValue === 'income') {
+					onChange(nextValue);
 				}
 			}}
 			spacing={1}

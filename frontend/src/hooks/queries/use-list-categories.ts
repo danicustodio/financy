@@ -1,18 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { LIST_CATEGORIES_QUERY } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
-
-export interface ListedCategory {
-	id: string;
-	name: string;
-	icon: string;
-	description: string | null;
-	color: string;
-}
-
-interface ListCategoriesResponse {
-	categories: ListedCategory[];
-}
+import { mapApiCategoryToDomain } from '@/mappers/api-to-domain/category.api-to-domain.mapper';
+import type { ListCategoriesResponse } from '@/types/api/operations';
 
 export const LIST_CATEGORIES_QUERY_KEY = ['categories'] as const;
 
@@ -22,6 +12,6 @@ export function useListCategories() {
 		queryFn: authGraphqlRequest<ListCategoriesResponse, undefined>(
 			LIST_CATEGORIES_QUERY,
 		),
-		select: (data) => data.categories,
+		select: (data) => data.categories.map(mapApiCategoryToDomain),
 	});
 }

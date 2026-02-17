@@ -1,9 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { mapSignUpError } from '@/mappers/sign-up.mapper';
+import type { SignUpInput } from '@/types/api/operations';
 import { useSignUpMutation } from '../mutations/use-sign-up-mutation';
 
 export const signUpSchema = z.object({
@@ -12,7 +13,7 @@ export const signUpSchema = z.object({
 	password: z.string().min(8, 'Senha deve ter no mínimo 8 caracteres'),
 });
 
-export type SignUpFormData = z.infer<typeof signUpSchema>;
+export type SignUpFormData = SignUpInput;
 
 export function useSignUpForm() {
 	const navigate = useNavigate();

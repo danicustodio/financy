@@ -1,20 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CREATE_CATEGORY_MUTATION } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
+import type {
+	CreateCategoryInput,
+	CreateCategoryResponse,
+} from '@/types/api/operations';
 import { LIST_CATEGORIES_QUERY_KEY } from '../queries/use-list-categories';
-
-interface CreateCategoryInput {
-	name: string;
-	description: string;
-	icon: string;
-	color: string;
-}
-
-interface CreateCategoryResponse {
-	createCategory: {
-		id: string;
-	};
-}
 
 export function useCreateCategoryMutation() {
 	const queryClient = useQueryClient();

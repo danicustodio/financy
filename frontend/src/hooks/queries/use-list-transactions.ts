@@ -1,25 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { LIST_TRANSACTIONS_QUERY } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
-import type { TransactionType } from '@/types/transaction';
-
-export interface ListedTransaction {
-	id: string;
-	description: string;
-	amount: number;
-	type: TransactionType;
-	date: string;
-	category: {
-		id: string;
-		name: string;
-		icon: string;
-		color: string;
-	};
-}
-
-interface ListTransactionsResponse {
-	transactions: ListedTransaction[];
-}
+import { mapApiTransactionToDomain } from '@/mappers/api-to-domain/transaction.api-to-domain.mapper';
+import type { ListTransactionsResponse } from '@/types/api/operations';
 
 export const LIST_TRANSACTIONS_QUERY_KEY = ['transactions'] as const;
 
@@ -29,6 +12,6 @@ export function useListTransactions() {
 		queryFn: authGraphqlRequest<ListTransactionsResponse, undefined>(
 			LIST_TRANSACTIONS_QUERY,
 		),
-		select: (data) => data.transactions,
+		select: (data) => data.transactions.map(mapApiTransactionToDomain),
 	});
 }

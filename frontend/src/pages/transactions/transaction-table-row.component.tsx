@@ -4,10 +4,10 @@ import { IconButton } from '@/components/icon-button';
 import { Tag } from '@/components/tag';
 import { TypeTag } from '@/components/type-tag';
 import { TableCell, TableRow } from '@/components/ui/table';
-import type { TransactionData } from './transactions.types';
+import type { TransactionTableView } from '@/types/view/transactions';
 
 interface TransactionTableRowProps {
-	transaction: TransactionData;
+	transaction: TransactionTableView;
 	onEdit?: (id: string) => void;
 	onDelete?: (id: string) => void;
 }
@@ -29,7 +29,6 @@ export const TransactionTableRow = ({
 	} = transaction;
 	return (
 		<TableRow className="border-financy-gray-200">
-			{/* Description Cell */}
 			<TableCell className="h-[72px] px-6 py-0">
 				<div className="flex items-center gap-4">
 					<div
@@ -42,27 +41,22 @@ export const TransactionTableRow = ({
 				</div>
 			</TableCell>
 
-			{/* Date Cell */}
 			<TableCell className="h-[72px] w-28 px-6 text-center">
 				<span className="text-financy-gray-600 text-sm">{date}</span>
 			</TableCell>
 
-			{/* Category Cell */}
 			<TableCell className="h-[72px] w-[200px] px-6 text-center">
 				<Tag color={categoryColor}>{category}</Tag>
 			</TableCell>
 
-			{/* Type Cell */}
 			<TableCell className="h-[72px] w-[136px] px-6 text-center">
 				<TypeTag type={type} />
 			</TableCell>
 
-			{/* Amount Cell */}
 			<TableCell className="h-[72px] w-[200px] px-6 text-right">
 				<AmountIndicator amount={amount} type={type} showIcon={false} />
 			</TableCell>
 
-			{/* Actions Cell */}
 			<TableCell className="h-[72px] w-[120px] px-6">
 				<div className="flex items-center justify-center gap-2">
 					<IconButton

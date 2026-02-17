@@ -1,10 +1,8 @@
 import { XIcon } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
-import {
-	type CreateCategoryFormData,
-	useCreateCategoryForm,
-} from '@/hooks/forms/use-create-category-form';
+import { useCreateCategoryForm } from '@/hooks/forms/use-create-category-form';
 import { cn } from '@/lib/utils';
+import type { CreateCategoryFormData } from '@/types/forms/categories';
 import { Input } from '../input';
 import { LabelButton } from '../label-button';
 import {
@@ -89,15 +87,19 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 									key={name}
 									type="button"
 									className={cn(
-										'flex h-[42px] w-[42px] items-center justify-center rounded-lg border transition-colors',
+										'flex h-10.5 w-10.5 cursor-pointer items-center justify-center rounded-lg border transition-colors',
 										selectedIcon === name
 											? 'border-financy-brand-base bg-financy-gray-100'
 											: 'border-financy-gray-300 hover:bg-financy-gray-100',
 									)}
 									onClick={() =>
-										form.setValue('icon', name as CreateCategoryFormData['icon'], {
-											shouldDirty: true,
-										})
+										form.setValue(
+											'icon',
+											name as CreateCategoryFormData['icon'],
+											{
+												shouldDirty: true,
+											},
+										)
 									}
 								>
 									<Icon className="h-5 w-5 text-financy-gray-700" />
@@ -106,7 +108,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 						</div>
 					</div>
 
-					<div className="flex flex-col gap-2">
+					<div className="mb-2 flex flex-col gap-2">
 						<span className="font-medium text-financy-gray-700 text-sm">
 							Cor
 						</span>
@@ -116,7 +118,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 									key={name}
 									type="button"
 									className={cn(
-										'flex flex-1 items-center justify-center rounded-lg border p-[5px] transition-colors',
+										'flex flex-1 cursor-pointer items-center justify-center rounded-lg border p-1.25 transition-colors',
 										selectedColor === name
 											? 'border-financy-brand-base bg-financy-gray-100'
 											: 'border-financy-gray-300',
@@ -140,7 +142,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 						type="submit"
 						loading={isSubmitting}
 					>
-						Criar categoria
+						Salvar
 					</LabelButton>
 				</form>
 			</DialogContent>

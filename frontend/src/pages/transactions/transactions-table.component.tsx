@@ -6,11 +6,11 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import type { TransactionTableView } from '@/types/view/transactions';
 import { TransactionTableRow } from './transaction-table-row.component';
-import type { TransactionData } from './transactions.types';
 
 interface TransactionsTableProps {
-	transactions: TransactionData[];
+	transactions: TransactionTableView[];
 	currentPage: number;
 	totalPages: number;
 	totalResults: number;

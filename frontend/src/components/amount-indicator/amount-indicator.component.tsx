@@ -1,7 +1,7 @@
 import { CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { presentAmount } from '@/mappers/amount.mapper';
-import type { TransactionType } from '@/types/transaction';
+import type { TransactionType } from '@/types/domain/transaction';
 
 interface AmountIndicatorProps {
 	amount: number;

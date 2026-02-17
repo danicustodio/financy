@@ -1,9 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod/v4';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { mapSignInError } from '@/mappers/sign-in.mapper';
+import type { SignInInput } from '@/types/api/operations';
 import { useLoginMutation } from '../mutations/use-login-mutation';
 
 export const signInSchema = z.object({
@@ -11,7 +12,7 @@ export const signInSchema = z.object({
 	password: z.string().min(1, 'Senha é obrigatória'),
 });
 
-export type SignInFormData = z.infer<typeof signInSchema>;
+export type SignInFormData = SignInInput;
 
 export function useSignInForm() {
 	const navigate = useNavigate();

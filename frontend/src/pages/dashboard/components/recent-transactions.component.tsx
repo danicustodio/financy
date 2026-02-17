@@ -1,24 +1,9 @@
-import type { LucideIcon } from 'lucide-react';
 import { Plus } from 'lucide-react';
 import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import { SectionCard } from '@/components/section-card';
-import type { BadgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { TransactionType } from '@/types/transaction';
+import type { RecentTransactionItem } from '@/types/view/dashboard';
 import { TransactionRow } from './transaction-row.component';
-
-interface RecentTransactionItem {
-	id: string;
-	description: string;
-	date: string;
-	category: {
-		name: string;
-		icon: LucideIcon;
-		color: NonNullable<BadgeVariants['color']>;
-	};
-	amount: number;
-	type: TransactionType;
-}
 
 interface RecentTransactionsProps {
 	transactions: RecentTransactionItem[];
