@@ -39,7 +39,7 @@ export const CreateTransactionModal = ({
 	const descriptionError = form.formState.errors.description?.message;
 	const dateError = form.formState.errors.date?.message;
 	const amountError = form.formState.errors.amount?.message;
-	const categoryError = form.formState.errors.categoryId?.message;
+	const categoryError = form.formState.errors.categoryId?.message ?? formError;
 
 	const handleOpenChange = (open: boolean) => {
 		setIsOpen(open);
@@ -141,7 +141,7 @@ export const CreateTransactionModal = ({
 						categories={categories}
 						selectedCategoryId={selectedCategoryId}
 						isLoading={isLoadingCategories}
-						errorMessage={categoryError}
+						errorMessage={categoryError ?? undefined}
 						onSelect={(categoryId) =>
 							form.setValue('categoryId', categoryId, {
 								shouldDirty: true,
@@ -149,12 +149,6 @@ export const CreateTransactionModal = ({
 							})
 						}
 					/>
-
-					{formError && (
-						<div className="rounded-lg bg-red-50 px-4 py-3 text-red-700 text-sm">
-							{formError}
-						</div>
-					)}
 
 					<LabelButton
 						variant="default"

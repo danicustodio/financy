@@ -7,7 +7,6 @@ import {
 	TransactionsTable,
 } from '@/components/transactions';
 import {
-	formatAmountFromCents,
 	formatDate,
 	iconBackgroundColor,
 	toCategoryColor,
@@ -44,7 +43,7 @@ export function Transactions() {
 				date: formatDate(transaction.date),
 				category: transaction.category.name,
 				categoryColor: toCategoryColor(transaction.category.color),
-				amount: formatAmountFromCents(transaction.amountCents),
+				amount: transaction.amount,
 				type: transaction.type,
 				iconBgColor: iconBackgroundColor(transaction.category.color),
 			})),

@@ -1,8 +1,9 @@
 import { CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { presentAmount } from '@/mappers/amount.mapper';
 
 interface AmountIndicatorProps {
-	amount: string;
+	amount: number;
 	type: 'income' | 'expense';
 	className?: string;
 }
@@ -18,7 +19,7 @@ export const AmountIndicator = ({
 	return (
 		<div className={cn('inline-flex items-center gap-2', className)}>
 			<span className="font-semibold text-financy-gray-800 text-sm">
-				{isIncome ? '+' : '-'} {amount}
+				{isIncome ? '+' : '-'} {presentAmount(amount)}
 			</span>
 			<Icon
 				className={cn(

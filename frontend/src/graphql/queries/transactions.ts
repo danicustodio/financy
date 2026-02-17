@@ -3,7 +3,7 @@ export const LIST_TRANSACTIONS_QUERY = `
     transactions {
       id
       description
-      amountCents
+      amount
       type
       date
       category {

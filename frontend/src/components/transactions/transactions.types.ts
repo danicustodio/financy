@@ -6,7 +6,7 @@ export interface TransactionData {
 	date: string;
 	category: string;
 	categoryColor: NonNullable<TagVariants['color']>;
-	amount: string;
+	amount: number;
 	type: 'income' | 'expense';
 	iconBgColor: string;
 }

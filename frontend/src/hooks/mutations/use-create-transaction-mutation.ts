@@ -7,7 +7,7 @@ import { LIST_TRANSACTIONS_QUERY_KEY } from '../queries/use-list-transactions';
 
 interface CreateTransactionInput {
 	description: string;
-	amountCents: number;
+	amount: number;
 	type: 'expense' | 'income';
 	date: string;
 	categoryId: string;

@@ -1,11 +1,8 @@
 import { CircleArrowDown, CircleArrowUp, Wallet } from 'lucide-react';
 import { useMemo } from 'react';
+import { presentAmount } from '@/mappers/amount.mapper';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
-import {
-	formatAmountFromCents,
-	formatDate,
-	toCategoryColor,
-} from '@/mappers/listing.mapper';
+import { formatDate, toCategoryColor } from '@/mappers/listing.mapper';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 import { useDashboardSummary } from '@/hooks/queries/use-dashboard-summary';
 import { CategoriesSection } from './components/categories-section.component';
@@ -25,7 +22,7 @@ export function Dashboard() {
 				date: formatDate(transaction.date),
 				category: transaction.category.name,
 				categoryColor: toCategoryColor(transaction.category.color),
-				amount: formatAmountFromCents(transaction.amountCents),
+				amount: transaction.amount,
 				type: transaction.type,
 			})),
 		[transactions],
@@ -33,12 +30,12 @@ export function Dashboard() {
 
 	const categoriesSectionData = useMemo(() => {
 		const totalsByCategoryId = transactions.reduce<
-			Record<string, { amountCents: number; itemCount: number }>
+			Record<string, { amount: number; itemCount: number }>
 		>((acc, transaction) => {
 			const categoryId = transaction.category.id;
-			const current = acc[categoryId] ?? { amountCents: 0, itemCount: 0 };
+			const current = acc[categoryId] ?? { amount: 0, itemCount: 0 };
 			acc[categoryId] = {
-				amountCents: current.amountCents + transaction.amountCents,
+				amount: current.amount + transaction.amount,
 				itemCount: current.itemCount + 1,
 			};
 			return acc;
@@ -50,9 +47,7 @@ export function Dashboard() {
 				category: category.name,
 				categoryColor: toCategoryColor(category.color),
 				itemCount: totalsByCategoryId[category.id]?.itemCount ?? 0,
-				amount: formatAmountFromCents(
-					totalsByCategoryId[category.id]?.amountCents ?? 0,
-				),
+				amount: totalsByCategoryId[category.id]?.amount ?? 0,
 			}))
 			.sort((first, second) => second.itemCount - first.itemCount)
 			.slice(0, 5);
@@ -74,19 +69,19 @@ export function Dashboard() {
 				<SummaryCard
 					icon={Wallet}
 					label="Saldo total"
-					value={formatAmountFromCents(summary?.totalBalanceCents ?? 0)}
+					value={presentAmount(summary?.totalBalance ?? 0)}
 					accentClassName="text-financy-purple-base"
 				/>
 				<SummaryCard
 					icon={CircleArrowUp}
 					label="Receitas do mês"
-					value={formatAmountFromCents(summary?.monthlyIncomeCents ?? 0)}
+					value={presentAmount(summary?.monthlyIncome ?? 0)}
 					accentClassName="text-financy-brand-base"
 				/>
 				<SummaryCard
 					icon={CircleArrowDown}
 					label="Despesas do mês"
-					value={formatAmountFromCents(summary?.monthlyExpenseCents ?? 0)}
+					value={presentAmount(summary?.monthlyExpense ?? 0)}
 					accentClassName="text-financy-red-base"
 				/>
 			</div>

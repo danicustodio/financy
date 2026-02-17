@@ -3,9 +3,9 @@ import { DASHBOARD_SUMMARY_QUERY } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
 
 interface DashboardSummaryData {
-	totalBalanceCents: number;
-	monthlyIncomeCents: number;
-	monthlyExpenseCents: number;
+	totalBalance: number;
+	monthlyIncome: number;
+	monthlyExpense: number;
 }
 
 interface DashboardSummaryResponse {

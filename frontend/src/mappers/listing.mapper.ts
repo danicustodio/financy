@@ -12,11 +12,6 @@ const iconBackgroundByColor: Record<CategoryColor, string> = {
 	red: '#FEE2E2',
 };
 
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-	style: 'currency',
-	currency: 'BRL',
-});
-
 const shortDateFormatter = new Intl.DateTimeFormat('pt-BR', {
 	day: '2-digit',
 	month: '2-digit',
@@ -36,10 +31,6 @@ export function toCategoryColor(color: string): CategoryColor {
 		default:
 			return categoryColorFallback;
 	}
-}
-
-export function formatAmountFromCents(amountCents: number): string {
-	return currencyFormatter.format(amountCents / 100);
 }
 
 export function formatDate(value: string): string {

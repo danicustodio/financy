@@ -2,6 +2,7 @@ import { SquarePen, Trash } from 'lucide-react';
 import { IconButton } from '@/components/icon-button';
 import { Tag } from '@/components/tag';
 import { TypeTag } from '@/components/type-tag';
+import { presentAmount } from '@/mappers/amount.mapper';
 import type { TransactionData } from './transactions.types';
 
 interface TransactionTableRowProps {
@@ -58,7 +59,7 @@ export const TransactionTableRow = ({
 			{/* Amount Cell */}
 			<div className="flex h-[72px] w-[200px] items-center justify-end px-6">
 				<span className="font-semibold text-financy-gray-800 text-sm">
-					{isIncome ? '+' : '-'} {amount}
+					{isIncome ? '+' : '-'} {presentAmount(amount)}
 				</span>
 			</div>
 

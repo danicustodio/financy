@@ -10,7 +10,7 @@ interface RecentTransactionItem {
 	date: string;
 	category: string;
 	categoryColor: NonNullable<TagVariants['color']>;
-	amount: string;
+	amount: number;
 	type: 'income' | 'expense';
 }
 

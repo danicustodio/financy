@@ -1,4 +1,18 @@
-export function parseAmountToCents(value: string): number {
+const amountFormatter = new Intl.NumberFormat('pt-BR', {
+	style: 'currency',
+	currency: 'BRL',
+});
+
+export function presentAmount(amount: number): string {
+	return amountFormatter.format(amount / 100);
+}
+
+export function parseAmount(value: string): number {
 	const cleaned = value.replace(/\./g, '').replace(',', '.');
-	return Math.round(Number.parseFloat(cleaned) * 100);
+	const parsedValue = Number.parseFloat(cleaned);
+	if (Number.isNaN(parsedValue)) {
+		return Number.NaN;
+	}
+
+	return Math.round(parsedValue * 100);
 }

@@ -5,7 +5,7 @@ import { authGraphqlRequest } from '@/graphql/graphql-client';
 export interface ListedTransaction {
 	id: string;
 	description: string;
-	amountCents: number;
+	amount: number;
 	type: 'income' | 'expense';
 	date: string;
 	category: {

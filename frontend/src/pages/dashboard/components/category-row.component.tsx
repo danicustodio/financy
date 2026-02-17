@@ -1,11 +1,12 @@
 import type { TagVariants } from '@/components/tag';
 import { Tag } from '@/components/tag';
+import { presentAmount } from '@/mappers/amount.mapper';
 
 interface CategoryRowProps {
 	category: string;
 	categoryColor: NonNullable<TagVariants['color']>;
 	itemCount: number;
-	amount: string;
+	amount: number;
 }
 
 export const CategoryRow = ({
@@ -21,7 +22,7 @@ export const CategoryRow = ({
 				{itemCount} {itemCount === 1 ? 'item' : 'itens'}
 			</span>
 			<span className="w-22 text-right font-semibold text-financy-gray-800 text-sm">
-				{amount}
+				{presentAmount(amount)}
 			</span>
 		</div>
 	);

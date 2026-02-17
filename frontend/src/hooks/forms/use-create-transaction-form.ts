@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { type RegisterOptions, useForm } from 'react-hook-form';
-import { parseAmountToCents } from '@/mappers/amount.mapper';
+import { parseAmount } from '@/mappers/amount.mapper';
 import { mapCreateTransactionError } from '@/mappers/create-transaction.mapper';
 import { useCreateTransactionMutation } from '../mutations/use-create-transaction-mutation';
 
@@ -43,7 +43,7 @@ export const createTransactionFormRules: {
 	amount: {
 		required: 'Valor é obrigatório',
 		validate: (value) => {
-			const num = parseAmountToCents(value);
+			const num = parseAmount(value);
 			if (Number.isNaN(num) || num <= 0) {
 				return 'Valor deve ser positivo';
 			}
@@ -74,7 +74,7 @@ export function useCreateTransactionForm(onSuccess?: () => void) {
 		try {
 			await createTransactionMutation.mutateAsync({
 				description: data.description,
-				amountCents: parseAmountToCents(data.amount),
+				amount: parseAmount(data.amount),
 				type: data.type,
 				date: new Date(data.date).toISOString(),
 				categoryId: data.categoryId,

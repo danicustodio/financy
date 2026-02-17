@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const inputFieldVariants = cva(
-	'flex-1 bg-transparent placeholder-financy-gray-400 focus-within:outline-none',
+	'min-w-0 flex-1 bg-transparent placeholder-financy-gray-400 focus-within:outline-none',
 	{
 		variants: {
 			state: {

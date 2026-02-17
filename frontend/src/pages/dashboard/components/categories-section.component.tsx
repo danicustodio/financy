@@ -8,7 +8,7 @@ interface CategorySectionItem {
 	category: string;
 	categoryColor: NonNullable<TagVariants['color']>;
 	itemCount: number;
-	amount: string;
+	amount: number;
 }
 
 interface CategoriesSectionProps {
