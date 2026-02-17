@@ -1,13 +1,13 @@
 import { CircleArrowDown, CircleArrowUp, Wallet } from 'lucide-react';
 import { useMemo } from 'react';
-import { useListCategories } from '@/features/categories/list-categories';
-import { useDashboardSummary } from '@/features/dashboard/dashboard-summary';
+import { useListCategories } from '@/hooks/queries/use-list-categories';
 import {
 	formatAmountFromCents,
 	formatDate,
 	toCategoryColor,
-} from '@/features/listings/listing-presenter';
-import { useListTransactions } from '@/features/transactions/list-transactions';
+} from '@/mappers/listing.mapper';
+import { useListTransactions } from '@/hooks/queries/use-list-transactions';
+import { useDashboardSummary } from '@/hooks/queries/use-dashboard-summary';
 import { CategoriesSection } from './components/categories-section.component';
 import { RecentTransactions } from './components/recent-transactions.component';
 import { SummaryCard } from './components/summary-card.component';

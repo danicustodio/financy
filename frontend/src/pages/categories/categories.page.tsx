@@ -4,10 +4,10 @@ import { CategoryCard } from '@/components/categories';
 import { IconTile } from '@/components/icon-tile';
 import { LabelButton } from '@/components/label-button';
 import { NewCategoryModal } from '@/components/new-category-modal';
-import { useCreateCategoryForm } from '@/features/categories/create-category';
-import { useListCategories } from '@/features/categories/list-categories';
-import { toCategoryColor } from '@/features/listings/listing-presenter';
-import { useListTransactions } from '@/features/transactions/list-transactions';
+import { useCreateCategoryForm } from '@/hooks/forms/use-create-category-form';
+import { useListCategories } from '@/hooks/queries/use-list-categories';
+import { toCategoryColor } from '@/mappers/listing.mapper';
+import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 
 export function Categories() {
 	const [isModalOpen, setIsModalOpen] = useState(false);

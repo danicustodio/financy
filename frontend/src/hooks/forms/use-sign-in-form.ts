@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { type RegisterOptions, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { mapSignInError } from '../../mappers/sign-in.mapper';
+import { mapSignInError } from '@/mappers/sign-in.mapper';
 import { useLoginMutation } from '../mutations/use-login-mutation';
 
 export interface SignInFormData {

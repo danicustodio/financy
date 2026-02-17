@@ -1,5 +1,6 @@
 import { ChevronRight, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import type { TagVariants } from '@/components/tag';
 import { TransactionRow } from './transaction-row.component';
 
@@ -56,13 +57,15 @@ export const RecentTransactions = ({
 			</div>
 
 			<div className="flex items-center justify-center px-6 py-5">
-				<Link
-					to="/transactions"
-					className="flex items-center gap-1 text-financy-brand-base"
-				>
-					<Plus className="h-5 w-5" />
-					Nova transação
-				</Link>
+				<CreateTransactionModal>
+					<button
+						type="button"
+						className="flex cursor-pointer items-center gap-1 text-financy-brand-base"
+					>
+						<Plus className="h-5 w-5" />
+						Nova transação
+					</button>
+				</CreateTransactionModal>
 			</div>
 		</div>
 	);

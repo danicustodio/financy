@@ -1,5 +1,5 @@
 import type { UseFormReturn } from 'react-hook-form';
-import type { CreateCategoryFormData } from '@/features/categories/create-category';
+import type { CreateCategoryFormData } from '@/hooks/forms/create-category-form.types';
 
 export interface NewCategoryModalProps {
 	isOpen: boolean;

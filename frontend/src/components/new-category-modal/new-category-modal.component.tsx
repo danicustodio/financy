@@ -21,7 +21,7 @@ import { IconButton } from '@/components/icon-button';
 import { IconTile } from '@/components/icon-tile';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
-import { createCategoryFormRules } from '@/features/categories/create-category';
+import { createCategoryFormRules } from '@/hooks/forms/use-create-category-form';
 import { cn } from '@/lib/utils';
 import type {
 	CategoryColor,

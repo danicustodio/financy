@@ -1,7 +1,7 @@
 import { ChevronDown, Plus, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import { LabelButton } from '@/components/label-button';
-import { NewTransactionModal } from '@/components/new-transaction-modal';
 import {
 	type TransactionData,
 	TransactionsTable,
@@ -11,12 +11,8 @@ import {
 	formatDate,
 	iconBackgroundColor,
 	toCategoryColor,
-} from '@/features/listings/listing-presenter';
-import {
-	useCategories,
-	useCreateTransactionForm,
-} from '@/features/transactions/create-transaction';
-import { useListTransactions } from '@/features/transactions/list-transactions';
+} from '@/mappers/listing.mapper';
+import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 
 export function Transactions() {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -26,16 +22,7 @@ export function Transactions() {
 		setCurrentPage(page);
 	};
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const { categories } = useCategories();
 	const { data: transactions = [], isLoading } = useListTransactions();
-	const { form, formError, isSubmitting, onSubmit } = useCreateTransactionForm(
-		() => {
-			setIsModalOpen(false);
-			form.reset();
-		},
-	);
 
 	const totalResults = transactions.length;
 	const totalPages = Math.max(1, Math.ceil(totalResults / pageSize));
@@ -65,8 +52,7 @@ export function Transactions() {
 	);
 
 	return (
-		<>
-			<main className="flex flex-col gap-8 p-12">
+		<main className="flex flex-col gap-8 p-12">
 				{/* Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-0.5">
@@ -77,14 +63,15 @@ export function Transactions() {
 							Gerencie todas as suas transações financeiras
 						</p>
 					</div>
-					<LabelButton
-						variant="default"
-						size="sm"
-						icon={<Plus className="h-4 w-4" />}
-						onClick={() => setIsModalOpen(true)}
-					>
-						Nova transação
-					</LabelButton>
+					<CreateTransactionModal>
+						<LabelButton
+							variant="default"
+							size="sm"
+							icon={<Plus className="h-4 w-4" />}
+						>
+							Nova transação
+						</LabelButton>
+					</CreateTransactionModal>
 				</div>
 
 				{/* Filters Section */}
@@ -169,16 +156,5 @@ export function Transactions() {
 					/>
 				)}
 			</main>
-
-			<NewTransactionModal
-				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-				form={form}
-				categories={categories}
-				formError={formError}
-				isSubmitting={isSubmitting}
-				onSubmit={onSubmit}
-			/>
-		</>
 	);
 }
