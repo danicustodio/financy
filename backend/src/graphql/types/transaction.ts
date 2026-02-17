@@ -6,7 +6,7 @@ builder.prismaObject('Transaction', {
 	fields: (t) => ({
 		id: t.exposeID('id'),
 		description: t.exposeString('description'),
-		amountCents: t.exposeInt('amountCents'),
+		amount: t.exposeInt('amount'),
 		type: t.exposeString('type'),
 		date: t.expose('date', { type: 'DateTime' }),
 		category: t.relation('category'),
@@ -20,7 +20,7 @@ const CreateTransactionInput = builder.inputType('CreateTransactionInput', {
 			required: true,
 			validate: z.string().min(1, 'Descrição é obrigatória'),
 		}),
-		amountCents: t.int({
+		amount: t.int({
 			required: true,
 			validate: z.int().positive('Valor deve ser positivo'),
 		}),
@@ -75,7 +75,7 @@ builder.mutationFields((t) => ({
 				...query,
 				data: {
 					description: args.input.description,
-					amountCents: args.input.amountCents,
+					amount: args.input.amount,
 					type: args.input.type,
 					date: args.input.date,
 					categoryId: args.input.categoryId,

@@ -11,7 +11,7 @@ type SeedCategory = {
 
 type SeedTransaction = {
 	description: string;
-	amountCents: number;
+	amount: number;
 	type: 'income' | 'expense';
 	date: string;
 	categoryName: string;
@@ -57,28 +57,28 @@ const users = [
 		transactions: [
 			{
 				description: 'Monthly salary',
-				amountCents: 620000,
+				amount: 620000,
 				type: 'income',
 				date: '2026-02-01T09:00:00.000Z',
 				categoryName: 'Salary',
 			},
 			{
 				description: 'Apartment rent',
-				amountCents: 180000,
+				amount: 180000,
 				type: 'expense',
 				date: '2026-02-03T14:30:00.000Z',
 				categoryName: 'Housing',
 			},
 			{
 				description: 'Supermarket purchase',
-				amountCents: 42890,
+				amount: 42890,
 				type: 'expense',
 				date: '2026-02-07T18:15:00.000Z',
 				categoryName: 'Groceries',
 			},
 			{
 				description: 'Pharmacy',
-				amountCents: 11990,
+				amount: 11990,
 				type: 'expense',
 				date: '2026-02-10T12:10:00.000Z',
 				categoryName: 'Health',
@@ -112,21 +112,21 @@ const users = [
 		transactions: [
 			{
 				description: 'Client payment',
-				amountCents: 210000,
+				amount: 210000,
 				type: 'income',
 				date: '2026-02-02T10:00:00.000Z',
 				categoryName: 'Freelance',
 			},
 			{
 				description: 'Fuel refill',
-				amountCents: 27500,
+				amount: 27500,
 				type: 'expense',
 				date: '2026-02-06T08:45:00.000Z',
 				categoryName: 'Transport',
 			},
 			{
 				description: 'Cinema tickets',
-				amountCents: 4600,
+				amount: 4600,
 				type: 'expense',
 				date: '2026-02-11T20:00:00.000Z',
 				categoryName: 'Leisure',
@@ -191,7 +191,7 @@ async function seedUser(userSeed: (typeof users)[number]) {
 
 			return {
 				description: transaction.description,
-				amountCents: transaction.amountCents,
+				amount: transaction.amount,
 				type: transaction.type,
 				date: new Date(transaction.date),
 				categoryId,

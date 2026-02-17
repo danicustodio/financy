@@ -39,7 +39,9 @@
 	"packageManager": "pnpm@10.27.0",
 	"scripts": {
 		"build": "tsup",
+		"prebuild": "prisma generate",
 		"dev": "tsx watch --env-file .env src/server.ts",
+		"predev": "prisma generate",
 		"lint": "biome check --write",
 		"prisma:generate": "prisma generate",
 		"prisma:migrate": "prisma migrate dev",

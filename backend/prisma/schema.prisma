@@ -41,7 +41,7 @@ model Category {
 model Transaction {
   id          String   @id @default(uuid())
   description String
-  amountCents Int
+  amount      Int
   type        String
   date        DateTime
   categoryId  String

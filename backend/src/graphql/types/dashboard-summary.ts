@@ -3,9 +3,9 @@ import { unauthenticatedError } from '../errors';
 
 const DashboardSummary = builder.simpleObject('DashboardSummary', {
 	fields: (t) => ({
-		totalBalanceCents: t.int(),
-		monthlyIncomeCents: t.int(),
-		monthlyExpenseCents: t.int(),
+		totalBalance: t.int(),
+		monthlyIncome: t.int(),
+		monthlyExpense: t.int(),
 	}),
 });
 
@@ -32,11 +32,11 @@ builder.queryFields((t) => ({
 				await Promise.all([
 					ctx.prisma.transaction.aggregate({
 						where: { userId, type: 'income' },
-						_sum: { amountCents: true },
+						_sum: { amount: true },
 					}),
 					ctx.prisma.transaction.aggregate({
 						where: { userId, type: 'expense' },
-						_sum: { amountCents: true },
+						_sum: { amount: true },
 					}),
 					ctx.prisma.transaction.aggregate({
 						where: {
@@ -44,7 +44,7 @@ builder.queryFields((t) => ({
 							type: 'income',
 							date: { gte: startOfMonth, lt: startOfNextMonth },
 						},
-						_sum: { amountCents: true },
+						_sum: { amount: true },
 					}),
 					ctx.prisma.transaction.aggregate({
 						where: {
@@ -52,16 +52,15 @@ builder.queryFields((t) => ({
 							type: 'expense',
 							date: { gte: startOfMonth, lt: startOfNextMonth },
 						},
-						_sum: { amountCents: true },
+						_sum: { amount: true },
 					}),
 				]);
 
 			return {
-				totalBalanceCents:
-					(totalIncome._sum.amountCents ?? 0) -
-					(totalExpense._sum.amountCents ?? 0),
-				monthlyIncomeCents: monthlyIncome._sum.amountCents ?? 0,
-				monthlyExpenseCents: monthlyExpense._sum.amountCents ?? 0,
+				totalBalance:
+					(totalIncome._sum.amount ?? 0) - (totalExpense._sum.amount ?? 0),
+				monthlyIncome: monthlyIncome._sum.amount ?? 0,
+				monthlyExpense: monthlyExpense._sum.amount ?? 0,
 			};
 		},
 	}),

@@ -1,7 +1,19 @@
 -- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "Category" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
+    "icon" TEXT NOT NULL,
+    "description" TEXT,
     "color" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -13,7 +25,7 @@ CREATE TABLE "Category" (
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "description" TEXT NOT NULL,
-    "amountCents" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
     "type" TEXT NOT NULL,
     "date" DATETIME NOT NULL,
     "categoryId" TEXT NOT NULL,
@@ -23,6 +35,9 @@ CREATE TABLE "Transaction" (
     CONSTRAINT "Transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_name_userId_key" ON "Category"("name", "userId");
