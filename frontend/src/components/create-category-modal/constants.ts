@@ -1,0 +1,48 @@
+import {
+	BaggageClaim,
+	BookOpen,
+	BriefcaseBusiness,
+	CarFront,
+	Dumbbell,
+	Gift,
+	HeartPulse,
+	House,
+	type LucideIcon,
+	Mailbox,
+	PawPrint,
+	PiggyBank,
+	ReceiptText,
+	ShoppingCart,
+	Ticket,
+	Utensils,
+	Wrench,
+} from 'lucide-react';
+
+export const CATEGORY_ICONS: { name: string; icon: LucideIcon }[] = [
+	{ name: 'briefcase-business', icon: BriefcaseBusiness },
+	{ name: 'car-front', icon: CarFront },
+	{ name: 'heart-pulse', icon: HeartPulse },
+	{ name: 'piggy-bank', icon: PiggyBank },
+	{ name: 'shopping-cart', icon: ShoppingCart },
+	{ name: 'ticket', icon: Ticket },
+	{ name: 'wrench', icon: Wrench },
+	{ name: 'utensils', icon: Utensils },
+	{ name: 'paw-print', icon: PawPrint },
+	{ name: 'house', icon: House },
+	{ name: 'gift', icon: Gift },
+	{ name: 'dumbbell', icon: Dumbbell },
+	{ name: 'book-open', icon: BookOpen },
+	{ name: 'baggage-claim', icon: BaggageClaim },
+	{ name: 'mailbox', icon: Mailbox },
+	{ name: 'receipt-text', icon: ReceiptText },
+];
+
+export const CATEGORY_COLORS = [
+	{ name: 'green', value: 'bg-financy-green-base' },
+	{ name: 'blue', value: 'bg-financy-blue-base' },
+	{ name: 'purple', value: 'bg-financy-purple-base' },
+	{ name: 'pink', value: 'bg-financy-pink-base' },
+	{ name: 'red', value: 'bg-financy-red-base' },
+	{ name: 'orange', value: 'bg-financy-orange-base' },
+	{ name: 'yellow', value: 'bg-financy-yellow-base' },
+] as const;

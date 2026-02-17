@@ -46,8 +46,8 @@ export function useCreateCategoryForm(onSuccess?: () => void) {
 		defaultValues: {
 			name: '',
 			description: '',
-			icon: 'utensils',
-			color: 'blue',
+			icon: 'briefcase-business',
+			color: 'green',
 		},
 	});
 
