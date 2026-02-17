@@ -2,10 +2,10 @@ import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
 import ValidationPlugin from '@pothos/plugin-validation';
-import { env } from '../env';
+import { env } from '../app/config/env';
+import type { Context } from '../app/context';
 import type PrismaTypes from '../generated/prisma-pothos-types';
 import { getDatamodel } from '../generated/prisma-pothos-types';
-import type { Context } from './context';
 
 export const builder = new SchemaBuilder<{
 	Context: Context;

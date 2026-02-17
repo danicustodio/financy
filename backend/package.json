@@ -25,7 +25,8 @@
 		"prisma": "^7.4.0",
 		"tsup": "^8.5.1",
 		"tsx": "^4.21.0",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.0"
 	},
 	"keywords": [
 		"graphql",
@@ -43,6 +44,7 @@
 		"dev": "tsx watch --env-file .env src/server.ts",
 		"predev": "prisma generate",
 		"lint": "biome check --write",
+		"lint:check": "biome check",
 		"prisma:generate": "prisma generate",
 		"prisma:migrate": "prisma migrate dev",
 		"prisma:studio": "prisma studio",
@@ -50,6 +52,7 @@
 		"prisma:seed:direct": "tsx prisma/seed.ts",
 		"prisma:reset": "prisma migrate reset --force && pnpm prisma:seed",
 		"start": "node dist/server.js",
+		"test": "vitest run",
 		"typecheck": "tsc"
 	},
 	"prisma": {

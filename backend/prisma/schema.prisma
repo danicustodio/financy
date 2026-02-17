@@ -13,27 +13,32 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
+  id           String @id @default(uuid())
   name         String
-  email        String        @unique
+  email        String @unique
   passwordHash String
+
   categories   Category[]
   transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id           String        @id @default(uuid())
-  name         String
-  icon         String
-  description  String?
-  color        String
-  userId       String
-  user         User          @relation(fields: [userId], references: [id])
+  id          String  @id @default(uuid())
+  name        String
+  icon        String
+  description String?
+  color       String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
   transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([name, userId])
 }
@@ -44,10 +49,13 @@ model Transaction {
   amount      Int
   type        String
   date        DateTime
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,11 +1,18 @@
 import { builder } from './builder';
 
-// Import all type definitions (side-effect imports)
-import './types/auth';
-import './types/category';
-import './types/dashboard-summary';
-import './types/transaction';
-import './types/user';
+import '../modules/users/users.schema';
+import '../modules/users/users.resolver';
 
-// Build and export the executable schema
+import '../modules/auth/auth.schema';
+import '../modules/auth/auth.resolver';
+
+import '../modules/categories/categories.schema';
+import '../modules/categories/categories.resolver';
+
+import '../modules/transactions/transactions.schema';
+import '../modules/transactions/transactions.resolver';
+
+import '../modules/dashboard/dashboard.schema';
+import '../modules/dashboard/dashboard.resolver';
+
 export const schema = builder.toSchema();
