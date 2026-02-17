@@ -1,16 +1,31 @@
 import { useState } from 'react';
-import { type RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod/v4';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { parseAmount } from '@/mappers/amount.mapper';
 import { mapCreateTransactionError } from '@/mappers/create-transaction.mapper';
 import { useCreateTransactionMutation } from '../mutations/use-create-transaction-mutation';
 
-export interface CreateTransactionFormData {
-	description: string;
-	date: string;
-	amount: string;
-	categoryId: string;
-	type: 'expense' | 'income';
-}
+export const createTransactionSchema = z.object({
+	description: z.string().min(1, 'Descrição é obrigatória'),
+	date: z
+		.string()
+		.min(1, 'Data é obrigatória')
+		.refine((value) => !Number.isNaN(new Date(value).getTime()), {
+			message: 'Data inválida',
+		}),
+	amount: z
+		.string()
+		.min(1, 'Valor é obrigatório')
+		.refine((value) => {
+			const num = parseAmount(value);
+			return !Number.isNaN(num) && num > 0;
+		}, 'Valor deve ser positivo'),
+	categoryId: z.string().min(1, 'Categoria é obrigatória'),
+	type: z.enum(['expense', 'income']),
+});
+
+export type CreateTransactionFormData = z.infer<typeof createTransactionSchema>;
 
 export interface CategoryOption {
 	id: string;
@@ -24,45 +39,12 @@ export interface CreateTransactionResponse {
 	};
 }
 
-export const createTransactionFormRules: {
-	[K in keyof CreateTransactionFormData]: RegisterOptions<
-		CreateTransactionFormData,
-		K
-	>;
-} = {
-	description: {
-		required: 'Descrição é obrigatória',
-		minLength: {
-			value: 1,
-			message: 'Descrição é obrigatória',
-		},
-	},
-	date: {
-		required: 'Data é obrigatória',
-	},
-	amount: {
-		required: 'Valor é obrigatório',
-		validate: (value) => {
-			const num = parseAmount(value);
-			if (Number.isNaN(num) || num <= 0) {
-				return 'Valor deve ser positivo';
-			}
-			return true;
-		},
-	},
-	categoryId: {
-		required: 'Categoria é obrigatória',
-	},
-	type: {
-		required: 'Tipo é obrigatório',
-	},
-};
-
 export function useCreateTransactionForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
 	const createTransactionMutation = useCreateTransactionMutation();
 
 	const form = useForm<CreateTransactionFormData>({
+		resolver: zodResolver(createTransactionSchema),
 		defaultValues: {
 			type: 'expense',
 		},

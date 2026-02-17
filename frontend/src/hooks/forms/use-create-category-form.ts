@@ -1,14 +1,48 @@
 import { useState } from 'react';
-import { type RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod/v4';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { mapCreateCategoryError } from '@/mappers/create-category.mapper';
 import { useCreateCategoryMutation } from '../mutations/use-create-category-mutation';
 
-export interface CreateCategoryFormData {
-	name: string;
-	description: string;
-	icon: string;
-	color: string;
-}
+const categoryIconSchema = z.enum([
+	'utensils',
+	'car-front',
+	'briefcase-business',
+	'ticket',
+	'piggy-bank',
+	'shopping-cart',
+	'heart-pulse',
+	'tag',
+	'tool-case',
+	'paw-print',
+	'house',
+	'gift',
+	'dumbbell',
+	'book-open',
+	'receipt-text',
+	'mailbox',
+]);
+
+const categoryColorSchema = z.enum([
+	'blue',
+	'green',
+	'red',
+	'yellow',
+	'purple',
+	'orange',
+	'pink',
+	'gray',
+]);
+
+export const createCategorySchema = z.object({
+	name: z.string().min(1, 'Título é obrigatório'),
+	description: z.string().optional(),
+	icon: categoryIconSchema,
+	color: categoryColorSchema,
+});
+
+export type CreateCategoryFormData = z.infer<typeof createCategorySchema>;
 
 export interface CreateCategoryResponse {
 	createCategory: {
@@ -20,29 +54,12 @@ export interface CreateCategoryResponse {
 	};
 }
 
-export const createCategoryFormRules: Pick<
-	{
-		[K in keyof CreateCategoryFormData]: RegisterOptions<
-			CreateCategoryFormData,
-			K
-		>;
-	},
-	'name'
-> = {
-	name: {
-		required: 'Título é obrigatório',
-		minLength: {
-			value: 1,
-			message: 'Título é obrigatório',
-		},
-	},
-};
-
 export function useCreateCategoryForm(onSuccess?: () => void) {
 	const [formError, setFormError] = useState<string | null>(null);
 	const createCategoryMutation = useCreateCategoryMutation();
 
 	const form = useForm<CreateCategoryFormData>({
+		resolver: zodResolver(createCategorySchema),
 		defaultValues: {
 			name: '',
 			description: '',

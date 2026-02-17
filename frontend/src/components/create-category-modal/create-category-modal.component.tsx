@@ -1,7 +1,7 @@
 import { XIcon } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import {
-	createCategoryFormRules,
+	type CreateCategoryFormData,
 	useCreateCategoryForm,
 } from '@/hooks/forms/use-create-category-form';
 import { cn } from '@/lib/utils';
@@ -69,7 +69,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 						placeholder="Ex. Alimentação"
 						error={!!nameError}
 						helper={nameError ?? formError ?? undefined}
-						{...form.register('name', createCategoryFormRules.name)}
+						{...form.register('name')}
 					/>
 
 					<Input
@@ -95,7 +95,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 											: 'border-financy-gray-300 hover:bg-financy-gray-100',
 									)}
 									onClick={() =>
-										form.setValue('icon', name, {
+										form.setValue('icon', name as CreateCategoryFormData['icon'], {
 											shouldDirty: true,
 										})
 									}

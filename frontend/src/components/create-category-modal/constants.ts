@@ -14,8 +14,8 @@ import {
 	ReceiptText,
 	ShoppingCart,
 	Ticket,
+	ToolCase,
 	Utensils,
-	Wrench,
 } from 'lucide-react';
 
 export const CATEGORY_ICONS: { name: string; icon: LucideIcon }[] = [
@@ -25,7 +25,7 @@ export const CATEGORY_ICONS: { name: string; icon: LucideIcon }[] = [
 	{ name: 'piggy-bank', icon: PiggyBank },
 	{ name: 'shopping-cart', icon: ShoppingCart },
 	{ name: 'ticket', icon: Ticket },
-	{ name: 'wrench', icon: Wrench },
+	{ name: 'tool-case', icon: ToolCase },
 	{ name: 'utensils', icon: Utensils },
 	{ name: 'paw-print', icon: PawPrint },
 	{ name: 'house', icon: House },

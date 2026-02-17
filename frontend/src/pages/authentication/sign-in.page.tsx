@@ -4,7 +4,7 @@ import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import { Link } from '@/components/link';
 import { Checkbox } from '@/components/ui/checkbox';
-import { signInFormRules, useSignInForm } from '@/hooks/forms/use-sign-in-form';
+import { useSignInForm } from '@/hooks/forms/use-sign-in-form';
 
 export function SignIn() {
 	const navigate = useNavigate();
@@ -42,7 +42,7 @@ export function SignIn() {
 							prefix={<Mail />}
 							error={!!errors.email}
 							helper={errors.email?.message}
-							{...register('email', signInFormRules.email)}
+							{...register('email')}
 						/>
 
 						<Input
@@ -53,7 +53,7 @@ export function SignIn() {
 							prefix={<Lock />}
 							error={!!errors.password || !!formError}
 							helper={errors.password?.message || (formError ?? undefined)}
-							{...register('password', signInFormRules.password)}
+							{...register('password')}
 						/>
 
 						<div className="flex items-center justify-between">

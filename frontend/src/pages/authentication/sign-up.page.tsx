@@ -2,7 +2,7 @@ import { Lock, LogIn, Mail, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
-import { signUpFormRules, useSignUpForm } from '@/hooks/forms/use-sign-up-form';
+import { useSignUpForm } from '@/hooks/forms/use-sign-up-form';
 
 export function SignUp() {
 	const navigate = useNavigate();
@@ -40,7 +40,7 @@ export function SignUp() {
 							prefix={<UserRound size={16} />}
 							error={!!errors.name}
 							helper={errors.name?.message}
-							{...register('name', signUpFormRules.name)}
+							{...register('name')}
 						/>
 
 						<Input
@@ -51,7 +51,7 @@ export function SignUp() {
 							prefix={<Mail size={16} />}
 							error={!!errors.email}
 							helper={errors.email?.message}
-							{...register('email', signUpFormRules.email)}
+							{...register('email')}
 						/>
 
 						<div className="flex flex-col gap-1">
@@ -66,7 +66,7 @@ export function SignUp() {
 									errors.password?.message ??
 									'A senha deve ter pelo menos 8 caracteres'
 								}
-								{...register('password', signUpFormRules.password)}
+								{...register('password')}
 							/>
 						</div>
 

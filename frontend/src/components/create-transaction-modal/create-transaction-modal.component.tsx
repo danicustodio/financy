@@ -1,9 +1,6 @@
 import { XIcon } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
-import {
-	createTransactionFormRules,
-	useCreateTransactionForm,
-} from '@/hooks/forms/use-create-transaction-form';
+import { useCreateTransactionForm } from '@/hooks/forms/use-create-transaction-form';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { Input } from '../input';
 import { LabelButton } from '../label-button';
@@ -87,17 +84,8 @@ export const CreateTransactionModal = ({
 				/>
 
 				<form onSubmit={onSubmit} className="flex flex-col gap-4">
-					<input
-						type="hidden"
-						{...form.register('type', createTransactionFormRules.type)}
-					/>
-					<input
-						type="hidden"
-						{...form.register(
-							'categoryId',
-							createTransactionFormRules.categoryId,
-						)}
-					/>
+					<input type="hidden" {...form.register('type')} />
+					<input type="hidden" {...form.register('categoryId')} />
 
 					<Input
 						id="description"
@@ -105,10 +93,7 @@ export const CreateTransactionModal = ({
 						placeholder="Ex. Almoço no restaurante"
 						error={!!descriptionError}
 						helper={descriptionError}
-						{...form.register(
-							'description',
-							createTransactionFormRules.description,
-						)}
+						{...form.register('description')}
 					/>
 
 					<div className="flex gap-4">
@@ -120,7 +105,7 @@ export const CreateTransactionModal = ({
 								placeholder="Selecione"
 								error={!!dateError}
 								helper={dateError}
-								{...form.register('date', createTransactionFormRules.date)}
+								{...form.register('date')}
 							/>
 						</div>
 
@@ -132,7 +117,7 @@ export const CreateTransactionModal = ({
 								placeholder="0,00"
 								error={!!amountError}
 								helper={amountError}
-								{...form.register('amount', createTransactionFormRules.amount)}
+								{...form.register('amount')}
 							/>
 						</div>
 					</div>
