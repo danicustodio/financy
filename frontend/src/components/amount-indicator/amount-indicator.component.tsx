@@ -1,16 +1,19 @@
 import { CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { presentAmount } from '@/mappers/amount.mapper';
+import type { TransactionType } from '@/types/transaction';
 
 interface AmountIndicatorProps {
 	amount: number;
-	type: 'income' | 'expense';
+	type: TransactionType;
+	showIcon?: boolean;
 	className?: string;
 }
 
 export const AmountIndicator = ({
 	amount,
 	type,
+	showIcon = true,
 	className,
 }: AmountIndicatorProps) => {
 	const isIncome = type === 'income';
@@ -21,12 +24,14 @@ export const AmountIndicator = ({
 			<span className="font-semibold text-financy-gray-800 text-sm">
 				{isIncome ? '+' : '-'} {presentAmount(amount)}
 			</span>
-			<Icon
-				className={cn(
-					'h-4 w-4',
-					isIncome ? 'text-financy-green-base' : 'text-financy-danger',
-				)}
-			/>
+			{showIcon && (
+				<Icon
+					className={cn(
+						'h-4 w-4',
+						isIncome ? 'text-financy-green-base' : 'text-financy-danger',
+					)}
+				/>
+			)}
 		</div>
 	);
 };

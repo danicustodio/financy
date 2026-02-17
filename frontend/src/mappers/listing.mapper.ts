@@ -83,3 +83,73 @@ export function iconBackgroundColor(color: string): string {
 export function toCategoryIcon(icon: string): LucideIcon {
 	return categoryIconMap[icon] ?? BriefcaseBusiness;
 }
+
+export interface TransactionTableView {
+	id: string;
+	description: string;
+	date: string;
+	category: string;
+	categoryColor: CategoryColor;
+	amount: number;
+	type: import('@/types/transaction').TransactionType;
+	iconBgColor: string;
+}
+
+export interface TransactionRowView {
+	id: string;
+	description: string;
+	date: string;
+	category: {
+		name: string;
+		icon: LucideIcon;
+		color: CategoryColor;
+	};
+	amount: number;
+	type: import('@/types/transaction').TransactionType;
+}
+
+interface MappableTransaction {
+	id: string;
+	description: string;
+	amount: number;
+	type: import('@/types/transaction').TransactionType;
+	date: string;
+	category: {
+		id: string;
+		name: string;
+		icon: string;
+		color: string;
+	};
+}
+
+export function toTransactionTableView(
+	transaction: MappableTransaction,
+): TransactionTableView {
+	return {
+		id: transaction.id,
+		description: transaction.description,
+		date: formatDate(transaction.date),
+		category: transaction.category.name,
+		categoryColor: toCategoryColor(transaction.category.color),
+		amount: transaction.amount,
+		type: transaction.type,
+		iconBgColor: iconBackgroundColor(transaction.category.color),
+	};
+}
+
+export function toTransactionRowView(
+	transaction: MappableTransaction,
+): TransactionRowView {
+	return {
+		id: transaction.id,
+		description: transaction.description,
+		date: formatDate(transaction.date),
+		category: {
+			name: transaction.category.name,
+			icon: toCategoryIcon(transaction.category.icon),
+			color: toCategoryColor(transaction.category.color),
+		},
+		amount: transaction.amount,
+		type: transaction.type,
+	};
+}

@@ -5,16 +5,13 @@ import { IconTile } from './icon-tile.component';
 
 describe('IconTile', () => {
 	it('renders icon with base layout classes', () => {
-		render(
-			<IconTile
-				color="green"
-				icon={<BriefcaseBusiness data-testid="icon" />}
-			/>,
+		const { container } = render(
+			<IconTile color="green" icon={BriefcaseBusiness} />,
 		);
 
-		const tile = screen.getByTestId('icon').parentElement?.parentElement;
+		const tile = container.firstElementChild;
 		expect(tile).toHaveClass('h-40', 'w-40', 'rounded-[2rem]');
-		expect(screen.getByTestId('icon')).toBeInTheDocument();
+		expect(container.querySelector('svg')).toBeInTheDocument();
 	});
 
 	it.each([
@@ -26,14 +23,11 @@ describe('IconTile', () => {
 		['yellow', 'bg-financy-yellow-light', 'text-financy-yellow-base'],
 		['red', 'bg-financy-red-light', 'text-financy-red-base'],
 	] as const)('applies token classes for %s', (color, bgClass, textClass) => {
-		render(
-			<IconTile
-				color={color}
-				icon={<BriefcaseBusiness data-testid="icon" />}
-			/>,
+		const { container } = render(
+			<IconTile color={color} icon={BriefcaseBusiness} />,
 		);
 
-		const tile = screen.getByTestId('icon').parentElement?.parentElement;
+		const tile = container.firstElementChild;
 		expect(tile).toHaveClass(bgClass, textClass);
 	});
 
@@ -41,7 +35,7 @@ describe('IconTile', () => {
 		render(
 			<IconTile
 				color="blue"
-				icon={<BriefcaseBusiness data-testid="icon" />}
+				icon={BriefcaseBusiness}
 				className="custom-tile"
 				aria-label="Tile"
 			/>,

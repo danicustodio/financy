@@ -1,17 +1,21 @@
-import { ChevronDown, Plus, Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import { LabelButton } from '@/components/label-button';
+import { PageHeader } from '@/components/page-header';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
-	type TransactionData,
-	TransactionsTable,
-} from '@/components/transactions';
-import {
-	formatDate,
-	iconBackgroundColor,
-	toCategoryColor,
-} from '@/mappers/listing.mapper';
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
+import { toTransactionTableView } from '@/mappers/listing.mapper';
+import { TransactionsTable } from './transactions-table.component';
 
 export function Transactions() {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -35,33 +39,17 @@ export function Transactions() {
 		[transactions, currentPage],
 	);
 
-	const tableRows = useMemo<TransactionData[]>(
-		() =>
-			currentPageTransactions.map((transaction) => ({
-				id: transaction.id,
-				description: transaction.description,
-				date: formatDate(transaction.date),
-				category: transaction.category.name,
-				categoryColor: toCategoryColor(transaction.category.color),
-				amount: transaction.amount,
-				type: transaction.type,
-				iconBgColor: iconBackgroundColor(transaction.category.color),
-			})),
+	const tableRows = useMemo(
+		() => currentPageTransactions.map(toTransactionTableView),
 		[currentPageTransactions],
 	);
 
 	return (
 		<main className="flex flex-col gap-8 p-12">
-				{/* Header */}
-				<div className="flex items-center justify-between">
-					<div className="flex flex-col gap-0.5">
-						<h1 className="font-bold text-2xl text-financy-gray-800">
-							Transações
-						</h1>
-						<p className="text-base text-financy-gray-600">
-							Gerencie todas as suas transações financeiras
-						</p>
-					</div>
+			<PageHeader
+				title="Transações"
+				subtitle="Gerencie todas as suas transações financeiras"
+				action={
 					<CreateTransactionModal>
 						<LabelButton
 							variant="default"
@@ -71,89 +59,107 @@ export function Transactions() {
 							Nova transação
 						</LabelButton>
 					</CreateTransactionModal>
-				</div>
+				}
+			/>
 
-				{/* Filters Section */}
-				<div className="flex gap-4 rounded-xl border border-financy-gray-200 bg-white p-5 px-6">
+			{/* Filters Section */}
+			<Card className="border-financy-gray-200 p-0 shadow-none">
+				<CardContent className="flex gap-4 px-6 py-5">
 					{/* Search Input */}
 					<div className="flex flex-1 flex-col gap-2">
-						<label
+						<Label
 							htmlFor="search"
 							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Buscar
-						</label>
-						<div className="flex w-full items-center gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
-							<Search className="h-4 w-4 text-financy-gray-400" />
-							<input
+						</Label>
+						<div className="relative">
+							<Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-financy-gray-400" />
+							<Input
 								type="text"
 								id="search"
 								placeholder="Buscar por descrição"
-								className="flex-1 bg-transparent text-base outline-none placeholder:text-financy-gray-400"
+								className="h-auto rounded-lg border-financy-gray-300 bg-financy-white py-3.5 pl-10 text-base shadow-none placeholder:text-financy-gray-400"
 							/>
 						</div>
 					</div>
 
 					{/* Type Select */}
 					<div className="flex flex-1 flex-col gap-2">
-						<label
+						<Label
 							htmlFor="type"
 							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Tipo
-						</label>
-						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
-							<span className="text-base text-financy-gray-800">Todos</span>
-							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
-						</div>
+						</Label>
+						<Select defaultValue="all">
+							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
+								<SelectValue placeholder="Todos" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">Todos</SelectItem>
+								<SelectItem value="income">Receita</SelectItem>
+								<SelectItem value="expense">Despesa</SelectItem>
+							</SelectContent>
+						</Select>
 					</div>
 
 					{/* Category Select */}
 					<div className="flex flex-1 flex-col gap-2">
-						<label
+						<Label
 							htmlFor="category"
 							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Categoria
-						</label>
-						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
-							<span className="text-base text-financy-gray-800">Todas</span>
-							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
-						</div>
+						</Label>
+						<Select defaultValue="all">
+							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
+								<SelectValue placeholder="Todas" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">Todas</SelectItem>
+							</SelectContent>
+						</Select>
 					</div>
 
 					{/* Period Select */}
 					<div className="flex flex-1 flex-col gap-2">
-						<label
+						<Label
 							htmlFor="period"
 							className="font-medium text-financy-gray-700 text-sm"
 						>
 							Período
-						</label>
-						<div className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border border-financy-gray-300 bg-financy-white p-3 py-3.5">
-							<span className="text-base text-financy-gray-800">
-								Novembro / 2025
-							</span>
-							<ChevronDown className="h-4 w-4 text-financy-gray-400" />
-						</div>
+						</Label>
+						<Select defaultValue="2025-11">
+							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
+								<SelectValue placeholder="Selecionar período" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="2025-11">Novembro / 2025</SelectItem>
+								<SelectItem value="2025-12">Dezembro / 2025</SelectItem>
+								<SelectItem value="2026-01">Janeiro / 2026</SelectItem>
+								<SelectItem value="2026-02">Fevereiro / 2026</SelectItem>
+							</SelectContent>
+						</Select>
 					</div>
-				</div>
+				</CardContent>
+			</Card>
 
-				{/* Transactions Table */}
-				{isLoading ? (
-					<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
-						Carregando transações...
-					</div>
-				) : (
-					<TransactionsTable
-						transactions={tableRows}
-						currentPage={currentPage}
-						totalPages={totalPages}
-						totalResults={totalResults}
-						pageSize={pageSize}
-						onPageChange={handlePageChange}
-					/>
-				)}
-			</main>
+			{/* Transactions Table */}
+			{isLoading ? (
+				<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
+					Carregando transações...
+				</div>
+			) : (
+				<TransactionsTable
+					transactions={tableRows}
+					currentPage={currentPage}
+					totalPages={totalPages}
+					totalResults={totalResults}
+					pageSize={pageSize}
+					onPageChange={handlePageChange}
+				/>
+			)}
+		</main>
 	);
 }

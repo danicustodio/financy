@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { LIST_TRANSACTIONS_QUERY } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
+import type { TransactionType } from '@/types/transaction';
 
 export interface ListedTransaction {
 	id: string;
 	description: string;
 	amount: number;
-	type: 'income' | 'expense';
+	type: TransactionType;
 	date: string;
 	category: {
 		id: string;

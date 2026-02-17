@@ -1,17 +1,10 @@
-import { ChevronRight, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { CreateTransactionModal } from '@/components/create-transaction-modal';
+import { SectionCard } from '@/components/section-card';
 import type { BadgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardAction,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import type { TransactionType } from '@/types/transaction';
 import { TransactionRow } from './transaction-row.component';
 
 interface RecentTransactionItem {
@@ -24,7 +17,7 @@ interface RecentTransactionItem {
 		color: NonNullable<BadgeVariants['color']>;
 	};
 	amount: number;
-	type: 'income' | 'expense';
+	type: TransactionType;
 }
 
 interface RecentTransactionsProps {
@@ -35,42 +28,12 @@ export const RecentTransactions = ({
 	transactions,
 }: RecentTransactionsProps) => {
 	return (
-		<Card className="flex-2 gap-0 overflow-hidden border-financy-gray-200 bg-white p-0 shadow-none">
-			<CardHeader className="border-financy-gray-200 border-b px-6 py-5">
-				<CardTitle className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
-					Transações recentes
-				</CardTitle>
-				<CardAction>
-					<Link
-						to="/transactions"
-						className="flex items-center gap-1 text-financy-brand-base text-sm"
-					>
-						Ver todas
-						<ChevronRight className="h-5 w-5" />
-					</Link>
-				</CardAction>
-			</CardHeader>
-
-			<CardContent className="p-0">
-				{transactions.length > 0 ? (
-					transactions.map((transaction) => (
-						<TransactionRow
-							key={transaction.id}
-							description={transaction.description}
-							date={transaction.date}
-							category={transaction.category}
-							amount={transaction.amount}
-							type={transaction.type}
-						/>
-					))
-				) : (
-					<p className="px-6 py-5 text-financy-gray-600 text-sm">
-						Nenhuma transação cadastrada.
-					</p>
-				)}
-			</CardContent>
-
-			<CardFooter className="justify-center px-6 py-5">
+		<SectionCard
+			title="Transações recentes"
+			linkTo="/transactions"
+			linkLabel="Ver todas"
+			className="flex-2"
+			footer={
 				<CreateTransactionModal>
 					<Button
 						variant="ghost"
@@ -80,7 +43,24 @@ export const RecentTransactions = ({
 						Nova transação
 					</Button>
 				</CreateTransactionModal>
-			</CardFooter>
-		</Card>
+			}
+		>
+			{transactions.length > 0 ? (
+				transactions.map((transaction) => (
+					<TransactionRow
+						key={transaction.id}
+						description={transaction.description}
+						date={transaction.date}
+						category={transaction.category}
+						amount={transaction.amount}
+						type={transaction.type}
+					/>
+				))
+			) : (
+				<p className="px-6 py-5 text-financy-gray-600 text-sm">
+					Nenhuma transação cadastrada.
+				</p>
+			)}
+		</SectionCard>
 	);
 };

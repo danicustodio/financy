@@ -1,4 +1,5 @@
 import type { TagVariants } from '@/components/tag';
+import type { TransactionType } from '@/types/transaction';
 
 export interface TransactionData {
 	id: string;
@@ -7,6 +8,6 @@ export interface TransactionData {
 	category: string;
 	categoryColor: NonNullable<TagVariants['color']>;
 	amount: number;
-	type: 'income' | 'expense';
+	type: TransactionType;
 	iconBgColor: string;
 }

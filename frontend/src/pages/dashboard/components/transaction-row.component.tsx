@@ -1,8 +1,9 @@
 import type { LucideIcon } from 'lucide-react';
+import { AmountIndicator } from '@/components/amount-indicator';
 import { IconTile } from '@/components/icon-tile';
 import { Badge, type BadgeVariants } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { AmountIndicator } from './amount-indicator.component';
+import type { TransactionType } from '@/types/transaction';
 
 interface TransactionRowProps {
 	description: string;
@@ -13,7 +14,7 @@ interface TransactionRowProps {
 		color: NonNullable<BadgeVariants['color']>;
 	};
 	amount: number;
-	type: 'income' | 'expense';
+	type: TransactionType;
 }
 
 export const TransactionRow = ({

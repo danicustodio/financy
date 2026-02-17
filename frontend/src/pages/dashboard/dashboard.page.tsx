@@ -6,9 +6,8 @@ import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 import { presentAmount } from '@/mappers/amount.mapper';
 import {
-	formatDate,
 	toCategoryColor,
-	toCategoryIcon,
+	toTransactionRowView,
 } from '@/mappers/listing.mapper';
 import { CategoriesSection } from './components/categories-section.component';
 import { RecentTransactions } from './components/recent-transactions.component';
@@ -36,19 +35,7 @@ export function Dashboard() {
 	const { data: summary } = useDashboardSummary();
 
 	const recentTransactions = useMemo(
-		() =>
-			transactions.slice(0, 5).map((transaction) => ({
-				id: transaction.id,
-				description: transaction.description,
-				date: formatDate(transaction.date),
-				category: {
-					name: transaction.category.name,
-					icon: toCategoryIcon(transaction.category.icon),
-					color: toCategoryColor(transaction.category.color),
-				},
-				amount: transaction.amount,
-				type: transaction.type,
-			})),
+		() => transactions.slice(0, 5).map(toTransactionRowView),
 		[transactions],
 	);
 
