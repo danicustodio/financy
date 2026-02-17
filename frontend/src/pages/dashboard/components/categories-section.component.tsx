@@ -1,12 +1,21 @@
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import type { TagVariants } from '@/components/tag';
+import type { BadgeVariants } from '@/components/ui/badge';
+import {
+	Card,
+	CardAction,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
 import { CategoryRow } from './category-row.component';
 
 interface CategorySectionItem {
 	id: string;
-	category: string;
-	categoryColor: NonNullable<TagVariants['color']>;
+	category: {
+		name: string;
+		color: NonNullable<BadgeVariants['color']>;
+	};
 	itemCount: number;
 	amount: number;
 }
@@ -17,27 +26,28 @@ interface CategoriesSectionProps {
 
 export const CategoriesSection = ({ categories }: CategoriesSectionProps) => {
 	return (
-		<div className="flex-1 overflow-hidden rounded-xl border border-financy-gray-200 bg-white">
-			<div className="flex items-center justify-between border-financy-gray-200 border-b px-6 py-5">
-				<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
+		<Card className="flex-1 gap-0 overflow-hidden border-financy-gray-200 bg-white p-0 shadow-none">
+			<CardHeader className="border-financy-gray-200 border-b px-6 py-5">
+				<CardTitle className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 					Categorias
-				</span>
-				<Link
-					to="/categories"
-					className="flex items-center gap-1 text-financy-brand-base text-sm"
-				>
-					Gerenciar
-					<ChevronRight className="h-5 w-5" />
-				</Link>
-			</div>
+				</CardTitle>
+				<CardAction>
+					<Link
+						to="/categories"
+						className="flex items-center gap-1 text-financy-brand-base text-sm"
+					>
+						Gerenciar
+						<ChevronRight className="h-5 w-5" />
+					</Link>
+				</CardAction>
+			</CardHeader>
 
-			<div className="flex flex-col gap-5 p-6">
+			<CardContent className="flex flex-col gap-5 p-6">
 				{categories.length > 0 ? (
 					categories.map((cat) => (
 						<CategoryRow
 							key={cat.id}
 							category={cat.category}
-							categoryColor={cat.categoryColor}
 							itemCount={cat.itemCount}
 							amount={cat.amount}
 						/>
@@ -47,7 +57,7 @@ export const CategoriesSection = ({ categories }: CategoriesSectionProps) => {
 						Nenhuma categoria cadastrada.
 					</p>
 				)}
-			</div>
-		</div>
+			</CardContent>
+		</Card>
 	);
 };

@@ -1,13 +1,34 @@
 import { CircleArrowDown, CircleArrowUp, Wallet } from 'lucide-react';
 import { useMemo } from 'react';
-import { presentAmount } from '@/mappers/amount.mapper';
-import { useListCategories } from '@/hooks/queries/use-list-categories';
-import { formatDate, toCategoryColor } from '@/mappers/listing.mapper';
-import { useListTransactions } from '@/hooks/queries/use-list-transactions';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useDashboardSummary } from '@/hooks/queries/use-dashboard-summary';
+import { useListCategories } from '@/hooks/queries/use-list-categories';
+import { useListTransactions } from '@/hooks/queries/use-list-transactions';
+import { presentAmount } from '@/mappers/amount.mapper';
+import {
+	formatDate,
+	toCategoryColor,
+	toCategoryIcon,
+} from '@/mappers/listing.mapper';
 import { CategoriesSection } from './components/categories-section.component';
 import { RecentTransactions } from './components/recent-transactions.component';
 import { SummaryCard } from './components/summary-card.component';
+
+function DashboardSkeleton() {
+	return (
+		<main className="m-auto max-w-7xl p-12">
+			<div className="mb-6 flex gap-6">
+				<Skeleton className="h-[120px] flex-1 rounded-xl" />
+				<Skeleton className="h-[120px] flex-1 rounded-xl" />
+				<Skeleton className="h-[120px] flex-1 rounded-xl" />
+			</div>
+			<div className="flex gap-6">
+				<Skeleton className="h-[400px] flex-2 rounded-xl" />
+				<Skeleton className="h-[400px] flex-1 rounded-xl" />
+			</div>
+		</main>
+	);
+}
 
 export function Dashboard() {
 	const { data: categories = [] } = useListCategories();
@@ -20,8 +41,11 @@ export function Dashboard() {
 				id: transaction.id,
 				description: transaction.description,
 				date: formatDate(transaction.date),
-				category: transaction.category.name,
-				categoryColor: toCategoryColor(transaction.category.color),
+				category: {
+					name: transaction.category.name,
+					icon: toCategoryIcon(transaction.category.icon),
+					color: toCategoryColor(transaction.category.color),
+				},
 				amount: transaction.amount,
 				type: transaction.type,
 			})),
@@ -44,8 +68,10 @@ export function Dashboard() {
 		return categories
 			.map((category) => ({
 				id: category.id,
-				category: category.name,
-				categoryColor: toCategoryColor(category.color),
+				category: {
+					name: category.name,
+					color: toCategoryColor(category.color),
+				},
 				itemCount: totalsByCategoryId[category.id]?.itemCount ?? 0,
 				amount: totalsByCategoryId[category.id]?.amount ?? 0,
 			}))
@@ -54,13 +80,7 @@ export function Dashboard() {
 	}, [categories, transactions]);
 
 	if (isLoading) {
-		return (
-			<main className="m-auto max-w-7xl p-12">
-				<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
-					Carregando dados do dashboard...
-				</div>
-			</main>
-		);
+		return <DashboardSkeleton />;
 	}
 
 	return (

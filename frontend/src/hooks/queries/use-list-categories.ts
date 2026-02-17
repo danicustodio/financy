@@ -5,6 +5,7 @@ import { authGraphqlRequest } from '@/graphql/graphql-client';
 export interface ListedCategory {
 	id: string;
 	name: string;
+	icon: string;
 	description: string | null;
 	color: string;
 }

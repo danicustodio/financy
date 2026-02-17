@@ -3,6 +3,7 @@ export const LIST_CATEGORIES_QUERY = `
     categories {
       id
       name
+      icon
       description
       color
     }

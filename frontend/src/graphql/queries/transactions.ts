@@ -9,6 +9,7 @@ export const LIST_TRANSACTIONS_QUERY = `
       category {
         id
         name
+        icon
         color
       }
     }

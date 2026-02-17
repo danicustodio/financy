@@ -1,4 +1,42 @@
+import {
+	BaggageClaim,
+	BookOpen,
+	BriefcaseBusiness,
+	CarFront,
+	Dumbbell,
+	Gift,
+	HeartPulse,
+	House,
+	type LucideIcon,
+	Mailbox,
+	PawPrint,
+	PiggyBank,
+	ReceiptText,
+	ShoppingCart,
+	Ticket,
+	Utensils,
+	Wrench,
+} from 'lucide-react';
 import type { CategoryColor } from '@/components/categories/category-card.component';
+
+const categoryIconMap: Record<string, LucideIcon> = {
+	'briefcase-business': BriefcaseBusiness,
+	'car-front': CarFront,
+	'heart-pulse': HeartPulse,
+	'piggy-bank': PiggyBank,
+	'shopping-cart': ShoppingCart,
+	ticket: Ticket,
+	wrench: Wrench,
+	utensils: Utensils,
+	'paw-print': PawPrint,
+	house: House,
+	gift: Gift,
+	dumbbell: Dumbbell,
+	'book-open': BookOpen,
+	'baggage-claim': BaggageClaim,
+	mailbox: Mailbox,
+	'receipt-text': ReceiptText,
+};
 
 const categoryColorFallback: CategoryColor = 'blue';
 
@@ -40,4 +78,8 @@ export function formatDate(value: string): string {
 
 export function iconBackgroundColor(color: string): string {
 	return iconBackgroundByColor[toCategoryColor(color)];
+}
+
+export function toCategoryIcon(icon: string): LucideIcon {
+	return categoryIconMap[icon] ?? BriefcaseBusiness;
 }

@@ -1,23 +1,23 @@
-import type { TagVariants } from '@/components/tag';
-import { Tag } from '@/components/tag';
+import { Badge, type BadgeVariants } from '@/components/ui/badge';
 import { presentAmount } from '@/mappers/amount.mapper';
 
 interface CategoryRowProps {
-	category: string;
-	categoryColor: NonNullable<TagVariants['color']>;
+	category: {
+		name: string;
+		color: NonNullable<BadgeVariants['color']>;
+	};
 	itemCount: number;
 	amount: number;
 }
 
 export const CategoryRow = ({
 	category,
-	categoryColor,
 	itemCount,
 	amount,
 }: CategoryRowProps) => {
 	return (
 		<div className="flex items-center gap-1">
-			<Tag color={categoryColor}>{category}</Tag>
+			<Badge color={category.color}>{category.name}</Badge>
 			<span className="flex-1 text-right text-financy-gray-600 text-sm">
 				{itemCount} {itemCount === 1 ? 'item' : 'itens'}
 			</span>

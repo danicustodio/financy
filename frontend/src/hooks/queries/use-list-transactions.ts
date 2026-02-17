@@ -11,6 +11,7 @@ export interface ListedTransaction {
 	category: {
 		id: string;
 		name: string;
+		icon: string;
 		color: string;
 	};
 }
