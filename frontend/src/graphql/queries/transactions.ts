@@ -8,7 +8,7 @@ export const LIST_TRANSACTIONS_QUERY = `
       date
       category {
         id
-        name
+        title
         icon
         color
       }

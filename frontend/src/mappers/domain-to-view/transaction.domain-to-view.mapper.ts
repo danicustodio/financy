@@ -41,7 +41,7 @@ export function toTransactionTableView(
 		id: transaction.id,
 		description: transaction.description,
 		date: formatDate(transaction.date),
-		category: transaction.category.name,
+		category: transaction.category.title,
 		categoryColor: transaction.category.color,
 		amount: transaction.amount,
 		type: transaction.type,
@@ -57,7 +57,7 @@ export function toTransactionRowView(
 		description: transaction.description,
 		date: formatDate(transaction.date),
 		category: {
-			name: transaction.category.name,
+			name: transaction.category.title,
 			icon: toCategoryIcon(transaction.category.icon),
 			color: transaction.category.color,
 		},

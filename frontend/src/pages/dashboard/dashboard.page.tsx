@@ -56,7 +56,7 @@ export function Dashboard() {
 			.map((category) => ({
 				id: category.id,
 				category: {
-					name: category.name,
+					name: category.title,
 					color: toCategoryColor(category.color),
 				},
 				itemCount: totalsByCategoryId[category.id]?.itemCount ?? 0,

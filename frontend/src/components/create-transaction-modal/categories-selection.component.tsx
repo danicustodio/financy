@@ -8,7 +8,7 @@ import {
 } from '../ui/dropdown-menu';
 
 export interface CategoriesSelectionProps {
-	categories: Pick<Category, 'id' | 'name'>[];
+	categories: Pick<Category, 'id' | 'title'>[];
 	selectedCategoryId?: string;
 	isLoading?: boolean;
 	errorMessage?: string;
@@ -48,7 +48,7 @@ export const CategoriesSelection = ({
 									: 'text-financy-gray-400'
 							}
 						>
-							{selectedCategory?.name ??
+							{selectedCategory?.title ??
 								(isLoading ? 'Carregando...' : 'Selecione')}
 						</span>
 						<ChevronDown size={16} className="text-financy-gray-500" />
@@ -65,7 +65,7 @@ export const CategoriesSelection = ({
 							onSelect={() => onSelect(category.id)}
 							className="flex items-center justify-between px-3 py-2.5"
 						>
-							{category.name}
+							{category.title}
 							{selectedCategoryId === category.id && (
 								<CheckIcon size={16} className="text-financy-brand-base" />
 							)}

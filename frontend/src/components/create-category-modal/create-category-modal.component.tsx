@@ -29,7 +29,7 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 	const selectedIcon = form.watch('icon');
 	const selectedColor = form.watch('color');
 
-	const nameError = form.formState.errors.name?.message;
+	const titleError = form.formState.errors.title?.message;
 
 	const handleOpenChange = (open: boolean) => {
 		setIsOpen(open);
@@ -62,12 +62,12 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 
 				<form onSubmit={onSubmit} className="flex flex-col gap-4">
 					<Input
-						id="name"
-						label="Nome"
+						id="title"
+						label="Título"
 						placeholder="Ex. Alimentação"
-						error={!!nameError}
-						helper={nameError ?? formError ?? undefined}
-						{...form.register('name')}
+						error={!!titleError}
+						helper={titleError ?? formError ?? undefined}
+						{...form.register('title')}
 					/>
 
 					<Input

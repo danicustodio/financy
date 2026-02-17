@@ -29,7 +29,7 @@ export type CategoryColor =
 
 export interface Category {
 	id: ID;
-	name: string;
+	title: string;
 	icon: CategoryIconName;
 	description: string | null;
 	color: CategoryColor;

@@ -12,7 +12,7 @@ import type { CreateCategoryFormData } from '@/types/forms/categories';
 import { useCreateCategoryMutation } from '../mutations/use-create-category-mutation';
 
 export const createCategorySchema = z.object({
-	name: z.string().min(1, 'Título é obrigatório'),
+	title: z.string().min(1, 'Título é obrigatório'),
 	description: z.string().optional(),
 	icon: z.enum(CATEGORY_ICON_NAMES),
 	color: z.enum(CATEGORY_COLOR_NAMES),
@@ -25,7 +25,7 @@ export function useCreateCategoryForm(onSuccess?: () => void) {
 	const form = useForm<CreateCategoryFormData>({
 		resolver: zodResolver(createCategorySchema),
 		defaultValues: {
-			name: '',
+			title: '',
 			description: '',
 			icon: 'briefcase-business',
 			color: 'green',

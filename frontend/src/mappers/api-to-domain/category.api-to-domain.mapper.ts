@@ -37,7 +37,7 @@ export function mapApiCategoryToDomain(
 ): Category {
 	return {
 		id: category.id,
-		name: category.name,
+		title: category.title,
 		icon: toCategoryIconName(category.icon),
 		description: category.description,
 		color: toCategoryColor(category.color),

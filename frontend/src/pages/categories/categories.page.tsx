@@ -88,7 +88,7 @@ export function Categories() {
 
 				<CategorySummaryCard
 					icon={mostUsedCategory?.uiIcon ?? Tag}
-					value={mostUsedCategory?.name ?? '-'}
+					value={mostUsedCategory?.title ?? '-'}
 					label="categoria mais utilizada"
 					accentClassName={mostUsedCategory?.color} // TODO: get the category color
 				/>
@@ -105,7 +105,7 @@ export function Categories() {
 					{categoriesWithCount.map((category) => (
 						<CategoryCard
 							key={category.id}
-							name={category.name}
+							name={category.title}
 							description={category.description ?? ''}
 							icon={category.uiIcon}
 							color={category.uiColor}

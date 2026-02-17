@@ -16,7 +16,7 @@ export function mapApiTransactionToDomain(
 		date: transaction.date,
 		category: {
 			id: transaction.category.id,
-			name: transaction.category.name,
+			title: transaction.category.title,
 			icon: toCategoryIconName(transaction.category.icon),
 			color: toCategoryColor(transaction.category.color),
 		},

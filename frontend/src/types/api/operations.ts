@@ -16,7 +16,7 @@ export interface ListTransactionsResponse {
 		date: ISODateString;
 		category: {
 			id: string;
-			name: string;
+			title: string;
 			icon: string;
 			color: string;
 		};
@@ -26,7 +26,7 @@ export interface ListTransactionsResponse {
 export interface ListCategoriesResponse {
 	categories: {
 		id: string;
-		name: string;
+		title: string;
 		icon: string;
 		description: string | null;
 		color: string;
@@ -49,7 +49,7 @@ export interface DashboardSummaryVariables {
 }
 
 export interface CreateCategoryInput {
-	name: string;
+	title: string;
 	description: string;
 	icon: CategoryIconName;
 	color: CategoryColor;
@@ -58,7 +58,7 @@ export interface CreateCategoryInput {
 export interface CreateCategoryResponse {
 	createCategory: Pick<
 		Category,
-		'id' | 'name' | 'icon' | 'description' | 'color'
+		'id' | 'title' | 'icon' | 'description' | 'color'
 	>;
 }
 

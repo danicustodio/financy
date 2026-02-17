@@ -9,5 +9,5 @@ export interface Transaction {
 	amount: CurrencyAmount;
 	type: TransactionType;
 	date: ISODateString;
-	category: Pick<Category, 'id' | 'name' | 'icon' | 'color'>;
+	category: Pick<Category, 'id' | 'title' | 'icon' | 'color'>;
 }
