@@ -1,10 +1,7 @@
 import { XIcon } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
-import { useCreateCategoryForm } from '@/hooks/forms/use-create-category-form';
-import { cn } from '@/lib/utils';
-import type { CreateCategoryFormData } from '@/types/forms/categories';
-import { Input } from '../input';
-import { LabelButton } from '../label-button';
+import { Input } from '@/components/input';
+import { LabelButton } from '@/components/label-button';
 import {
 	Dialog,
 	DialogClose,
@@ -12,8 +9,11 @@ import {
 	DialogDescription,
 	DialogTitle,
 	DialogTrigger,
-} from '../ui/dialog';
-import { CATEGORY_COLORS, CATEGORY_ICONS } from './constants';
+} from '@/components/ui/dialog';
+import { CATEGORY_COLORS, CATEGORY_ICONS } from '@/constants/category';
+import { useCreateCategoryForm } from '@/hooks/forms/use-create-category-form';
+import { cn } from '@/lib/utils';
+import type { CreateCategoryFormData } from '@/types/forms/categories';
 
 interface CreateCategoryModalProps {
 	children: ReactNode;

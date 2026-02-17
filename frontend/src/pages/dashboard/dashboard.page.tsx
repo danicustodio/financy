@@ -6,9 +6,7 @@ import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 import { presentAmount } from '@/mappers/amount.mapper';
 import { toCategoryColor } from '@/mappers/api-to-domain/category.api-to-domain.mapper';
-import {
-	toTransactionRowView,
-} from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
+import { toTransactionRowView } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { CategoriesSection } from './components/categories-section.component';
 import { RecentTransactions } from './components/recent-transactions.component';
 import { SummaryCard } from './components/summary-card.component';

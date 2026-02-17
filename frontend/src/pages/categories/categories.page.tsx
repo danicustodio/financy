@@ -1,6 +1,5 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
 import { useMemo } from 'react';
-import { CreateCategoryModal } from '@/components/create-category-modal';
 import { LabelButton } from '@/components/label-button';
 import { PageHeader } from '@/components/page-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,6 +9,7 @@ import { toCategoryColor } from '@/mappers/api-to-domain/category.api-to-domain.
 import { toCategoryIcon } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { CategoryCard } from './components/category-card.component';
 import { CategorySummaryCard } from './components/category-summary-card.component';
+import { CreateCategoryModal } from './components/create-category-modal.component';
 
 export function Categories() {
 	const { data: categories = [], isLoading } = useListCategories();
@@ -98,7 +98,7 @@ export function Categories() {
 			{isLoading ? (
 				<div className="grid grid-cols-4 gap-6">
 					{['a', 'b', 'c', 'd'].map((id) => (
-						<Skeleton key={id} className="h-[280px] rounded-xl" />
+						<Skeleton key={id} className="h-70 rounded-xl" />
 					))}
 				</div>
 			) : (
