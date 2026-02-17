@@ -57,9 +57,7 @@ export const SectionCard = ({
 			</CardContent>
 
 			{footer && (
-				<CardFooter className="justify-center px-6 py-5">
-					{footer}
-				</CardFooter>
+				<CardFooter className="justify-center px-6 py-5">{footer}</CardFooter>
 			)}
 		</Card>
 	);

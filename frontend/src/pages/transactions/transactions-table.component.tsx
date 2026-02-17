@@ -6,8 +6,8 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import type { TransactionData } from './transactions.types';
 import { TransactionTableRow } from './transaction-table-row.component';
+import type { TransactionData } from './transactions.types';
 
 interface TransactionsTableProps {
 	transactions: TransactionData[];

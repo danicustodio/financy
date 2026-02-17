@@ -1,5 +1,5 @@
-import { Plus } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import { SectionCard } from '@/components/section-card';
 import type { BadgeVariants } from '@/components/ui/badge';

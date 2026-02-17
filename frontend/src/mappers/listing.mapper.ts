@@ -17,7 +17,7 @@ import {
 	Utensils,
 	Wrench,
 } from 'lucide-react';
-import type { CategoryColor } from '@/components/categories/category-card.component';
+import type { CategoryColor } from '@/pages/categories/components/category-card.component';
 
 const categoryIconMap: Record<string, LucideIcon> = {
 	'briefcase-business': BriefcaseBusiness,

@@ -52,7 +52,8 @@ export const CategoriesSelection = ({
 									: 'text-financy-gray-400'
 							}
 						>
-							{selectedCategory?.name ?? (isLoading ? 'Carregando...' : 'Selecione')}
+							{selectedCategory?.name ??
+								(isLoading ? 'Carregando...' : 'Selecione')}
 						</span>
 						<ChevronDown size={16} className="text-financy-gray-500" />
 					</button>

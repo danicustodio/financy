@@ -4,7 +4,7 @@ import { LabelButton } from '@/components/label-button';
 
 export function Profile() {
 	return (
-		<main className="flex justify-center p-12">
+		<main className="m-auto flex max-w-7xl justify-center p-12">
 			{/* Profile Card Container */}
 			<div className="flex w-[448px] flex-col gap-8 rounded-xl border border-financy-gray-200 bg-white p-8">
 				{/* Header Section */}

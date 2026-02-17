@@ -1,12 +1,14 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
 import { useMemo } from 'react';
-import { CategoryCard } from '@/components/categories';
 import { CreateCategoryModal } from '@/components/create-category-modal';
-import { IconTile } from '@/components/icon-tile';
 import { LabelButton } from '@/components/label-button';
+import { PageHeader } from '@/components/page-header';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
-import { toCategoryColor } from '@/mappers/listing.mapper';
+import { toCategoryColor, toCategoryIcon } from '@/mappers/listing.mapper';
+import { CategoryCard } from './components/category-card.component';
+import { CategorySummaryCard } from './components/category-summary-card.component';
 
 export function Categories() {
 	const { data: categories = [], isLoading } = useListCategories();
@@ -25,6 +27,7 @@ export function Categories() {
 				...category,
 				itemCount: categoryCountById[category.id] ?? 0,
 				uiColor: toCategoryColor(category.color),
+				uiIcon: toCategoryIcon(category.icon),
 			})),
 		[categories, categoryCountById],
 	);
@@ -51,91 +54,60 @@ export function Categories() {
 	);
 
 	return (
-		<main className="flex flex-col gap-8 p-12">
-			{/* Header */}
-			<div className="flex items-center justify-between">
-				<div className="flex flex-col gap-0.5">
-					<h1 className="font-bold text-2xl text-financy-gray-800">
-						Categorias
-					</h1>
-					<p className="text-base text-financy-gray-600">
-						Organize suas transações por categorias
-					</p>
-				</div>
-				<CreateCategoryModal>
-					<LabelButton
-						variant="default"
-						size="sm"
-						icon={<Plus className="h-4 w-4" />}
-					>
-						Nova categoria
-					</LabelButton>
-				</CreateCategoryModal>
-			</div>
+		<main className="m-auto flex max-w-7xl flex-col gap-8 p-12">
+			<PageHeader
+				title="Categorias"
+				subtitle="Organize suas transações por categorias"
+				action={
+					<CreateCategoryModal>
+						<LabelButton
+							variant="default"
+							size="sm"
+							icon={<Plus className="h-4 w-4" />}
+						>
+							Nova categoria
+						</LabelButton>
+					</CreateCategoryModal>
+				}
+			/>
 
-			{/* Summary Cards */}
 			<div className="flex gap-6">
-				{/* Total Categories Card */}
-				<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
-					<div className="flex h-8 w-8 items-center justify-center">
-						<Tag className="h-6 w-6 text-financy-brand-base" />
-					</div>
-					<div className="flex flex-col gap-2">
-						<span className="font-bold text-[28px] text-financy-gray-800">
-							{totalCategories}
-						</span>
-						<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
-							total de categorias
-						</span>
-					</div>
-				</div>
+				<CategorySummaryCard
+					icon={Tag}
+					value={totalCategories}
+					label="total de categorias"
+					accentClassName="text-financy-gray-700"
+				/>
 
-				{/* Total Transactions Card */}
-				<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
-					<div className="flex h-8 w-8 items-center justify-center">
-						<ArrowUpDown className="h-6 w-6 text-financy-brand-base" />
-					</div>
-					<div className="flex flex-col gap-2">
-						<span className="font-bold text-[28px] text-financy-gray-800">
-							{totalTransactions}
-						</span>
-						<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
-							total de transações
-						</span>
-					</div>
-				</div>
+				<CategorySummaryCard
+					icon={ArrowUpDown}
+					value={totalTransactions}
+					label="total de transações"
+					accentClassName="text-financy-purple-base"
+				/>
 
-				{/* Most Used Category Card */}
-				<div className="flex flex-1 gap-4 rounded-xl border border-financy-gray-200 bg-white p-6">
-					<IconTile
-						icon={Tag}
-						color={mostUsedCategory?.uiColor ?? 'blue'}
-						className="h-8 w-8 rounded-full [&_svg]:h-5 [&_svg]:w-5"
-						aria-label="Categoria mais utilizada"
-					/>
-					<div className="flex flex-col gap-2">
-						<span className="font-bold text-[28px] text-financy-gray-800">
-							{mostUsedCategory?.name ?? '-'}
-						</span>
-						<span className="font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
-							categoria mais utilizada
-						</span>
-					</div>
-				</div>
+				<CategorySummaryCard
+					icon={mostUsedCategory?.uiIcon ?? Tag}
+					value={mostUsedCategory?.name ?? '-'}
+					label="categoria mais utilizada"
+					accentClassName={mostUsedCategory?.color} // TODO: get the category color
+				/>
 			</div>
 
-			{/* Categories Grid */}
 			{isLoading ? (
-				<div className="rounded-xl border border-financy-gray-200 bg-white p-8 text-center text-financy-gray-600 text-sm">
-					Carregando categorias...
+				<div className="grid grid-cols-4 gap-6">
+					{['a', 'b', 'c', 'd'].map((id) => (
+						<Skeleton key={id} className="h-[280px] rounded-xl" />
+					))}
 				</div>
 			) : (
-				<div className="grid grid-cols-4 gap-6">
+				<div className="grid grid-cols-4 gap-4">
 					{categoriesWithCount.map((category) => (
 						<CategoryCard
 							key={category.id}
 							name={category.name}
 							description={category.description ?? ''}
+							icon={category.uiIcon}
 							color={category.uiColor}
 							itemCount={category.itemCount}
 						/>

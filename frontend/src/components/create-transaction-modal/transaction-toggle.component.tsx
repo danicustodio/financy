@@ -10,7 +10,10 @@ export interface TransactionToggleProps {
 	onChange: (value: 'expense' | 'income') => void;
 }
 
-export const TransactionToggle = ({ value, onChange }: TransactionToggleProps) => {
+export const TransactionToggle = ({
+	value,
+	onChange,
+}: TransactionToggleProps) => {
 	return (
 		<ToggleGroup
 			type="single"

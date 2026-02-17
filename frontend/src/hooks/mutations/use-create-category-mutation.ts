@@ -21,10 +21,10 @@ export function useCreateCategoryMutation() {
 
 	return useMutation({
 		mutationFn: (input: CreateCategoryInput) =>
-			authGraphqlRequest<CreateCategoryResponse, { input: CreateCategoryInput }>(
-				CREATE_CATEGORY_MUTATION,
-				{ input },
-			)(),
+			authGraphqlRequest<
+				CreateCategoryResponse,
+				{ input: CreateCategoryInput }
+			>(CREATE_CATEGORY_MUTATION, { input })(),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
 				queryKey: LIST_CATEGORIES_QUERY_KEY,

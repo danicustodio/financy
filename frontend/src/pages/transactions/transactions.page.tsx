@@ -45,7 +45,7 @@ export function Transactions() {
 	);
 
 	return (
-		<main className="flex flex-col gap-8 p-12">
+		<main className="m-auto flex max-w-7xl flex-col gap-8 p-12">
 			<PageHeader
 				title="Transações"
 				subtitle="Gerencie todas as suas transações financeiras"
