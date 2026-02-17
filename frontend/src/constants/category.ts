@@ -98,4 +98,14 @@ export const ICON_BACKGROUND_BY_COLOR: Record<CategoryColor, string> = {
 	red: '#FEE2E2',
 };
 
+export const TEXT_CLASS_BY_CATEGORY_COLOR: Record<CategoryColor, string> = {
+	blue: 'text-financy-blue-base',
+	purple: 'text-financy-purple-base',
+	yellow: 'text-financy-yellow-base',
+	pink: 'text-financy-pink-base',
+	green: 'text-financy-green-base',
+	orange: 'text-financy-orange-base',
+	red: 'text-financy-red-base',
+};
+
 export const CATEGORY_COLOR_FALLBACK: CategoryColor = 'blue';

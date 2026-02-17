@@ -2,6 +2,7 @@ import { ArrowUpDown, Plus, Tag } from 'lucide-react';
 import { LabelButton } from '@/components/label-button';
 import { PageHeader } from '@/components/page-header';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TEXT_CLASS_BY_CATEGORY_COLOR } from '@/constants/category';
 import { useCategoriesSummary } from '@/hooks/queries/use-categories-summary';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { toCategoryIcon } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
@@ -58,7 +59,11 @@ export function Categories() {
 					}
 					value={mostUsedCategory?.title ?? '-'}
 					label="categoria mais utilizada"
-					accentClassName={mostUsedCategory?.color}
+					accentClassName={
+						mostUsedCategory != null
+							? TEXT_CLASS_BY_CATEGORY_COLOR[mostUsedCategory.color]
+							: undefined
+					}
 				/>
 			</div>
 
