@@ -1,11 +1,9 @@
 import { ArrowUpDown, Plus, Tag } from 'lucide-react';
-import { useMemo } from 'react';
 import { LabelButton } from '@/components/label-button';
 import { PageHeader } from '@/components/page-header';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useCategoriesSummary } from '@/hooks/queries/use-categories-summary';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
-import { useListTransactions } from '@/hooks/queries/use-list-transactions';
-import { toCategoryColor } from '@/mappers/api-to-domain/category.api-to-domain.mapper';
 import { toCategoryIcon } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { CategoryCard } from './components/category-card.component';
 import { CategorySummaryCard } from './components/category-summary-card.component';
@@ -13,46 +11,11 @@ import { CreateCategoryModal } from './components/create-category-modal.componen
 
 export function Categories() {
 	const { data: categories = [], isLoading } = useListCategories();
-	const { data: transactions = [] } = useListTransactions();
+	const { data: summary } = useCategoriesSummary();
 
-	const categoryCountById = useMemo(() => {
-		return transactions.reduce<Record<string, number>>((acc, transaction) => {
-			acc[transaction.category.id] = (acc[transaction.category.id] ?? 0) + 1;
-			return acc;
-		}, {});
-	}, [transactions]);
-
-	const categoriesWithCount = useMemo(
-		() =>
-			categories.map((category) => ({
-				...category,
-				itemCount: categoryCountById[category.id] ?? 0,
-				uiColor: toCategoryColor(category.color),
-				uiIcon: toCategoryIcon(category.icon),
-			})),
-		[categories, categoryCountById],
-	);
-
-	const totalCategories = categoriesWithCount.length;
-	const totalTransactions = categoriesWithCount.reduce(
-		(sum, category) => sum + category.itemCount,
-		0,
-	);
-
-	const mostUsedCategory = useMemo(
-		() =>
-			categoriesWithCount.reduce<(typeof categoriesWithCount)[number] | null>(
-				(prev, current) => {
-					if (!prev || current.itemCount > prev.itemCount) {
-						return current;
-					}
-
-					return prev;
-				},
-				null,
-			),
-		[categoriesWithCount],
-	);
+	const totalCategories = summary?.totalCategories ?? 0;
+	const totalTransactions = summary?.totalTransactions ?? 0;
+	const mostUsedCategory = summary?.mostUsedCategory ?? null;
 
 	return (
 		<main className="m-auto flex max-w-7xl flex-col gap-8 p-12">
@@ -88,10 +51,14 @@ export function Categories() {
 				/>
 
 				<CategorySummaryCard
-					icon={mostUsedCategory?.uiIcon ?? Tag}
+					icon={
+						mostUsedCategory != null
+							? toCategoryIcon(mostUsedCategory.icon)
+							: Tag
+					}
 					value={mostUsedCategory?.title ?? '-'}
 					label="categoria mais utilizada"
-					accentClassName={mostUsedCategory?.color} // TODO: get the category color
+					accentClassName={mostUsedCategory?.color}
 				/>
 			</div>
 
@@ -103,14 +70,14 @@ export function Categories() {
 				</div>
 			) : (
 				<div className="grid grid-cols-4 gap-4">
-					{categoriesWithCount.map((category) => (
+					{categories.map((category) => (
 						<CategoryCard
 							key={category.id}
 							name={category.title}
 							description={category.description ?? ''}
-							icon={category.uiIcon}
-							color={category.uiColor}
-							itemCount={category.itemCount}
+							icon={toCategoryIcon(category.icon)}
+							color={category.color}
+							itemCount={category.transactionCount}
 						/>
 					))}
 				</div>

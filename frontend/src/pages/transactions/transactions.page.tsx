@@ -13,36 +13,84 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 import { toTransactionTableView } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
 import { TransactionsTable } from './transactions-table.component';
 
-export function Transactions() {
-	const [currentPage, setCurrentPage] = useState(1);
-	const pageSize = 10;
+const PAGE_SIZE = 10;
 
-	const handlePageChange = (page: number) => {
-		setCurrentPage(page);
+const MONTH_NAMES = [
+	'Janeiro',
+	'Fevereiro',
+	'Março',
+	'Abril',
+	'Maio',
+	'Junho',
+	'Julho',
+	'Agosto',
+	'Setembro',
+	'Outubro',
+	'Novembro',
+	'Dezembro',
+];
+
+function generatePeriodOptions() {
+	const now = new Date();
+	const options: { value: string; label: string }[] = [];
+	for (let i = 0; i < 12; i++) {
+		const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+		const month = date.getMonth() + 1;
+		const year = date.getFullYear();
+		const value = `${year}-${String(month).padStart(2, '0')}`;
+		const label = `${MONTH_NAMES[date.getMonth()]} / ${year}`;
+		options.push({ value, label });
+	}
+	return options;
+}
+
+const PERIOD_OPTIONS = generatePeriodOptions();
+
+function parsePeriod(period: string): { month: number; year: number } {
+	const [year, month] = period.split('-').map(Number);
+	return { month, year };
+}
+
+export function Transactions() {
+	const [search, setSearch] = useState('');
+	const [type, setType] = useState('all');
+	const [categoryId, setCategoryId] = useState('all');
+	const [period, setPeriod] = useState(PERIOD_OPTIONS[0].value);
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const { month, year } = parsePeriod(period);
+
+	const filter = {
+		...(search.trim() !== '' && { search: search.trim() }),
+		...(type !== 'all' && { type }),
+		...(categoryId !== 'all' && { categoryId }),
+		month,
+		year,
 	};
 
-	const { data: transactions = [], isLoading } = useListTransactions();
+	const { data, isLoading } = useListTransactions({
+		filter,
+		pagination: { page: currentPage, pageSize: PAGE_SIZE },
+	});
 
-	const totalResults = transactions.length;
-	const totalPages = Math.max(1, Math.ceil(totalResults / pageSize));
+	const { data: categories = [] } = useListCategories();
 
-	const currentPageTransactions = useMemo(
-		() =>
-			transactions.slice(
-				(currentPage - 1) * pageSize,
-				(currentPage - 1) * pageSize + pageSize,
-			),
-		[transactions, currentPage],
-	);
-
+	const totalCount = data?.totalCount ?? 0;
+	const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 	const tableRows = useMemo(
-		() => currentPageTransactions.map(toTransactionTableView),
-		[currentPageTransactions],
+		() => (data?.items ?? []).map(toTransactionTableView),
+		[data],
 	);
+
+	function handleFilterChange(updater: () => void) {
+		updater();
+		setCurrentPage(1);
+	}
 
 	return (
 		<main className="m-auto flex max-w-7xl flex-col gap-8 p-12">
@@ -78,6 +126,10 @@ export function Transactions() {
 							<Input
 								type="text"
 								id="search"
+								value={search}
+								onChange={(e) =>
+									handleFilterChange(() => setSearch(e.target.value))
+								}
 								placeholder="Buscar por descrição"
 								className="h-auto rounded-lg border-financy-gray-300 bg-financy-white py-3.5 pl-10 text-base shadow-none placeholder:text-financy-gray-400"
 							/>
@@ -92,7 +144,12 @@ export function Transactions() {
 						>
 							Tipo
 						</Label>
-						<Select defaultValue="all">
+						<Select
+							value={type}
+							onValueChange={(value) =>
+								handleFilterChange(() => setType(value))
+							}
+						>
 							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
 								<SelectValue placeholder="Todos" />
 							</SelectTrigger>
@@ -112,12 +169,22 @@ export function Transactions() {
 						>
 							Categoria
 						</Label>
-						<Select defaultValue="all">
+						<Select
+							value={categoryId}
+							onValueChange={(value) =>
+								handleFilterChange(() => setCategoryId(value))
+							}
+						>
 							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
 								<SelectValue placeholder="Todas" />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="all">Todas</SelectItem>
+								{categories.map((cat) => (
+									<SelectItem key={cat.id} value={cat.id}>
+										{cat.title}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -130,15 +197,21 @@ export function Transactions() {
 						>
 							Período
 						</Label>
-						<Select defaultValue="2025-11">
+						<Select
+							value={period}
+							onValueChange={(value) =>
+								handleFilterChange(() => setPeriod(value))
+							}
+						>
 							<SelectTrigger className="h-auto w-full rounded-lg border-financy-gray-300 bg-financy-white px-3 py-3.5 text-base text-financy-gray-800 shadow-none">
 								<SelectValue placeholder="Selecionar período" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="2025-11">Novembro / 2025</SelectItem>
-								<SelectItem value="2025-12">Dezembro / 2025</SelectItem>
-								<SelectItem value="2026-01">Janeiro / 2026</SelectItem>
-								<SelectItem value="2026-02">Fevereiro / 2026</SelectItem>
+								{PERIOD_OPTIONS.map((opt) => (
+									<SelectItem key={opt.value} value={opt.value}>
+										{opt.label}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -155,9 +228,9 @@ export function Transactions() {
 					transactions={tableRows}
 					currentPage={currentPage}
 					totalPages={totalPages}
-					totalResults={totalResults}
-					pageSize={pageSize}
-					onPageChange={handlePageChange}
+					totalResults={totalCount}
+					pageSize={PAGE_SIZE}
+					onPageChange={setCurrentPage}
 				/>
 			)}
 		</main>

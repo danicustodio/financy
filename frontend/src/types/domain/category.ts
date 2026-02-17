@@ -33,6 +33,7 @@ export interface Category {
 	icon: CategoryIconName;
 	description: string | null;
 	color: CategoryColor;
+	transactionCount: number;
 }
 
 export type CategorySummary = Pick<Category, 'id' | 'title' | 'icon' | 'color'>;

@@ -6,6 +6,7 @@ export const LIST_CATEGORIES_QUERY = `
       icon
       description
       color
+      transactionCount
     }
   }
 `;

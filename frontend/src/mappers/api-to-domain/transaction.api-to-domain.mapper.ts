@@ -6,7 +6,7 @@ import {
 } from './category.api-to-domain.mapper';
 
 export function mapApiTransactionToDomain(
-	transaction: ListTransactionsResponse['transactions'][number],
+	transaction: ListTransactionsResponse['transactions']['items'][number],
 ): Transaction {
 	return {
 		...transaction,

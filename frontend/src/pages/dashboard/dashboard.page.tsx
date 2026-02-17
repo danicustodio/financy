@@ -1,5 +1,6 @@
 import { CircleArrowDown, CircleArrowUp, Wallet } from 'lucide-react';
 import { useMemo } from 'react';
+import { SectionErrorBoundary } from '@/components/error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDashboardSummary } from '@/hooks/queries/use-dashboard-summary';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
@@ -15,13 +16,13 @@ function DashboardSkeleton() {
 	return (
 		<main className="m-auto max-w-7xl p-12">
 			<div className="mb-6 flex gap-6">
-				<Skeleton className="h-[120px] flex-1 rounded-xl" />
-				<Skeleton className="h-[120px] flex-1 rounded-xl" />
-				<Skeleton className="h-[120px] flex-1 rounded-xl" />
+				<Skeleton className="h-30 flex-1 rounded-xl" />
+				<Skeleton className="h-30 flex-1 rounded-xl" />
+				<Skeleton className="h-30 flex-1 rounded-xl" />
 			</div>
 			<div className="flex gap-6">
-				<Skeleton className="h-[400px] flex-2 rounded-xl" />
-				<Skeleton className="h-[400px] flex-1 rounded-xl" />
+				<Skeleton className="h-100 flex-2 rounded-xl" />
+				<Skeleton className="h-100 flex-1 rounded-xl" />
 			</div>
 		</main>
 	);
@@ -29,7 +30,10 @@ function DashboardSkeleton() {
 
 export function Dashboard() {
 	const { data: categories = [] } = useListCategories();
-	const { data: transactions = [], isLoading } = useListTransactions();
+	const { data: transactionData, isLoading } = useListTransactions({
+		pagination: { page: 1, pageSize: 5 },
+	});
+	const transactions = transactionData?.items ?? [];
 	const { data: summary } = useDashboardSummary();
 
 	const recentTransactions = useMemo(
@@ -70,31 +74,35 @@ export function Dashboard() {
 
 	return (
 		<main className="m-auto max-w-7xl p-12">
-			<div className="mb-6 flex gap-6">
-				<SummaryCard
-					icon={Wallet}
-					label="Saldo total"
-					value={presentAmount(summary?.totalBalance ?? 0)}
-					accentClassName="text-financy-purple-base"
-				/>
-				<SummaryCard
-					icon={CircleArrowUp}
-					label="Receitas do mês"
-					value={presentAmount(summary?.monthlyIncome ?? 0)}
-					accentClassName="text-financy-brand-base"
-				/>
-				<SummaryCard
-					icon={CircleArrowDown}
-					label="Despesas do mês"
-					value={presentAmount(summary?.monthlyExpense ?? 0)}
-					accentClassName="text-financy-red-base"
-				/>
-			</div>
+			<SectionErrorBoundary>
+				<div className="mb-6 flex gap-6">
+					<SummaryCard
+						icon={Wallet}
+						label="Saldo total"
+						value={presentAmount(summary?.totalBalance ?? 0)}
+						accentClassName="text-financy-purple-base"
+					/>
+					<SummaryCard
+						icon={CircleArrowUp}
+						label="Receitas do mês"
+						value={presentAmount(summary?.monthlyIncome ?? 0)}
+						accentClassName="text-financy-brand-base"
+					/>
+					<SummaryCard
+						icon={CircleArrowDown}
+						label="Despesas do mês"
+						value={presentAmount(summary?.monthlyExpense ?? 0)}
+						accentClassName="text-financy-red-base"
+					/>
+				</div>
+			</SectionErrorBoundary>
 
-			<div className="flex gap-6">
-				<RecentTransactions transactions={recentTransactions} />
-				<CategoriesSection categories={categoriesSectionData} />
-			</div>
+			<SectionErrorBoundary>
+				<div className="flex gap-6">
+					<RecentTransactions transactions={recentTransactions} />
+					<CategoriesSection categories={categoriesSectionData} />
+				</div>
+			</SectionErrorBoundary>
 		</main>
 	);
 }

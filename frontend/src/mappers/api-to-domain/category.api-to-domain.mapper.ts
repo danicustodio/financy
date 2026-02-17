@@ -3,7 +3,11 @@ import {
 	CATEGORY_ICON_COMPONENT_BY_NAME,
 } from '@/constants/category';
 import type { ListCategoriesResponse } from '@/types/api/operations';
-import type { Category, CategoryColor, CategoryIconName } from '@/types/domain/category';
+import type {
+	Category,
+	CategoryColor,
+	CategoryIconName,
+} from '@/types/domain/category';
 
 export function toCategoryColor(color: string): CategoryColor {
 	switch (color) {

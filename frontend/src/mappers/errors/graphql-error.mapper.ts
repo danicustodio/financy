@@ -20,7 +20,10 @@ export function mapGraphQLError(
 
 	for (const rule of rules) {
 		if (rule.code && code === rule.code) return rule.userMessage;
-		if (rule.messageIncludes && gqlError.message?.includes(rule.messageIncludes))
+		if (
+			rule.messageIncludes &&
+			gqlError.message?.includes(rule.messageIncludes)
+		)
 			return rule.userMessage;
 	}
 

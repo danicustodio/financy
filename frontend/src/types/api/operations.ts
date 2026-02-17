@@ -12,10 +12,51 @@ type ApiCategorySummary = Omit<CategorySummary, 'icon' | 'color'> & {
 	color: string;
 };
 
-export interface ListTransactionsResponse {
-	transactions: (Omit<Transaction, 'category'> & {
+export interface TransactionFilterInput {
+	search?: string;
+	type?: string;
+	categoryId?: string;
+	month?: number;
+	year?: number;
+}
+
+export interface TransactionPaginationInput {
+	page: number;
+	pageSize: number;
+}
+
+export interface TransactionPageData {
+	totalCount: number;
+	items: (Omit<Transaction, 'category'> & {
 		category: ApiCategorySummary;
 	})[];
+}
+
+export interface ListTransactionsResponse {
+	transactions: TransactionPageData;
+}
+
+export interface ListTransactionsVariables {
+	filter?: TransactionFilterInput;
+	pagination?: TransactionPaginationInput;
+}
+
+export interface MostUsedCategorySummaryData {
+	id: string;
+	title: string;
+	icon: string;
+	color: string;
+	transactionCount: number;
+}
+
+export interface CategoriesSummaryData {
+	totalCategories: number;
+	totalTransactions: number;
+	mostUsedCategory: MostUsedCategorySummaryData | null;
+}
+
+export interface CategoriesSummaryResponse {
+	categoriesSummary: CategoriesSummaryData;
 }
 
 export interface ListCategoriesResponse {
