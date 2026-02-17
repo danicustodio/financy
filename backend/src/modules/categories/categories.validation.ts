@@ -8,8 +8,6 @@ export const categoryIconSchema = z.enum([
 	'piggy-bank',
 	'shopping-cart',
 	'heart-pulse',
-	'tag',
-	'tool-case',
 	'paw-print',
 	'house',
 	'gift',
@@ -17,6 +15,8 @@ export const categoryIconSchema = z.enum([
 	'book-open',
 	'receipt-text',
 	'mailbox',
+	'tool-case',
+	'baggage-claim',
 ]);
 
 export const categoryColorSchema = z.enum([
@@ -27,7 +27,6 @@ export const categoryColorSchema = z.enum([
 	'purple',
 	'orange',
 	'pink',
-	'gray',
 ]);
 
 export const createCategoryInputSchema = z.object({
