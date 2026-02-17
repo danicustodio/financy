@@ -7,14 +7,14 @@ export class CategoriesRepository {
 	listByUserId(userId: string) {
 		return this.prisma.category.findMany({
 			where: { userId },
-			orderBy: { name: 'asc' },
+			orderBy: { title: 'asc' },
 		});
 	}
 
 	create(userId: string, input: CreateCategoryInput) {
 		return this.prisma.category.create({
 			data: {
-				name: input.name,
+				title: input.title,
 				icon: input.icon,
 				description: input.description,
 				color: input.color,

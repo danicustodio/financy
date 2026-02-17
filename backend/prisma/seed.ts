@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
 type SeedCategory = {
-	name: string;
+	title: string;
 	icon: string;
 	color: string;
 	description: string;
@@ -30,25 +30,25 @@ const users = [
 		password: '12345678',
 		categories: [
 			{
-				name: 'Salary',
+				title: 'Salary',
 				icon: 'briefcase-business',
 				color: 'green',
 				description: 'Primary monthly income',
 			},
 			{
-				name: 'Groceries',
+				title: 'Groceries',
 				icon: 'shopping-cart',
 				color: 'blue',
 				description: 'Supermarket and essentials',
 			},
 			{
-				name: 'Housing',
+				title: 'Housing',
 				icon: 'house',
 				color: 'orange',
 				description: 'Rent and housing costs',
 			},
 			{
-				name: 'Health',
+				title: 'Health',
 				icon: 'heart-pulse',
 				color: 'red',
 				description: 'Medication and doctor expenses',
@@ -91,19 +91,19 @@ const users = [
 		password: '12345678',
 		categories: [
 			{
-				name: 'Freelance',
+				title: 'Freelance',
 				icon: 'tool-case',
 				color: 'purple',
 				description: 'Freelance and side projects',
 			},
 			{
-				name: 'Transport',
+				title: 'Transport',
 				icon: 'car-front',
 				color: 'gray',
 				description: 'Fuel and ride-sharing',
 			},
 			{
-				name: 'Leisure',
+				title: 'Leisure',
 				icon: 'ticket',
 				color: 'pink',
 				description: 'Entertainment expenses',
@@ -154,8 +154,8 @@ async function seedUser(userSeed: (typeof users)[number]) {
 	for (const category of userSeed.categories) {
 		await prisma.category.upsert({
 			where: {
-				name_userId: {
-					name: category.name,
+				title_userId: {
+					title: category.title,
 					userId: user.id,
 				},
 			},
@@ -165,7 +165,7 @@ async function seedUser(userSeed: (typeof users)[number]) {
 				description: category.description,
 			},
 			create: {
-				name: category.name,
+				title: category.title,
 				icon: category.icon,
 				color: category.color,
 				description: category.description,
@@ -176,8 +176,12 @@ async function seedUser(userSeed: (typeof users)[number]) {
 
 	await prisma.transaction.deleteMany({ where: { userId: user.id } });
 
-	const categories = await prisma.category.findMany({ where: { userId: user.id } });
-	const categoriesByName = new Map(categories.map((category) => [category.name, category.id]));
+	const categories = await prisma.category.findMany({
+		where: { userId: user.id },
+	});
+	const categoriesByName = new Map(
+		categories.map((category) => [category.title, category.id]),
+	);
 
 	await prisma.transaction.createMany({
 		data: userSeed.transactions.map((transaction) => {
@@ -185,7 +189,7 @@ async function seedUser(userSeed: (typeof users)[number]) {
 
 			if (!categoryId) {
 				throw new Error(
-					`Category \"${transaction.categoryName}\" not found for user ${user.email}`,
+					`Category "${transaction.categoryName}" not found for user ${user.email}`,
 				);
 			}
 

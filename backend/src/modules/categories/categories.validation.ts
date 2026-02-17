@@ -30,7 +30,7 @@ export const categoryColorSchema = z.enum([
 ]);
 
 export const createCategoryInputSchema = z.object({
-	name: z.string().min(1, 'Name is required'),
+	title: z.string().min(1, 'Title is required'),
 	icon: categoryIconSchema,
 	description: z.string().optional(),
 	color: categoryColorSchema,

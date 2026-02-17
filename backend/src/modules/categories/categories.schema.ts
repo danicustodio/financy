@@ -8,7 +8,7 @@ import {
 export const CategoryRef = builder.prismaObject('Category', {
 	fields: (t) => ({
 		id: t.exposeID('id'),
-		name: t.exposeString('name'),
+		title: t.exposeString('title'),
 		icon: t.exposeString('icon'),
 		description: t.exposeString('description', { nullable: true }),
 		color: t.exposeString('color'),
@@ -18,9 +18,9 @@ export const CategoryRef = builder.prismaObject('Category', {
 
 export const CreateCategoryInputRef = builder.inputType('CreateCategoryInput', {
 	fields: (t) => ({
-		name: t.string({
+		title: t.string({
 			required: true,
-			validate: createCategoryInputSchema.shape.name,
+			validate: createCategoryInputSchema.shape.title,
 		}),
 		icon: t.string({ required: true, validate: categoryIconSchema }),
 		description: t.string({ required: false }),
