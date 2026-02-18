@@ -78,6 +78,7 @@ export function Categories() {
 					{categories.map((category) => (
 						<CategoryCard
 							key={category.id}
+							id={category.id}
 							name={category.title}
 							description={category.description ?? ''}
 							icon={toCategoryIcon(category.icon)}

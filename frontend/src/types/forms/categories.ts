@@ -1,5 +1,11 @@
-import type { Category } from '@/types/domain/category';
+import type {
+	CategoryColor,
+	CategoryIconName,
+} from '@/types/domain/category';
 
-export type CreateCategoryFormData = Omit<Category, 'id' | 'description'> & {
+export interface CreateCategoryFormData {
+	title: string;
+	icon: CategoryIconName;
+	color: CategoryColor;
 	description?: string;
-};
+}

@@ -78,12 +78,23 @@ export interface DashboardSummaryVariables {
 	year: number;
 }
 
-export type CreateCategoryInput = Omit<Category, 'id' | 'description'> & {
+export interface CreateCategoryInput {
+	title: string;
+	icon: Category['icon'];
+	color: Category['color'];
 	description: string;
-};
+}
 
 export interface CreateCategoryResponse {
 	createCategory: ApiCategory;
+}
+
+export interface DeleteCategoryResponse {
+	deleteCategory: boolean;
+}
+
+export interface DeleteCategoryVariables {
+	id: string;
 }
 
 export interface CreateTransactionInput {

@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CREATE_CATEGORY_MUTATION } from '@/graphql';
+import { DELETE_CATEGORY_MUTATION } from '@/graphql';
 import { authGraphqlRequest } from '@/graphql/graphql-client';
 import type {
-	CreateCategoryInput,
-	CreateCategoryResponse,
+	DeleteCategoryResponse,
+	DeleteCategoryVariables,
 } from '@/types/api/operations';
 import { CATEGORIES_SUMMARY_QUERY_KEY } from '../queries/use-categories-summary';
 import { LIST_CATEGORIES_QUERY_KEY } from '../queries/use-list-categories';
 
-export function useCreateCategoryMutation() {
+export function useDeleteCategoryMutation() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (input: CreateCategoryInput) =>
-			authGraphqlRequest<
-				CreateCategoryResponse,
-				{ input: CreateCategoryInput }
-			>(CREATE_CATEGORY_MUTATION, { input })(),
+		mutationFn: (variables: DeleteCategoryVariables) =>
+			authGraphqlRequest<DeleteCategoryResponse, DeleteCategoryVariables>(
+				DELETE_CATEGORY_MUTATION,
+				variables,
+			)(),
 		onSuccess: async () => {
 			await Promise.all([
 				queryClient.invalidateQueries({

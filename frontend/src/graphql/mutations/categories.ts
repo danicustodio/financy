@@ -9,3 +9,9 @@ export const CREATE_CATEGORY_MUTATION = `
     }
   }
 `;
+
+export const DELETE_CATEGORY_MUTATION = `
+  mutation DeleteCategory($id: ID!) {
+    deleteCategory(id: $id)
+  }
+`;

@@ -1,5 +1,5 @@
 import { XIcon } from 'lucide-react';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import {
@@ -31,11 +31,14 @@ export const CreateCategoryModal = ({ children }: CreateCategoryModalProps) => {
 
 	const titleError = form.formState.errors.title?.message;
 
-	const handleOpenChange = (open: boolean) => {
-		setIsOpen(open);
-		if (!open) {
+	useEffect(() => {
+		if (!isOpen) {
 			form.reset();
 		}
+	}, [form, isOpen]);
+
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
 	};
 
 	return (
