@@ -5,7 +5,10 @@ import {
 	CategoryRef,
 	CreateCategoryInputRef,
 } from './categories.schema';
-import { createCategoryInputSchema } from './categories.validation';
+import {
+	categoryIdSchema,
+	createCategoryInputSchema,
+} from './categories.validation';
 
 builder.queryFields((t) => ({
 	categories: t.field({
@@ -35,6 +38,19 @@ builder.mutationFields((t) => ({
 				ctx.services.categories.create(
 					ctx.currentUser,
 					createCategoryInputSchema.parse(args.input),
+				),
+			),
+	}),
+	deleteCategory: t.field({
+		type: 'Boolean',
+		args: {
+			id: t.arg.id({ required: true }),
+		},
+		resolve: async (_root, args, ctx) =>
+			mapResolverError(async () =>
+				ctx.services.categories.delete(
+					ctx.currentUser,
+					categoryIdSchema.parse(args.id),
 				),
 			),
 	}),

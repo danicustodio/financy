@@ -29,6 +29,18 @@ export class CategoriesRepository {
 		});
 	}
 
+	countTransactionsByCategoryIdAndUserId(categoryId: string, userId: string) {
+		return this.prisma.transaction.count({
+			where: { categoryId, userId },
+		});
+	}
+
+	deleteById(categoryId: string) {
+		return this.prisma.category.delete({
+			where: { id: categoryId },
+		});
+	}
+
 	countAllByUserId(userId: string) {
 		return this.prisma.category.count({ where: { userId } });
 	}

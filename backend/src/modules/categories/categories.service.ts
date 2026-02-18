@@ -45,4 +45,48 @@ export class CategoriesService {
 			throw error;
 		}
 	}
+
+	async delete(currentUser: User | null, categoryId: string) {
+		const user = requireAuth(currentUser);
+
+		const category = await this.categoriesRepository.findByIdAndUserId(
+			categoryId,
+			user.id,
+		);
+
+		if (!category) {
+			throw new AppError(errorCodes.NOT_FOUND, 'Category not found');
+		}
+
+		const transactionCount =
+			await this.categoriesRepository.countTransactionsByCategoryIdAndUserId(
+				categoryId,
+				user.id,
+			);
+
+		if (transactionCount > 0) {
+			throw new AppError(
+				errorCodes.CONFLICT,
+				'Category with transactions cannot be deleted',
+			);
+		}
+
+		try {
+			await this.categoriesRepository.deleteById(categoryId);
+		} catch (error) {
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === 'P2003'
+			) {
+				throw new AppError(
+					errorCodes.CONFLICT,
+					'Category with transactions cannot be deleted',
+				);
+			}
+
+			throw error;
+		}
+
+		return true;
+	}
 }
