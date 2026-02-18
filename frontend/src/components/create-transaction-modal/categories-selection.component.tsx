@@ -44,7 +44,7 @@ export const CategoriesSelection = ({
 						type="button"
 						id="category"
 						className={cn(
-							'flex w-full items-center justify-between rounded-md border bg-financy-white p-3 py-3.5 text-left text-sm',
+							'flex w-full items-center justify-between rounded-md border bg-financy-white p-3 py-3.25 text-left text-sm',
 							errorMessage
 								? 'border-financy-danger'
 								: 'border-financy-gray-300',

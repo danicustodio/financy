@@ -4,10 +4,7 @@ import {
 	ICON_BACKGROUND_BY_COLOR,
 } from '@/constants/category';
 import type { Transaction } from '@/types/domain/transaction';
-import type {
-	TransactionRowView,
-	TransactionTableView,
-} from '@/types/view/transactions';
+import type { TransactionRowView } from '@/types/view/transactions';
 
 const shortDateFormatter = new Intl.DateTimeFormat('pt-BR', {
 	day: '2-digit',
@@ -32,21 +29,6 @@ export function iconBackgroundColor(
 	color: Transaction['category']['color'],
 ): string {
 	return ICON_BACKGROUND_BY_COLOR[color];
-}
-
-export function toTransactionTableView(
-	transaction: Transaction,
-): TransactionTableView {
-	return {
-		id: transaction.id,
-		description: transaction.description,
-		date: formatDate(transaction.date),
-		category: transaction.category.title,
-		categoryColor: transaction.category.color,
-		amount: transaction.amount,
-		type: transaction.type,
-		iconBgColor: iconBackgroundColor(transaction.category.color),
-	};
 }
 
 export function toTransactionRowView(

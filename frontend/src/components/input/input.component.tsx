@@ -52,7 +52,7 @@ export const Input = ({
 
 			<div
 				className={cn(
-					'flex w-full items-center gap-3 rounded-md p-3 py-3.5',
+					'flex w-full items-center gap-3 rounded-md p-3 py-2.75',
 					'border border-financy-gray-300 bg-financy-white,',
 				)}
 			>

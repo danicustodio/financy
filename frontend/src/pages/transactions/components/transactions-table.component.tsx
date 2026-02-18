@@ -41,16 +41,16 @@ export const TransactionsTable = ({
 						<TableHead className="h-auto w-28 px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 							Data
 						</TableHead>
-						<TableHead className="h-auto w-[200px] px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
+						<TableHead className="h-auto w-50 px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 							Categoria
 						</TableHead>
-						<TableHead className="h-auto w-[136px] px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
+						<TableHead className="h-auto w-34 px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 							Tipo
 						</TableHead>
-						<TableHead className="h-auto w-[200px] px-6 py-5 text-right font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
+						<TableHead className="h-auto w-50 px-6 py-5 text-right font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 							Valor
 						</TableHead>
-						<TableHead className="h-auto w-[120px] px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
+						<TableHead className="h-auto w-50 px-6 py-5 text-center font-medium text-financy-gray-500 text-xs uppercase tracking-wider">
 							Ações
 						</TableHead>
 					</TableRow>
