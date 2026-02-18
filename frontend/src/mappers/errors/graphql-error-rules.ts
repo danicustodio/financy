@@ -62,7 +62,24 @@ export const DELETE_CATEGORY_ERROR_RULES: ErrorRule[] = [
 	},
 	{
 		code: 'CONFLICT',
-		userMessage:
-			'Esta categoria possui transações e não pode ser excluída.',
+		userMessage: 'Esta categoria possui transações e não pode ser excluída.',
+	},
+];
+
+export const UPDATE_CATEGORY_ERROR_FALLBACK =
+	'Ocorreu um erro ao atualizar a categoria. Tente novamente.';
+
+export const UPDATE_CATEGORY_ERROR_RULES: ErrorRule[] = [
+	{
+		code: 'UNAUTHENTICATED',
+		userMessage: 'Sua sessão expirou. Faça login novamente.',
+	},
+	{
+		code: 'NOT_FOUND',
+		userMessage: 'Categoria não encontrada.',
+	},
+	{
+		code: 'CONFLICT',
+		userMessage: 'Já existe uma categoria com este nome.',
 	},
 ];

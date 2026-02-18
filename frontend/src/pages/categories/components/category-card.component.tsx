@@ -11,13 +11,15 @@ import {
 	DELETE_CATEGORY_ERROR_FALLBACK,
 	DELETE_CATEGORY_ERROR_RULES,
 } from '@/mappers/errors/graphql-error-rules';
-import type { CategoryColor } from '@/types/domain/category';
+import type { Category, CategoryColor, CategoryIconName } from '@/types/domain/category';
 import { DeleteCategoryDialog } from './delete-category-dialog.component';
+import { EditCategoryModal } from './edit-category-modal.component';
 
 interface CategoryCardProps {
 	id: string;
 	name: string;
 	description: string;
+	iconName: CategoryIconName;
 	icon: LucideIcon;
 	color: CategoryColor;
 	itemCount: number;
@@ -27,11 +29,13 @@ export const CategoryCard = ({
 	id,
 	name,
 	description,
+	iconName,
 	icon,
 	color,
 	itemCount,
 }: CategoryCardProps) => {
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 	const deleteCategoryMutation = useDeleteCategoryMutation();
 
@@ -78,6 +82,7 @@ export const CategoryCard = ({
 							variant="outline"
 							aria-label="Editar categoria"
 							icon={<SquarePen className="h-4 w-4 text-financy-gray-700" />}
+							onClick={() => setIsEditDialogOpen(true)}
 							disabled={deleteCategoryMutation.isPending}
 						/>
 					</div>
@@ -110,6 +115,21 @@ export const CategoryCard = ({
 				onOpenChange={setIsDeleteDialogOpen}
 				onCancel={() => setIsDeleteDialogOpen(false)}
 				onConfirm={handleDelete}
+			/>
+
+			<EditCategoryModal
+				category={
+					{
+						id,
+						title: name,
+						description,
+						icon: iconName,
+						color,
+						transactionCount: itemCount,
+					} satisfies Category
+				}
+				isOpen={isEditDialogOpen}
+				onOpenChange={setIsEditDialogOpen}
 			/>
 		</>
 	);

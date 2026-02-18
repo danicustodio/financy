@@ -81,6 +81,7 @@ export function Categories() {
 							id={category.id}
 							name={category.title}
 							description={category.description ?? ''}
+							iconName={category.icon}
 							icon={toCategoryIcon(category.icon)}
 							color={category.color}
 							itemCount={category.transactionCount}

@@ -9,3 +9,7 @@ export interface CreateCategoryFormData {
 	color: CategoryColor;
 	description?: string;
 }
+
+export interface UpdateCategoryFormData extends CreateCategoryFormData {
+	id: string;
+}

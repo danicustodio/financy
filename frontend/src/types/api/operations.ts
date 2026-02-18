@@ -89,6 +89,14 @@ export interface CreateCategoryResponse {
 	createCategory: ApiCategory;
 }
 
+export interface UpdateCategoryInput extends CreateCategoryInput {
+	id: string;
+}
+
+export interface UpdateCategoryResponse {
+	updateCategory: ApiCategory;
+}
+
 export interface DeleteCategoryResponse {
 	deleteCategory: boolean;
 }
