@@ -4,10 +4,12 @@ import {
 	CategoriesSummaryRef,
 	CategoryRef,
 	CreateCategoryInputRef,
+	UpdateCategoryInputRef,
 } from './categories.schema';
 import {
 	categoryIdSchema,
 	createCategoryInputSchema,
+	updateCategoryInputSchema,
 } from './categories.validation';
 
 builder.queryFields((t) => ({
@@ -38,6 +40,19 @@ builder.mutationFields((t) => ({
 				ctx.services.categories.create(
 					ctx.currentUser,
 					createCategoryInputSchema.parse(args.input),
+				),
+			),
+	}),
+	updateCategory: t.field({
+		type: CategoryRef,
+		args: {
+			input: t.arg({ type: UpdateCategoryInputRef, required: true }),
+		},
+		resolve: async (_root, args, ctx) =>
+			mapResolverError(async () =>
+				ctx.services.categories.update(
+					ctx.currentUser,
+					updateCategoryInputSchema.parse(args.input),
 				),
 			),
 	}),

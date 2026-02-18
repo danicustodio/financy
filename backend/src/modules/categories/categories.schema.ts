@@ -3,6 +3,7 @@ import {
 	categoryColorSchema,
 	categoryIconSchema,
 	createCategoryInputSchema,
+	updateCategoryInputSchema,
 } from './categories.validation';
 
 export const CategoryRef = builder.prismaObject('Category', {
@@ -43,6 +44,22 @@ export const CategoriesSummaryRef = builder.simpleObject('CategoriesSummary', {
 
 export const CreateCategoryInputRef = builder.inputType('CreateCategoryInput', {
 	fields: (t) => ({
+		title: t.string({
+			required: true,
+			validate: createCategoryInputSchema.shape.title,
+		}),
+		icon: t.string({ required: true, validate: categoryIconSchema }),
+		description: t.string({ required: false }),
+		color: t.string({ required: true, validate: categoryColorSchema }),
+	}),
+});
+
+export const UpdateCategoryInputRef = builder.inputType('UpdateCategoryInput', {
+	fields: (t) => ({
+		id: t.id({
+			required: true,
+			validate: updateCategoryInputSchema.shape.id,
+		}),
 		title: t.string({
 			required: true,
 			validate: createCategoryInputSchema.shape.title,

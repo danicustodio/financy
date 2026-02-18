@@ -36,6 +36,11 @@ export const createCategoryInputSchema = z.object({
 	color: categoryColorSchema,
 });
 
+export const updateCategoryInputSchema = createCategoryInputSchema.extend({
+	id: z.uuid('Invalid category id'),
+});
+
 export const categoryIdSchema = z.uuid('Invalid category id');
 
 export type CreateCategoryInput = z.infer<typeof createCategoryInputSchema>;
+export type UpdateCategoryInput = z.infer<typeof updateCategoryInputSchema>;

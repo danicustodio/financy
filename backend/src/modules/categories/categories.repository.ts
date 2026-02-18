@@ -1,5 +1,8 @@
 import type { PrismaClient } from '@prisma/client';
-import type { CreateCategoryInput } from './categories.validation';
+import type {
+	CreateCategoryInput,
+	UpdateCategoryInput,
+} from './categories.validation';
 
 export class CategoriesRepository {
 	constructor(private readonly prisma: PrismaClient) {}
@@ -19,6 +22,18 @@ export class CategoriesRepository {
 				description: input.description,
 				color: input.color,
 				userId,
+			},
+		});
+	}
+
+	update(input: UpdateCategoryInput) {
+		return this.prisma.category.update({
+			where: { id: input.id },
+			data: {
+				title: input.title,
+				icon: input.icon,
+				description: input.description,
+				color: input.color,
 			},
 		});
 	}
