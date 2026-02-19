@@ -16,3 +16,8 @@ export function parseAmount(value: string): number {
 
 	return Math.round(parsedValue * 100);
 }
+
+export function formatAmountInput(amount: number): string {
+	const normalized = amount / 100;
+	return normalized.toFixed(2).replace('.', ',');
+}

@@ -17,6 +17,7 @@ import {
 	TransactionsFilterBar,
 } from './components/transactions-filter-bar.component';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog.component';
+import { EditTransactionModal } from './components/edit-transaction-modal.component';
 import { TransactionsTable } from './components/transactions-table.component';
 
 const PAGE_SIZE = 10;
@@ -40,6 +41,9 @@ export function Transactions() {
 	const [selectedTransactionDescription, setSelectedTransactionDescription] =
 		useState('');
 	const [deleteError, setDeleteError] = useState<string | null>(null);
+	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+	const [selectedTransactionIdForEdit, setSelectedTransactionIdForEdit] =
+		useState<string | null>(null);
 
 	const { month, year } = parsePeriod(period);
 
@@ -66,6 +70,9 @@ export function Transactions() {
 		() => (data?.items ?? []).map(toTransactionRowView),
 		[data],
 	);
+	const selectedTransactionForEdit =
+		data?.items.find((transaction) => transaction.id === selectedTransactionIdForEdit) ??
+		null;
 
 	function handleFilterChange(updater: () => void) {
 		updater();
@@ -78,6 +85,11 @@ export function Transactions() {
 		setSelectedTransactionId(id);
 		setSelectedTransactionDescription(transaction?.description ?? '');
 		setIsDeleteDialogOpen(true);
+	}
+
+	function openEditModal(id: string) {
+		setSelectedTransactionIdForEdit(id);
+		setIsEditModalOpen(true);
 	}
 
 	async function handleDeleteConfirm() {
@@ -145,6 +157,7 @@ export function Transactions() {
 					pageSize={PAGE_SIZE}
 					isDeleting={deleteTransactionMutation.isPending}
 					onPageChange={setCurrentPage}
+					onEdit={openEditModal}
 					onDelete={openDeleteDialog}
 				/>
 			)}
@@ -158,6 +171,17 @@ export function Transactions() {
 				onCancel={() => setIsDeleteDialogOpen(false)}
 				onConfirm={handleDeleteConfirm}
 			/>
+
+				<EditTransactionModal
+					transaction={selectedTransactionForEdit}
+					isOpen={isEditModalOpen}
+					onOpenChange={(open) => {
+						setIsEditModalOpen(open);
+						if (!open) {
+							setSelectedTransactionIdForEdit(null);
+						}
+					}}
+				/>
 		</main>
 	);
 }

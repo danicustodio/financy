@@ -8,6 +8,10 @@ export interface CreateTransactionFormData {
 	type: TransactionType;
 }
 
+export interface UpdateTransactionFormData extends CreateTransactionFormData {
+	id: string;
+}
+
 export interface CategoryOption {
 	id: string;
 	name: string;

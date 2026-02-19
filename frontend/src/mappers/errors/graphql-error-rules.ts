@@ -97,3 +97,17 @@ export const UPDATE_CATEGORY_ERROR_RULES: ErrorRule[] = [
 		userMessage: 'Já existe uma categoria com este nome.',
 	},
 ];
+
+export const UPDATE_TRANSACTION_ERROR_FALLBACK =
+	'Ocorreu um erro ao atualizar a transação. Tente novamente.';
+
+export const UPDATE_TRANSACTION_ERROR_RULES: ErrorRule[] = [
+	{
+		code: 'UNAUTHENTICATED',
+		userMessage: 'Sua sessão expirou. Faça login novamente.',
+	},
+	{
+		code: 'NOT_FOUND',
+		userMessage: 'Transação ou categoria não encontrada.',
+	},
+];

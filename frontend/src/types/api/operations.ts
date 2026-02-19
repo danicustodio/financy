@@ -113,6 +113,21 @@ export interface DeleteTransactionVariables {
 	id: string;
 }
 
+export interface UpdateTransactionInput {
+	id: string;
+	description: string;
+	amount: number;
+	type: TransactionType;
+	date: ISODateString;
+	categoryId: string;
+}
+
+export interface UpdateTransactionResponse {
+	updateTransaction: {
+		id: string;
+	};
+}
+
 export interface CreateTransactionInput {
 	description: string;
 	amount: number;

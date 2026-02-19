@@ -62,6 +62,7 @@ export const TransactionTableRow = ({
 						icon={<SquarePen className="h-4 w-4" />}
 						variant="outline"
 						onClick={() => onEdit?.(id)}
+						disabled={isDeleting}
 						aria-label="Editar transação"
 					/>
 				</div>

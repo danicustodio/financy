@@ -7,6 +7,7 @@ export {
 export {
 	CREATE_TRANSACTION_MUTATION,
 	DELETE_TRANSACTION_MUTATION,
+	UPDATE_TRANSACTION_MUTATION,
 } from './mutations/transactions';
 export { LIST_CATEGORIES_QUERY } from './queries/categories';
 export { CATEGORIES_SUMMARY_QUERY } from './queries/categories-summary';
