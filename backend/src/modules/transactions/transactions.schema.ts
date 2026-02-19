@@ -1,6 +1,7 @@
 import { builder } from '../../graphql/builder';
 import {
 	createTransactionInputSchema,
+	updateTransactionInputSchema,
 	transactionTypeSchema,
 } from './transactions.validation';
 
@@ -60,6 +61,32 @@ export const CreateTransactionInputRef = builder.inputType(
 			categoryId: t.string({
 				required: true,
 				validate: createTransactionInputSchema.shape.categoryId,
+			}),
+		}),
+	},
+);
+
+export const UpdateTransactionInputRef = builder.inputType(
+	'UpdateTransactionInput',
+	{
+		fields: (t) => ({
+			id: t.id({
+				required: true,
+				validate: updateTransactionInputSchema.shape.id,
+			}),
+			description: t.string({
+				required: true,
+				validate: updateTransactionInputSchema.shape.description,
+			}),
+			amount: t.int({
+				required: true,
+				validate: updateTransactionInputSchema.shape.amount,
+			}),
+			type: t.string({ required: true, validate: transactionTypeSchema }),
+			date: t.field({ type: 'DateTime', required: true }),
+			categoryId: t.string({
+				required: true,
+				validate: updateTransactionInputSchema.shape.categoryId,
 			}),
 		}),
 	},

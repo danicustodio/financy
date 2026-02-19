@@ -6,12 +6,14 @@ import {
 	TransactionRef,
 	TransactionPageRef,
 	TransactionPaginationRef,
+	UpdateTransactionInputRef,
 } from './transactions.schema';
 import {
 	createTransactionInputSchema,
 	transactionFilterSchema,
 	transactionIdSchema,
 	transactionPaginationSchema,
+	updateTransactionInputSchema,
 } from './transactions.validation';
 
 builder.queryFields((t) => ({
@@ -60,6 +62,19 @@ builder.mutationFields((t) => ({
 				ctx.services.transactions.create(
 					ctx.currentUser,
 					createTransactionInputSchema.parse(args.input),
+				),
+			),
+	}),
+	updateTransaction: t.field({
+		type: TransactionRef,
+		args: {
+			input: t.arg({ type: UpdateTransactionInputRef, required: true }),
+		},
+		resolve: async (_root, args, ctx) =>
+			mapResolverError(async () =>
+				ctx.services.transactions.update(
+					ctx.currentUser,
+					updateTransactionInputSchema.parse(args.input),
 				),
 			),
 	}),

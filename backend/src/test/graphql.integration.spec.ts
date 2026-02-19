@@ -45,6 +45,19 @@ mutation DeleteTransaction($id: ID!) {
   deleteTransaction(id: $id)
 }`;
 
+const UPDATE_TRANSACTION_MUTATION = `
+mutation UpdateTransaction($input: UpdateTransactionInput!) {
+  updateTransaction(input: $input) {
+    id
+    description
+    amount
+    type
+    category {
+      id
+    }
+  }
+}`;
+
 describe('GraphQL integration', () => {
 	let app: Awaited<ReturnType<typeof createApp>>;
 
@@ -301,6 +314,414 @@ describe('GraphQL integration', () => {
 
 		const body = deleteResponse.json();
 		expect(body.data.deleteTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
+	});
+
+	it('updateTransaction updates fields for authenticated owner', async () => {
+		const signUpResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Edit owner',
+						email: `edit-owner-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const token = signUpResponse.json().data.signUp.token as string;
+
+		const createFirstCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `Food ${Date.now()}`,
+						icon: 'utensils',
+						description: 'Food',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const firstCategoryId = createFirstCategoryResponse.json().data
+			.createCategory.id as string;
+
+		const createSecondCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `Salary ${Date.now()}`,
+						icon: 'briefcase-business',
+						description: 'Salary',
+						color: 'green',
+					},
+				},
+			},
+		});
+		const secondCategoryId = createSecondCategoryResponse.json().data
+			.createCategory.id as string;
+
+		const createTransactionResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						description: 'Initial description',
+						amount: 1200,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId: firstCategoryId,
+					},
+				},
+			},
+		});
+		const transactionId = createTransactionResponse.json().data
+			.createTransaction.id as string;
+
+		const updateResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: UPDATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						id: transactionId,
+						description: 'Updated description',
+						amount: 3500,
+						type: 'income',
+						date: new Date('2026-01-10T12:00:00.000Z').toISOString(),
+						categoryId: secondCategoryId,
+					},
+				},
+			},
+		});
+
+		const updateBody = updateResponse.json();
+		expect(updateBody.errors).toBeUndefined();
+		expect(updateBody.data.updateTransaction.id).toBe(transactionId);
+		expect(updateBody.data.updateTransaction.description).toBe(
+			'Updated description',
+		);
+		expect(updateBody.data.updateTransaction.amount).toBe(3500);
+		expect(updateBody.data.updateTransaction.type).toBe('income');
+		expect(updateBody.data.updateTransaction.category.id).toBe(secondCategoryId);
+
+		const persisted = await app.prisma.transaction.findUnique({
+			where: { id: transactionId },
+		});
+		expect(persisted?.description).toBe('Updated description');
+		expect(persisted?.amount).toBe(3500);
+		expect(persisted?.type).toBe('income');
+		expect(persisted?.categoryId).toBe(secondCategoryId);
+	});
+
+	it('updateTransaction returns UNAUTHENTICATED without token', async () => {
+		const updateResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: UPDATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+						description: 'Updated description',
+						amount: 3500,
+						type: 'income',
+						date: new Date().toISOString(),
+						categoryId: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
+					},
+				},
+			},
+		});
+
+		const body = updateResponse.json();
+		expect(body.data.updateTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('UNAUTHENTICATED');
+	});
+
+	it("updateTransaction returns NOT_FOUND for another user's transaction", async () => {
+		const ownerSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Update owner',
+						email: `update-owner-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const ownerToken = ownerSignUp.json().data.signUp.token as string;
+
+		const otherSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Update other',
+						email: `update-other-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const otherToken = otherSignUp.json().data.signUp.token as string;
+
+		const createCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `Owner category ${Date.now()}`,
+						icon: 'utensils',
+						description: 'Owner category',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const categoryId = createCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const createTransactionResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						description: 'Owner transaction',
+						amount: 1000,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId,
+					},
+				},
+			},
+		});
+		const transactionId = createTransactionResponse.json().data
+			.createTransaction.id as string;
+
+		const updateResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${otherToken}` },
+			payload: {
+				query: UPDATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						id: transactionId,
+						description: 'Other edit',
+						amount: 1800,
+						type: 'income',
+						date: new Date().toISOString(),
+						categoryId,
+					},
+				},
+			},
+		});
+
+		const body = updateResponse.json();
+		expect(body.data.updateTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
+	});
+
+	it('updateTransaction returns NOT_FOUND for non-existent transaction id', async () => {
+		const signUpResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Update not found',
+						email: `update-not-found-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const token = signUpResponse.json().data.signUp.token as string;
+
+		const createCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `NF category ${Date.now()}`,
+						icon: 'utensils',
+						description: 'NF',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const categoryId = createCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const updateResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: UPDATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
+						description: 'Missing transaction',
+						amount: 1800,
+						type: 'income',
+						date: new Date().toISOString(),
+						categoryId,
+					},
+				},
+			},
+		});
+
+		const body = updateResponse.json();
+		expect(body.data.updateTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
+	});
+
+	it('updateTransaction returns NOT_FOUND for category outside ownership', async () => {
+		const ownerSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Owner category validation',
+						email: `owner-category-validation-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const ownerToken = ownerSignUp.json().data.signUp.token as string;
+
+		const otherSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Other category validation',
+						email: `other-category-validation-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const otherToken = otherSignUp.json().data.signUp.token as string;
+
+		const ownerCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `Owner update category ${Date.now()}`,
+						icon: 'utensils',
+						description: 'Owner',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const ownerCategoryId = ownerCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const otherCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${otherToken}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: `Other update category ${Date.now()}`,
+						icon: 'briefcase-business',
+						description: 'Other',
+						color: 'green',
+					},
+				},
+			},
+		});
+		const otherCategoryId = otherCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const createTransactionResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						description: 'Owner transaction',
+						amount: 1000,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId: ownerCategoryId,
+					},
+				},
+			},
+		});
+		const transactionId = createTransactionResponse.json().data
+			.createTransaction.id as string;
+
+		const updateResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: UPDATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						id: transactionId,
+						description: 'Owner tries foreign category',
+						amount: 2000,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId: otherCategoryId,
+					},
+				},
+			},
+		});
+
+		const body = updateResponse.json();
+		expect(body.data.updateTransaction).toBeNull();
 		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
 	});
 

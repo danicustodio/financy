@@ -8,6 +8,7 @@ import type {
 	CreateTransactionInput,
 	TransactionFilter,
 	TransactionPagination,
+	UpdateTransactionInput,
 } from './transactions.validation';
 
 export class TransactionsService {
@@ -54,5 +55,29 @@ export class TransactionsService {
 		}
 
 		return this.transactionsRepository.create(user.id, input);
+	}
+
+	async update(currentUser: User | null, input: UpdateTransactionInput) {
+		const user = requireAuth(currentUser);
+
+		const transaction = await this.transactionsRepository.findByIdAndUserId(
+			input.id,
+			user.id,
+		);
+
+		if (!transaction) {
+			throw new AppError(errorCodes.NOT_FOUND, 'Transaction not found');
+		}
+
+		const category = await this.categoriesRepository.findByIdAndUserId(
+			input.categoryId,
+			user.id,
+		);
+
+		if (!category) {
+			throw new AppError(errorCodes.NOT_FOUND, 'Category not found');
+		}
+
+		return this.transactionsRepository.update(input);
 	}
 }

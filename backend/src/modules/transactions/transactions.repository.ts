@@ -3,6 +3,7 @@ import type {
 	CreateTransactionInput,
 	TransactionFilter,
 	TransactionPagination,
+	UpdateTransactionInput,
 } from './transactions.validation';
 
 export class TransactionsRepository {
@@ -57,6 +58,19 @@ export class TransactionsRepository {
 				date: input.date,
 				categoryId: input.categoryId,
 				userId,
+			},
+		});
+	}
+
+	update(input: UpdateTransactionInput) {
+		return this.prisma.transaction.update({
+			where: { id: input.id },
+			data: {
+				description: input.description,
+				amount: input.amount,
+				type: input.type,
+				date: input.date,
+				categoryId: input.categoryId,
 			},
 		});
 	}
