@@ -61,6 +61,18 @@ export class TransactionsRepository {
 		});
 	}
 
+	findByIdAndUserId(transactionId: string, userId: string) {
+		return this.prisma.transaction.findFirst({
+			where: { id: transactionId, userId },
+		});
+	}
+
+	deleteById(transactionId: string) {
+		return this.prisma.transaction.delete({
+			where: { id: transactionId },
+		});
+	}
+
 	aggregateAmount(
 		userId: string,
 		type: 'income' | 'expense',

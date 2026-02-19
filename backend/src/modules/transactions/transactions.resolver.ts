@@ -10,6 +10,7 @@ import {
 import {
 	createTransactionInputSchema,
 	transactionFilterSchema,
+	transactionIdSchema,
 	transactionPaginationSchema,
 } from './transactions.validation';
 
@@ -36,6 +37,19 @@ builder.queryFields((t) => ({
 }));
 
 builder.mutationFields((t) => ({
+	deleteTransaction: t.field({
+		type: 'Boolean',
+		args: {
+			id: t.arg.id({ required: true }),
+		},
+		resolve: async (_root, args, ctx) =>
+			mapResolverError(async () =>
+				ctx.services.transactions.delete(
+					ctx.currentUser,
+					transactionIdSchema.parse(args.id),
+				),
+			),
+	}),
 	createTransaction: t.field({
 		type: TransactionRef,
 		args: {

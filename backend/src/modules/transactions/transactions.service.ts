@@ -25,6 +25,22 @@ export class TransactionsService {
 		return this.transactionsRepository.list(user.id, filter, pagination);
 	}
 
+	async delete(currentUser: User | null, transactionId: string) {
+		const user = requireAuth(currentUser);
+
+		const transaction = await this.transactionsRepository.findByIdAndUserId(
+			transactionId,
+			user.id,
+		);
+
+		if (!transaction) {
+			throw new AppError(errorCodes.NOT_FOUND, 'Transaction not found');
+		}
+
+		await this.transactionsRepository.deleteById(transactionId);
+		return true;
+	}
+
 	async create(currentUser: User | null, input: CreateTransactionInput) {
 		const user = requireAuth(currentUser);
 

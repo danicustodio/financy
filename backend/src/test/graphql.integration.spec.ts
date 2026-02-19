@@ -40,6 +40,11 @@ mutation CreateTransaction($input: CreateTransactionInput!) {
   }
 }`;
 
+const DELETE_TRANSACTION_MUTATION = `
+mutation DeleteTransaction($id: ID!) {
+  deleteTransaction(id: $id)
+}`;
+
 describe('GraphQL integration', () => {
 	let app: Awaited<ReturnType<typeof createApp>>;
 
@@ -87,6 +92,216 @@ describe('GraphQL integration', () => {
 		const body = response.json();
 		expect(body.data.me).toBeNull();
 		expect(body.errors[0].extensions.code).toBe('UNAUTHENTICATED');
+	});
+
+	it('deleteTransaction returns true for authenticated owner', async () => {
+		const signUpResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Alice',
+						email: `alice-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const token = signUpResponse.json().data.signUp.token as string;
+
+		const createCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: 'Food',
+						icon: 'utensils',
+						description: 'Food expenses',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const categoryId = createCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const createTransactionResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: CREATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						description: 'Lunch',
+						amount: 2000,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId,
+					},
+				},
+			},
+		});
+		const transactionId = createTransactionResponse.json().data
+			.createTransaction.id as string;
+
+		const deleteResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: DELETE_TRANSACTION_MUTATION,
+				variables: { id: transactionId },
+			},
+		});
+
+		const deleteBody = deleteResponse.json();
+		expect(deleteBody.errors).toBeUndefined();
+		expect(deleteBody.data.deleteTransaction).toBe(true);
+
+		const record = await app.prisma.transaction.findUnique({
+			where: { id: transactionId },
+		});
+		expect(record).toBeNull();
+	});
+
+	it('deleteTransaction returns UNAUTHENTICATED without token', async () => {
+		const deleteResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: DELETE_TRANSACTION_MUTATION,
+				variables: { id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' },
+			},
+		});
+
+		const body = deleteResponse.json();
+		expect(body.data.deleteTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('UNAUTHENTICATED');
+	});
+
+	it("deleteTransaction returns NOT_FOUND for another user's transaction", async () => {
+		const ownerSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Owner',
+						email: `owner-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const ownerToken = ownerSignUp.json().data.signUp.token as string;
+
+		const otherSignUp = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Other',
+						email: `other-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const otherToken = otherSignUp.json().data.signUp.token as string;
+
+		const createCategoryResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_CATEGORY_MUTATION,
+				variables: {
+					input: {
+						title: 'Misc',
+						icon: 'utensils',
+						description: 'Misc',
+						color: 'orange',
+					},
+				},
+			},
+		});
+		const categoryId = createCategoryResponse.json().data.createCategory
+			.id as string;
+
+		const createTransactionResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${ownerToken}` },
+			payload: {
+				query: CREATE_TRANSACTION_MUTATION,
+				variables: {
+					input: {
+						description: 'Owner expense',
+						amount: 1000,
+						type: 'expense',
+						date: new Date().toISOString(),
+						categoryId,
+					},
+				},
+			},
+		});
+		const transactionId = createTransactionResponse.json().data
+			.createTransaction.id as string;
+
+		const deleteResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${otherToken}` },
+			payload: {
+				query: DELETE_TRANSACTION_MUTATION,
+				variables: { id: transactionId },
+			},
+		});
+
+		const body = deleteResponse.json();
+		expect(body.data.deleteTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
+	});
+
+	it('deleteTransaction returns NOT_FOUND for non-existent id', async () => {
+		const signUpResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Bob',
+						email: `bob-${Date.now()}@example.com`,
+						password: 'password123',
+					},
+				},
+			},
+		});
+		const token = signUpResponse.json().data.signUp.token as string;
+
+		const deleteResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			headers: { authorization: `Bearer ${token}` },
+			payload: {
+				query: DELETE_TRANSACTION_MUTATION,
+				variables: { id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22' },
+			},
+		});
+
+		const body = deleteResponse.json();
+		expect(body.data.deleteTransaction).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('NOT_FOUND');
 	});
 
 	it('createTransaction creates a transaction for authenticated user', async () => {

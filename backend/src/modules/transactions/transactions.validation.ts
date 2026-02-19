@@ -2,6 +2,8 @@ import { z } from 'zod/v4';
 
 export const transactionTypeSchema = z.enum(['income', 'expense']);
 
+export const transactionIdSchema = z.uuid('Invalid transaction id');
+
 export const createTransactionInputSchema = z.object({
 	description: z.string().min(1, 'Description is required'),
 	amount: z.int().positive('Amount must be positive'),
