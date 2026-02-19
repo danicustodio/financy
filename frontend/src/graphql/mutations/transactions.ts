@@ -5,3 +5,9 @@ export const CREATE_TRANSACTION_MUTATION = `
     }
   }
 `;
+
+export const DELETE_TRANSACTION_MUTATION = `
+  mutation DeleteTransaction($id: ID!) {
+    deleteTransaction(id: $id)
+  }
+`;

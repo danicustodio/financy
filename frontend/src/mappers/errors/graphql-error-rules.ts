@@ -66,6 +66,20 @@ export const DELETE_CATEGORY_ERROR_RULES: ErrorRule[] = [
 	},
 ];
 
+export const DELETE_TRANSACTION_ERROR_FALLBACK =
+	'Ocorreu um erro ao excluir a transação. Tente novamente.';
+
+export const DELETE_TRANSACTION_ERROR_RULES: ErrorRule[] = [
+	{
+		code: 'UNAUTHENTICATED',
+		userMessage: 'Sua sessão expirou. Faça login novamente.',
+	},
+	{
+		code: 'NOT_FOUND',
+		userMessage: 'Transação não encontrada.',
+	},
+];
+
 export const UPDATE_CATEGORY_ERROR_FALLBACK =
 	'Ocorreu um erro ao atualizar a categoria. Tente novamente.';
 

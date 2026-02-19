@@ -105,6 +105,14 @@ export interface DeleteCategoryVariables {
 	id: string;
 }
 
+export interface DeleteTransactionResponse {
+	deleteTransaction: boolean;
+}
+
+export interface DeleteTransactionVariables {
+	id: string;
+}
+
 export interface CreateTransactionInput {
 	description: string;
 	amount: number;

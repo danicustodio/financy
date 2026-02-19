@@ -3,13 +3,20 @@ import { useMemo, useState } from 'react';
 import { CreateTransactionModal } from '@/components/create-transaction-modal';
 import { LabelButton } from '@/components/label-button';
 import { PageHeader } from '@/components/page-header';
+import { useDeleteTransactionMutation } from '@/hooks/mutations/use-delete-transaction-mutation';
 import { useListCategories } from '@/hooks/queries/use-list-categories';
 import { useListTransactions } from '@/hooks/queries/use-list-transactions';
 import { toTransactionRowView } from '@/mappers/domain-to-view/transaction.domain-to-view.mapper';
+import { mapGraphQLError } from '@/mappers/errors/graphql-error.mapper';
+import {
+	DELETE_TRANSACTION_ERROR_FALLBACK,
+	DELETE_TRANSACTION_ERROR_RULES,
+} from '@/mappers/errors/graphql-error-rules';
 import {
 	PERIOD_OPTIONS,
 	TransactionsFilterBar,
 } from './components/transactions-filter-bar.component';
+import { DeleteTransactionDialog } from './components/delete-transaction-dialog.component';
 import { TransactionsTable } from './components/transactions-table.component';
 
 const PAGE_SIZE = 10;
@@ -25,6 +32,14 @@ export function Transactions() {
 	const [categoryId, setCategoryId] = useState('all');
 	const [period, setPeriod] = useState(PERIOD_OPTIONS[0].value);
 	const [currentPage, setCurrentPage] = useState(1);
+
+	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+	const [selectedTransactionId, setSelectedTransactionId] = useState<
+		string | null
+	>(null);
+	const [selectedTransactionDescription, setSelectedTransactionDescription] =
+		useState('');
+	const [deleteError, setDeleteError] = useState<string | null>(null);
 
 	const { month, year } = parsePeriod(period);
 
@@ -43,6 +58,8 @@ export function Transactions() {
 
 	const { data: categories = [] } = useListCategories();
 
+	const deleteTransactionMutation = useDeleteTransactionMutation();
+
 	const totalCount = data?.totalCount ?? 0;
 	const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 	const tableRows = useMemo(
@@ -53,6 +70,34 @@ export function Transactions() {
 	function handleFilterChange(updater: () => void) {
 		updater();
 		setCurrentPage(1);
+	}
+
+	function openDeleteDialog(id: string) {
+		const transaction = tableRows.find((row) => row.id === id);
+		setDeleteError(null);
+		setSelectedTransactionId(id);
+		setSelectedTransactionDescription(transaction?.description ?? '');
+		setIsDeleteDialogOpen(true);
+	}
+
+	async function handleDeleteConfirm() {
+		if (!selectedTransactionId) return;
+		setDeleteError(null);
+
+		try {
+			await deleteTransactionMutation.mutateAsync({
+				id: selectedTransactionId,
+			});
+			setIsDeleteDialogOpen(false);
+		} catch (error) {
+			setDeleteError(
+				mapGraphQLError(
+					error,
+					DELETE_TRANSACTION_ERROR_FALLBACK,
+					DELETE_TRANSACTION_ERROR_RULES,
+				),
+			);
+		}
 	}
 
 	return (
@@ -98,9 +143,21 @@ export function Transactions() {
 					totalPages={totalPages}
 					totalResults={totalCount}
 					pageSize={PAGE_SIZE}
+					isDeleting={deleteTransactionMutation.isPending}
 					onPageChange={setCurrentPage}
+					onDelete={openDeleteDialog}
 				/>
 			)}
+
+			<DeleteTransactionDialog
+				isOpen={isDeleteDialogOpen}
+				description={selectedTransactionDescription}
+				errorMessage={deleteError}
+				isDeleting={deleteTransactionMutation.isPending}
+				onOpenChange={setIsDeleteDialogOpen}
+				onCancel={() => setIsDeleteDialogOpen(false)}
+				onConfirm={handleDeleteConfirm}
+			/>
 		</main>
 	);
 }

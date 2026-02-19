@@ -9,12 +9,14 @@ import type { TransactionRowView } from '@/types/view/transactions';
 
 interface TransactionTableRowProps {
 	transaction: TransactionRowView;
+	isDeleting?: boolean;
 	onEdit?: (id: string) => void;
 	onDelete?: (id: string) => void;
 }
 
 export const TransactionTableRow = ({
 	transaction,
+	isDeleting,
 	onEdit,
 	onDelete,
 }: TransactionTableRowProps) => {
@@ -53,6 +55,7 @@ export const TransactionTableRow = ({
 					<IconButton
 						icon={<Trash className="h-4 w-4 text-financy-danger" />}
 						onClick={() => onDelete?.(id)}
+						disabled={isDeleting}
 						aria-label="Excluir transação"
 					/>
 					<IconButton

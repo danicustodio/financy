@@ -6,15 +6,16 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import type { TransactionTableView } from '@/types/view/transactions';
+import type { TransactionRowView } from '@/types/view/transactions';
 import { TransactionTableRow } from './transaction-table-row.component';
 
 interface TransactionsTableProps {
-	transactions: TransactionTableView[];
+	transactions: TransactionRowView[];
 	currentPage: number;
 	totalPages: number;
 	totalResults: number;
 	pageSize: number;
+	isDeleting?: boolean;
 	onPageChange?: (page: number) => void;
 	onEdit?: (id: string) => void;
 	onDelete?: (id: string) => void;
@@ -26,6 +27,7 @@ export const TransactionsTable = ({
 	totalPages,
 	totalResults,
 	pageSize,
+	isDeleting,
 	onPageChange,
 	onEdit,
 	onDelete,
@@ -60,6 +62,7 @@ export const TransactionsTable = ({
 						<TransactionTableRow
 							key={transaction.id}
 							transaction={transaction}
+							isDeleting={isDeleting}
 							onEdit={onEdit}
 							onDelete={onDelete}
 						/>
