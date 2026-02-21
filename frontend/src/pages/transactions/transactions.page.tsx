@@ -12,18 +12,17 @@ import {
 	DELETE_TRANSACTION_ERROR_FALLBACK,
 	DELETE_TRANSACTION_ERROR_RULES,
 } from '@/mappers/errors/graphql-error-rules';
-import {
-	PERIOD_OPTIONS,
-	TransactionsFilterBar,
-} from './components/transactions-filter-bar.component';
+import { TransactionsFilterBar } from './components/transactions-filter-bar.component';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog.component';
 import { EditTransactionModal } from './components/edit-transaction-modal.component';
 import { TransactionsTable } from './components/transactions-table.component';
 
 const PAGE_SIZE = 10;
 
-function parsePeriod(period: string): { month: number; year: number } {
+function parsePeriod(period: string): { month: number; year: number } | null {
+	if (!period || period === 'all') return null;
 	const [year, month] = period.split('-').map(Number);
+	if (!year || !month) return null;
 	return { month, year };
 }
 
@@ -31,7 +30,7 @@ export function Transactions() {
 	const [search, setSearch] = useState('');
 	const [type, setType] = useState('all');
 	const [categoryId, setCategoryId] = useState('all');
-	const [period, setPeriod] = useState(PERIOD_OPTIONS[0].value);
+	const [period, setPeriod] = useState('all');
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -45,14 +44,13 @@ export function Transactions() {
 	const [selectedTransactionIdForEdit, setSelectedTransactionIdForEdit] =
 		useState<string | null>(null);
 
-	const { month, year } = parsePeriod(period);
+	const parsed = parsePeriod(period);
 
 	const filter = {
 		...(search.trim() !== '' && { search: search.trim() }),
 		...(type !== 'all' && { type }),
 		...(categoryId !== 'all' && { categoryId }),
-		month,
-		year,
+		...(parsed && { month: parsed.month, year: parsed.year }),
 	};
 
 	const { data, isLoading } = useListTransactions({

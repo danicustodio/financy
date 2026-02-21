@@ -1,7 +1,13 @@
-import { Search } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { useState } from 'react';
 import { Input } from '@/components/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
 import {
 	Select,
 	SelectContent,
@@ -11,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import type { Category } from '@/types/domain/category';
 
-const MONTH_NAMES = [
+const PORTUGUESE_MONTHS = [
 	'Janeiro',
 	'Fevereiro',
 	'Março',
@@ -26,21 +32,120 @@ const MONTH_NAMES = [
 	'Dezembro',
 ];
 
-function generatePeriodOptions() {
-	const now = new Date();
-	const options: { value: string; label: string }[] = [];
-	for (let i = 0; i < 12; i++) {
-		const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-		const month = date.getMonth() + 1;
-		const year = date.getFullYear();
-		const value = `${year}-${String(month).padStart(2, '0')}`;
-		const label = `${MONTH_NAMES[date.getMonth()]} / ${year}`;
-		options.push({ value, label });
-	}
-	return options;
+const PORTUGUESE_MONTHS_SHORT = [
+	'Jan',
+	'Fev',
+	'Mar',
+	'Abr',
+	'Mai',
+	'Jun',
+	'Jul',
+	'Ago',
+	'Set',
+	'Out',
+	'Nov',
+	'Dez',
+];
+
+function formatPeriodLabel(period: string): string {
+	const [year, month] = period.split('-').map(Number);
+	return `${PORTUGUESE_MONTHS[month - 1]} / ${year}`;
 }
 
-export const PERIOD_OPTIONS = generatePeriodOptions();
+interface MonthPickerProps {
+	period: string;
+	onPeriodChange: (value: string) => void;
+}
+
+function MonthPicker({ period, onPeriodChange }: MonthPickerProps) {
+	const [open, setOpen] = useState(false);
+	const currentYear = new Date().getFullYear();
+	const selectedYear = period !== 'all' ? Number(period.split('-')[0]) : null;
+	const selectedMonth = period !== 'all' ? Number(period.split('-')[1]) : null;
+	const [viewYear, setViewYear] = useState(selectedYear ?? currentYear);
+
+	function handleSelect(monthIndex: number) {
+		const mm = String(monthIndex + 1).padStart(2, '0');
+		onPeriodChange(`${viewYear}-${mm}`);
+		setOpen(false);
+	}
+
+	function handleClear() {
+		onPeriodChange('all');
+		setOpen(false);
+	}
+
+	return (
+		<Popover open={open} onOpenChange={setOpen}>
+			<PopoverTrigger asChild>
+				<button
+					type="button"
+					className="flex w-full items-center justify-between rounded-lg border border-financy-gray-300 bg-financy-white px-3 py-[0.6875rem] text-base text-financy-gray-800 shadow-none focus:outline-none focus:ring-1 focus:ring-financy-gray-400"
+				>
+					<span>{period === 'all' ? 'Todos' : formatPeriodLabel(period)}</span>
+					<ChevronDown className="h-4 w-4 opacity-50" />
+				</button>
+			</PopoverTrigger>
+			<PopoverContent className="w-64 p-3" align="start">
+				{/* Year navigation */}
+				<div className="mb-3 flex items-center justify-between">
+					<button
+						type="button"
+						onClick={() => setViewYear((y) => y - 1)}
+						className="rounded p-1 hover:bg-financy-gray-100"
+					>
+						<ChevronLeft className="h-4 w-4" />
+					</button>
+					<span className="font-medium text-sm">{viewYear}</span>
+					<button
+						type="button"
+						onClick={() => setViewYear((y) => y + 1)}
+						className="rounded p-1 hover:bg-financy-gray-100"
+					>
+						<ChevronRight className="h-4 w-4" />
+					</button>
+				</div>
+
+				{/* Month grid */}
+				<div className="grid grid-cols-3 gap-1">
+					{PORTUGUESE_MONTHS_SHORT.map((name, i) => {
+						const monthNumber = i + 1;
+						const isSelected =
+							selectedMonth === monthNumber && selectedYear === viewYear;
+						return (
+							<button
+								key={name}
+								type="button"
+								onClick={() => handleSelect(i)}
+								className={`rounded px-2 py-1.5 text-sm transition-colors hover:bg-financy-gray-100 ${
+									isSelected
+										? 'bg-financy-green-base text-white hover:bg-financy-green-base'
+										: ''
+								}`}
+							>
+								{name}
+							</button>
+						);
+					})}
+				</div>
+
+				{/* Clear option */}
+				{period !== 'all' && (
+					<>
+						<div className="my-2 border-financy-gray-200 border-t" />
+						<button
+							type="button"
+							onClick={handleClear}
+							className="w-full rounded px-2 py-1.5 text-left text-financy-gray-600 text-sm hover:bg-financy-gray-100"
+						>
+							Todos os períodos
+						</button>
+					</>
+				)}
+			</PopoverContent>
+		</Popover>
+	);
+}
 
 interface TransactionsFilterBarProps {
 	search: string;
@@ -126,18 +231,7 @@ export function TransactionsFilterBar({
 					>
 						Período
 					</Label>
-					<Select value={period} onValueChange={onPeriodChange}>
-						<SelectTrigger className="w-full rounded-md border-financy-gray-300 bg-financy-white px-3 py-5.75 text-base text-financy-gray-800 shadow-none">
-							<SelectValue placeholder="Selecionar período" />
-						</SelectTrigger>
-						<SelectContent>
-							{PERIOD_OPTIONS.map((opt) => (
-								<SelectItem key={opt.value} value={opt.value}>
-									{opt.label}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+					<MonthPicker period={period} onPeriodChange={onPeriodChange} />
 				</div>
 			</CardContent>
 		</Card>
