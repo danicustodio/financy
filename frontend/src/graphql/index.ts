@@ -9,7 +9,9 @@ export {
 	DELETE_TRANSACTION_MUTATION,
 	UPDATE_TRANSACTION_MUTATION,
 } from './mutations/transactions';
+export { UPDATE_ME_MUTATION } from './mutations/users';
 export { LIST_CATEGORIES_QUERY } from './queries/categories';
 export { CATEGORIES_SUMMARY_QUERY } from './queries/categories-summary';
 export { DASHBOARD_SUMMARY_QUERY } from './queries/dashboard-summary';
+export { ME_QUERY } from './queries/me';
 export { LIST_TRANSACTIONS_QUERY } from './queries/transactions';

@@ -9,7 +9,7 @@ export const inputFieldVariants = cva(
 				active: 'text-financy-gray-800',
 				filled: 'text-financy-gray-800',
 				error: 'text-financy-gray-800',
-				disabled: 'text-financy-black',
+				disabled: 'text-financy-black opacity-50',
 			},
 		},
 		defaultVariants: {
@@ -42,7 +42,7 @@ export const prefixVariants = cva(
 				active: 'text-financy-green-base',
 				filled: 'text-financy-gray-800',
 				error: 'text-financy-danger',
-				disabled: 'text-financy-black',
+				disabled: 'text-financy-black opacity-50',
 			},
 		},
 		defaultVariants: {

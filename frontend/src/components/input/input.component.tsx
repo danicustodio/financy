@@ -64,6 +64,7 @@ export const Input = ({
 
 				<input
 					type={inputType}
+					disabled={disabled}
 					className={cn(
 						inputFieldVariants({
 							state: variant,

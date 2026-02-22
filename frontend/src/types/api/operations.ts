@@ -78,6 +78,19 @@ export interface DashboardSummaryVariables {
 	year: number;
 }
 
+export interface MeResponse {
+	me: UserProfile;
+}
+
+export interface UpdateMeInput {
+	name?: string;
+	email?: string;
+}
+
+export interface UpdateMeResponse {
+	updateMe: UserProfile;
+}
+
 export interface CreateCategoryInput {
 	title: string;
 	icon: Category['icon'];

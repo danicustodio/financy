@@ -111,3 +111,25 @@ export const UPDATE_TRANSACTION_ERROR_RULES: ErrorRule[] = [
 		userMessage: 'Transação ou categoria não encontrada.',
 	},
 ];
+
+export const UPDATE_ME_ERROR_FALLBACK =
+	'Ocorreu um erro ao atualizar seu perfil. Tente novamente.';
+
+export const UPDATE_ME_ERROR_RULES: ErrorRule[] = [
+	{
+		code: 'UNAUTHENTICATED',
+		userMessage: 'Sua sessão expirou. Faça login novamente.',
+	},
+	{
+		code: 'NOT_FOUND',
+		userMessage: 'Usuário não encontrado.',
+	},
+	{
+		code: 'CONFLICT',
+		userMessage: 'Este e-mail já está em uso.',
+	},
+	{
+		code: 'VALIDATION',
+		userMessage: 'Os dados informados são inválidos.',
+	},
+];
