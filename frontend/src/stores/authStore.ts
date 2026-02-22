@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { AUTH_STORAGE_KEY, authStateStorage } from './auth-storage';
 
 export interface AuthUser {
 	id: string;
@@ -10,7 +11,8 @@ export interface AuthUser {
 interface AuthState {
 	user: AuthUser | null;
 	token: string | null;
-	setSession: (user: AuthUser, token: string) => void;
+	rememberMe: boolean;
+	setSession: (user: AuthUser, token: string, rememberMe: boolean) => void;
 	logout: () => void;
 	setToken: (token: string | null) => void;
 	setUser: (user: AuthUser) => void;
@@ -21,11 +23,13 @@ export const useAuthStore = create<AuthState>()(
 		(set) => ({
 			user: null,
 			token: null,
+			rememberMe: false,
 
-			setSession: (user: AuthUser, token: string) => {
+			setSession: (user: AuthUser, token: string, rememberMe: boolean) => {
 				set({
 					user,
 					token,
+					rememberMe,
 				});
 			},
 
@@ -33,12 +37,13 @@ export const useAuthStore = create<AuthState>()(
 				set({
 					user: null,
 					token: null,
+					rememberMe: false,
 				});
 			},
 
 			setToken: (token: string | null) => {
 				if (!token) {
-					set({ user: null, token: null });
+					set({ user: null, token: null, rememberMe: false });
 					return;
 				}
 
@@ -50,10 +55,12 @@ export const useAuthStore = create<AuthState>()(
 			},
 		}),
 		{
-			name: 'auth-storage',
+			name: AUTH_STORAGE_KEY,
+			storage: createJSONStorage(() => authStateStorage),
 			partialize: (state) => ({
 				user: state.user,
 				token: state.token,
+				rememberMe: state.rememberMe,
 			}),
 		},
 	),

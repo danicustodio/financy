@@ -1,4 +1,5 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
+import { Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
@@ -11,6 +12,7 @@ export function SignIn() {
 	const {
 		form: {
 			register,
+			control,
 			formState: { errors },
 		},
 		formError,
@@ -58,8 +60,25 @@ export function SignIn() {
 
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-2">
-								<Checkbox id="remember-me" name="remember-me" />
-								<p className="text-financy-gray-700 text-sm">Lembrar-me</p>
+								<Controller
+									name="rememberMe"
+									control={control}
+									render={({ field }) => (
+										<Checkbox
+											id="remember-me"
+											checked={field.value}
+											onCheckedChange={(checked) =>
+												field.onChange(checked === true)
+											}
+										/>
+									)}
+								/>
+								<label
+									htmlFor="remember-me"
+									className="text-financy-gray-700 text-sm"
+								>
+									Lembrar-me
+								</label>
 							</div>
 							<Link href="#">Recuperar senha</Link>
 						</div>

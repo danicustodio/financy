@@ -4,9 +4,13 @@ import { publicGraphqlRequest } from '@/graphql/graphql-client';
 import { useAuthStore } from '@/stores/authStore';
 import type { LoginResponse, SignInInput } from '@/types/api/operations';
 
+type LoginMutationInput = SignInInput & {
+	rememberMe: boolean;
+};
+
 export function useLoginMutation() {
 	return useMutation({
-		mutationFn: async (input: SignInInput) => {
+		mutationFn: async ({ rememberMe: _rememberMe, ...input }: LoginMutationInput) => {
 			const data = await publicGraphqlRequest<
 				LoginResponse,
 				{ input: SignInInput }
@@ -14,8 +18,10 @@ export function useLoginMutation() {
 
 			return data.login;
 		},
-		onSuccess: (data) => {
-			useAuthStore.getState().setSession(data.user, data.token);
+		onSuccess: (data, variables) => {
+			useAuthStore
+				.getState()
+				.setSession(data.user, data.token, variables.rememberMe);
 		},
 	});
 }

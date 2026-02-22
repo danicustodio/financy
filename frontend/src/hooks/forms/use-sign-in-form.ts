@@ -14,9 +14,12 @@ import { useLoginMutation } from '../mutations/use-login-mutation';
 export const signInSchema = z.object({
 	email: z.email('E-mail inválido'),
 	password: z.string().min(1, 'Senha é obrigatória'),
+	rememberMe: z.boolean(),
 });
 
-export type SignInFormData = SignInInput;
+export type SignInFormData = SignInInput & {
+	rememberMe: boolean;
+};
 
 export function useSignInForm() {
 	const navigate = useNavigate();
@@ -25,6 +28,9 @@ export function useSignInForm() {
 
 	const form = useForm<SignInFormData>({
 		resolver: zodResolver(signInSchema),
+		defaultValues: {
+			rememberMe: false,
+		},
 	});
 
 	const onSubmit = form.handleSubmit((data) => {

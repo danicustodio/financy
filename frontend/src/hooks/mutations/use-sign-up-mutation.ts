@@ -17,7 +17,7 @@ export function useSignUpMutation() {
 			return data.signUp;
 		},
 		onSuccess: (data) => {
-			useAuthStore.getState().setSession(data.user, data.token);
+			useAuthStore.getState().setSession(data.user, data.token, true);
 		},
 	});
 }
