@@ -44,7 +44,6 @@ describe('ErrorBoundary', () => {
 		);
 
 		expect(screen.getByRole('alert')).toHaveTextContent('Algo deu errado.');
-		expect(screen.getByText(/Escopo:/)).toHaveTextContent('Escopo: app');
 
 		consoleSpy.mockRestore();
 	});

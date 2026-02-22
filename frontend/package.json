@@ -46,6 +46,7 @@
 		"build": "tsc -b && vite build",
 		"dev": "vite",
 		"lint": "biome check --write",
+		"lint:check": "biome check",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",

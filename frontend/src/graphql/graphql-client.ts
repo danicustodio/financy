@@ -2,7 +2,7 @@ import { ClientError, GraphQLClient } from 'graphql-request';
 import { queryClient } from '@/lib/query-client';
 import { useAuthStore } from '@/stores/authStore';
 
-const endpoint = import.meta.env.VITE_API_URL;
+const endpoint = import.meta.env.VITE_BACKEND_URL;
 const client = new GraphQLClient(endpoint);
 
 export function requestGraphql<TResult, TVariables>(

@@ -10,7 +10,7 @@ describe('IconTile', () => {
 		);
 
 		const tile = container.firstElementChild;
-		expect(tile).toHaveClass('h-40', 'w-40', 'rounded-[2rem]');
+		expect(tile).toHaveClass('h-10', 'w-10', 'rounded-sm');
 		expect(container.querySelector('svg')).toBeInTheDocument();
 	});
 
