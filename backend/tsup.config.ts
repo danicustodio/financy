@@ -1,11 +1,10 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-	entry: ['src/**/*.ts'],
+	entry: ['src/server.ts'],
 	format: ['esm'],
 	target: 'es2022',
 	outDir: 'dist',
 	clean: true,
 	sourcemap: true,
-	bundle: false,
 });

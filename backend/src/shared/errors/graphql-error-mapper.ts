@@ -29,6 +29,9 @@ export async function mapResolverError<T>(
 	try {
 		return await resolver();
 	} catch (error) {
+		if (!isAppError(error) && !(error instanceof GraphQLError)) {
+			console.error('[resolver] Unhandled error:', error);
+		}
 		throw toGraphQLError(error);
 	}
 }
