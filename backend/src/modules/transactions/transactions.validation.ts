@@ -12,9 +12,11 @@ export const createTransactionInputSchema = z.object({
 	categoryId: z.string().min(1, 'Category is required'),
 });
 
-export const updateTransactionInputSchema = createTransactionInputSchema.extend({
-	id: z.uuid('Invalid transaction id'),
-});
+export const updateTransactionInputSchema = createTransactionInputSchema.extend(
+	{
+		id: z.uuid('Invalid transaction id'),
+	},
+);
 
 export type CreateTransactionInput = z.infer<
 	typeof createTransactionInputSchema

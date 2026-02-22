@@ -33,11 +33,7 @@ export class AuthRepository {
 		});
 	}
 
-	createPasswordResetToken(
-		userId: string,
-		tokenHash: string,
-		expiresAt: Date,
-	) {
+	createPasswordResetToken(userId: string, tokenHash: string, expiresAt: Date) {
 		return this.prisma.passwordResetToken.create({
 			data: {
 				userId,

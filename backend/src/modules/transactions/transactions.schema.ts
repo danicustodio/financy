@@ -1,8 +1,8 @@
 import { builder } from '../../graphql/builder';
 import {
 	createTransactionInputSchema,
-	updateTransactionInputSchema,
 	transactionTypeSchema,
+	updateTransactionInputSchema,
 } from './transactions.validation';
 
 export const TransactionRef = builder.prismaObject('Transaction', {

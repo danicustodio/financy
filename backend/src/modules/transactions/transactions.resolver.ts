@@ -3,9 +3,9 @@ import { mapResolverError } from '../../shared/errors/graphql-error-mapper';
 import {
 	CreateTransactionInputRef,
 	TransactionFilterRef,
-	TransactionRef,
 	TransactionPageRef,
 	TransactionPaginationRef,
+	TransactionRef,
 	UpdateTransactionInputRef,
 } from './transactions.schema';
 import {

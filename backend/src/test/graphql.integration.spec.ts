@@ -492,7 +492,9 @@ describe('GraphQL integration', () => {
 		);
 		expect(updateBody.data.updateTransaction.amount).toBe(3500);
 		expect(updateBody.data.updateTransaction.type).toBe('income');
-		expect(updateBody.data.updateTransaction.category.id).toBe(secondCategoryId);
+		expect(updateBody.data.updateTransaction.category.id).toBe(
+			secondCategoryId,
+		);
 
 		const persisted = await app.prisma.transaction.findUnique({
 			where: { id: transactionId },

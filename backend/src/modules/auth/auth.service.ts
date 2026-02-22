@@ -1,6 +1,6 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { createHash, randomBytes } from 'node:crypto';
 import { AppError } from '../../shared/errors/app-error';
 import { errorCodes } from '../../shared/errors/error-codes';
 import type { AuthRepository } from './auth.repository';
@@ -60,7 +60,9 @@ export class AuthService {
 		}
 	}
 
-	async requestPasswordReset(input: RequestPasswordResetInput): Promise<string | null> {
+	async requestPasswordReset(
+		input: RequestPasswordResetInput,
+	): Promise<string | null> {
 		const user = await this.authRepository.findUserByEmail(input.email);
 
 		if (!user) {
@@ -98,11 +100,12 @@ export class AuthService {
 		}
 
 		const passwordHash = await bcrypt.hash(input.password, 12);
-		const consumed = await this.authRepository.consumeResetTokenAndUpdatePassword(
-			tokenRecord.id,
-			tokenRecord.userId,
-			passwordHash,
-		);
+		const consumed =
+			await this.authRepository.consumeResetTokenAndUpdatePassword(
+				tokenRecord.id,
+				tokenRecord.userId,
+				passwordHash,
+			);
 
 		if (!consumed) {
 			throw new AppError(

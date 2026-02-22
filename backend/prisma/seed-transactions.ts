@@ -107,9 +107,7 @@ async function main() {
 		const category = categories[Math.floor(Math.random() * categories.length)];
 		const date = randomDateWithinLastYear();
 		const description =
-			Math.random() < 0.5
-				? faker.commerce.productName()
-				: faker.lorem.words(3);
+			Math.random() < 0.5 ? faker.commerce.productName() : faker.lorem.words(3);
 
 		return {
 			type: type as 'income' | 'expense',
