@@ -1,6 +1,11 @@
 import { builder } from '../../graphql/builder';
 import { UserRef } from '../users/users.schema';
-import { loginInputSchema, signUpInputSchema } from './auth.validation';
+import {
+	loginInputSchema,
+	requestPasswordResetInputSchema,
+	resetPasswordInputSchema,
+	signUpInputSchema,
+} from './auth.validation';
 
 export const SignUpInputRef = builder.inputType('SignUpInput', {
 	fields: (t) => ({
@@ -20,6 +25,31 @@ export const LoginInputRef = builder.inputType('LoginInput', {
 	fields: (t) => ({
 		email: t.string({ required: true, validate: loginInputSchema.shape.email }),
 		password: t.string({ required: true }),
+	}),
+});
+
+export const RequestPasswordResetInputRef = builder.inputType(
+	'RequestPasswordResetInput',
+	{
+		fields: (t) => ({
+			email: t.string({
+				required: true,
+				validate: requestPasswordResetInputSchema.shape.email,
+			}),
+		}),
+	},
+);
+
+export const ResetPasswordInputRef = builder.inputType('ResetPasswordInput', {
+	fields: (t) => ({
+		token: t.string({
+			required: true,
+			validate: resetPasswordInputSchema.shape.token,
+		}),
+		password: t.string({
+			required: true,
+			validate: resetPasswordInputSchema.shape.password,
+		}),
 	}),
 });
 

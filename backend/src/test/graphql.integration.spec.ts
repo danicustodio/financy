@@ -13,6 +13,16 @@ mutation SignUp($input: SignUpInput!) {
   }
 }`;
 
+const REQUEST_PASSWORD_RESET_MUTATION = `
+mutation RequestPasswordReset($input: RequestPasswordResetInput!) {
+  requestPasswordReset(input: $input)
+}`;
+
+const RESET_PASSWORD_MUTATION = `
+mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input)
+}`;
+
 const ME_QUERY = `
 query Me {
   me {
@@ -64,6 +74,7 @@ describe('GraphQL integration', () => {
 	beforeAll(async () => {
 		app = await createApp();
 		await app.ready();
+		await app.prisma.passwordResetToken.deleteMany();
 		await app.prisma.transaction.deleteMany();
 		await app.prisma.category.deleteMany();
 		await app.prisma.user.deleteMany();
@@ -93,6 +104,68 @@ describe('GraphQL integration', () => {
 		expect(body.errors).toBeUndefined();
 		expect(body.data.signUp.token).toEqual(expect.any(String));
 		expect(body.data.signUp.user.email).toContain('@example.com');
+	});
+
+	it('requestPasswordReset returns true for known and unknown emails', async () => {
+		const knownEmail = `reset-known-${Date.now()}@example.com`;
+
+		await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: SIGN_UP_MUTATION,
+				variables: {
+					input: {
+						name: 'Reset Known',
+						email: knownEmail,
+						password: 'password123',
+					},
+				},
+			},
+		});
+
+		const knownResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: REQUEST_PASSWORD_RESET_MUTATION,
+				variables: { input: { email: knownEmail } },
+			},
+		});
+
+		const unknownResponse = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: REQUEST_PASSWORD_RESET_MUTATION,
+				variables: { input: { email: `unknown-${Date.now()}@example.com` } },
+			},
+		});
+
+		expect(knownResponse.json().errors).toBeUndefined();
+		expect(knownResponse.json().data.requestPasswordReset).toBe(true);
+		expect(unknownResponse.json().errors).toBeUndefined();
+		expect(unknownResponse.json().data.requestPasswordReset).toBe(true);
+	});
+
+	it('resetPassword returns INVALID_RESET_TOKEN for invalid token', async () => {
+		const response = await app.inject({
+			method: 'POST',
+			url: '/graphql',
+			payload: {
+				query: RESET_PASSWORD_MUTATION,
+				variables: {
+					input: {
+						token: 'invalid-token',
+						password: 'new-password-123',
+					},
+				},
+			},
+		});
+
+		const body = response.json();
+		expect(body.data.resetPassword).toBeNull();
+		expect(body.errors[0].extensions.code).toBe('INVALID_RESET_TOKEN');
 	});
 
 	it('me query returns UNAUTHENTICATED without token', async () => {

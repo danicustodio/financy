@@ -50,4 +50,39 @@ describe('AuthService', () => {
 			code: errorCodes.INVALID_CREDENTIALS,
 		});
 	});
+
+	it('requestPasswordReset returns null for unknown email', async () => {
+		const authRepository = {
+			findUserByEmail: vi.fn().mockResolvedValue(null),
+		};
+
+		const authService = new AuthService(
+			authRepository as never,
+			() => 'token-123',
+		);
+
+		await expect(
+			authService.requestPasswordReset({ email: 'missing@example.com' }),
+		).resolves.toBeNull();
+	});
+
+	it('resetPassword throws INVALID_RESET_TOKEN for invalid token', async () => {
+		const authRepository = {
+			findValidPasswordResetToken: vi.fn().mockResolvedValue(null),
+		};
+
+		const authService = new AuthService(
+			authRepository as never,
+			() => 'token-123',
+		);
+
+		await expect(
+			authService.resetPassword({
+				token: 'invalid-token',
+				password: 'new-password-123',
+			}),
+		).rejects.toMatchObject({
+			code: errorCodes.INVALID_RESET_TOKEN,
+		});
+	});
 });
