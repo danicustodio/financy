@@ -1,69 +1,99 @@
 # Financy Backend
 
-GraphQL API server built with Fastify, Mercurius, Prisma, and SQLite.
+Servidor GraphQL construído com Fastify, Mercurius, Prisma e SQLite.
 
-## Getting Started
+## Primeiros passos
 
 ```bash
+cp .env.example .env   # preencha DATABASE_URL, JWT_SECRET, JWT_EXPIRES_IN
 pnpm install
-pnpm prisma:migrate   # run migrations
-pnpm prisma:seed      # seed baseline users, categories, and transactions
-pnpm dev              # start dev server with hot reload
+pnpm prisma:migrate    # executa as migrações
+pnpm prisma:seed       # popula usuários, categorias e transações de demonstração
+pnpm dev               # inicia o servidor de desenvolvimento com hot reload
 ```
+
+O playground GraphQL fica disponível em `http://localhost:4000/graphql`.
+
+## Variáveis de ambiente
+
+| Variável         | Exemplo                  | Descrição                                        |
+|------------------|--------------------------|--------------------------------------------------|
+| `DATABASE_URL`   | `file:./prisma/dev.db`   | Caminho para o arquivo do banco de dados SQLite  |
+| `JWT_SECRET`     | `supersecret`            | Segredo usado para assinar os tokens JWT         |
+| `JWT_EXPIRES_IN` | `7d`                     | Expiração do token (ex.: `1h`, `7d`, `30d`)     |
+
+Copie `.env.example` para `.env` e preencha os valores antes de rodar localmente.
 
 ## Scripts
 
-| Script | Description |
-|---|---|
-| `pnpm dev` | Start dev server (hot reload) |
-| `pnpm build` | Compile to `dist/` |
-| `pnpm test` | Run Vitest tests |
-| `pnpm typecheck` | TypeScript type check |
-| `pnpm lint` | Biome lint + auto-fix |
-| `pnpm prisma:migrate` | Run pending migrations |
-| `pnpm prisma:seed` | Baseline deterministic seed |
-| `pnpm prisma:seed:transactions` | Bulk faker seed (see below) |
-| `pnpm prisma:reset` | Reset DB and re-run baseline seed |
+| Script                          | Descrição                                              |
+|---------------------------------|--------------------------------------------------------|
+| `pnpm dev`                      | Inicia o servidor de desenvolvimento (hot reload)      |
+| `pnpm build`                    | Compila o TypeScript para `dist/`                      |
+| `pnpm start`                    | Executa o servidor compilado (`node dist/server.js`)   |
+| `pnpm test`                     | Executa os testes com Vitest                           |
+| `pnpm typecheck`                | Verificação de tipos com TypeScript                    |
+| `pnpm lint`                     | Lint + correção automática com Biome                   |
+| `pnpm prisma:migrate`           | Executa migrações pendentes (`migrate dev`)            |
+| `pnpm prisma:seed`              | Seed determinístico de base                            |
+| `pnpm prisma:seed:transactions` | Seed em massa com dados falsos (veja abaixo)           |
+| `pnpm prisma:reset`             | Reseta o banco e reexecuta o seed de base              |
+| `pnpm prisma:studio`            | Abre o Prisma Studio                                   |
 
-## Manual Pagination Seed
+## Contas de demonstração (após o seed)
 
-Use `prisma:seed:transactions` to populate a large number of fake transactions so that pagination and filters can be manually tested in the UI.
+| E-mail                  | Senha      |
+|-------------------------|------------|
+| `demo@financy.local`    | `12345678` |
+| `second@financy.local`  | `12345678` |
 
-### Prerequisite
+## Recuperação de senha (desenvolvimento)
 
-Run the baseline seed at least once so the demo users and their categories exist:
+O fluxo de recuperação de senha está implementado de ponta a ponta, mas o envio de e-mail não está integrado a um serviço externo (ex.: SendGrid, Resend). Em desenvolvimento, o token é exibido no log do servidor:
+
+```
+[DEV] Password reset token for user@example.com: <token>
+```
+
+Para testar o fluxo completo: acesse `/forgot-password`, envie um e-mail cadastrado, copie o token do log e abra `/reset-password?token=<token>` no frontend.
+
+## Seed em massa de transações
+
+Use `prisma:seed:transactions` para popular um grande volume de transações falsas e testar paginação e filtros.
+
+**Pré-requisito:** execute o seed de base pelo menos uma vez para que os usuários e categorias de demonstração existam.
 
 ```bash
 pnpm prisma:seed
 ```
 
-### Default usage (replace mode, 50 transactions)
+**Padrão — 50 transações no modo substituição:**
 
 ```bash
 pnpm prisma:seed:transactions
 ```
 
-Deletes all existing transactions for `demo@financy.local` and inserts 50 new ones spread across the last 12 months.
+Remove todas as transações existentes de `demo@financy.local` e insere 50 novas distribuídas nos últimos 12 meses.
 
-### Options
+**Opções:**
 
-| Flag | Default | Description |
-|---|---|---|
-| `--count <n>` | `50` | Number of transactions to insert (1–1000) |
-| `--email <email>` | `demo@financy.local` | Target user by email |
-| `--append` | off | Append to existing transactions instead of replacing |
+| Flag              | Padrão                | Descrição                                              |
+|-------------------|-----------------------|--------------------------------------------------------|
+| `--count <n>`     | `50`                  | Quantidade de transações a inserir (1–1000)            |
+| `--email <email>` | `demo@financy.local`  | Usuário alvo pelo e-mail                               |
+| `--append`        | desativado            | Adiciona às transações existentes em vez de substituir |
 
-### Examples
+**Exemplos:**
 
 ```bash
-# Insert 75 transactions in replace mode
+# Inserir 75 transações no modo substituição
 pnpm prisma:seed:transactions -- --count 75
 
-# Append 20 more without touching existing data
+# Adicionar 20 sem apagar os dados existentes
 pnpm prisma:seed:transactions -- --append --count 20
 
-# Seed a different user with 30 transactions
+# Seed em outro usuário com 30 transações
 pnpm prisma:seed:transactions -- --email second@financy.local --count 30
 ```
 
-> **Note:** The `--` separator is required by pnpm to forward arguments to the underlying script.
+> O separador `--` é necessário para que o pnpm repasse os argumentos ao script.
