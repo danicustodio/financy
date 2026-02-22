@@ -7,7 +7,6 @@ describe('UsersService', () => {
 		const usersRepository = {
 			findById: vi.fn(),
 			updateById: vi.fn(),
-			deleteById: vi.fn(),
 		};
 		const usersService = new UsersService(usersRepository as never);
 
@@ -20,7 +19,6 @@ describe('UsersService', () => {
 		const usersRepository = {
 			findById: vi.fn(),
 			updateById: vi.fn(),
-			deleteById: vi.fn(),
 		};
 		const usersService = new UsersService(usersRepository as never);
 

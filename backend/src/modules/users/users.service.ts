@@ -48,21 +48,4 @@ export class UsersService {
 			throw error;
 		}
 	}
-
-	async deleteMe(currentUser: User | null) {
-		const user = requireAuth(currentUser);
-
-		try {
-			return await this.usersRepository.deleteById(user.id);
-		} catch (error) {
-			if (
-				error instanceof Prisma.PrismaClientKnownRequestError &&
-				error.code === 'P2025'
-			) {
-				throw new AppError(errorCodes.NOT_FOUND, 'User not found');
-			}
-
-			throw error;
-		}
-	}
 }
