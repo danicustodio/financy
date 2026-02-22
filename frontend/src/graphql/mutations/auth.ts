@@ -23,3 +23,15 @@ export const LOGIN_MUTATION = `
 		}
 	}
 `;
+
+export const REQUEST_PASSWORD_RESET_MUTATION = `
+	mutation RequestPasswordReset($input: RequestPasswordResetInput!) {
+		requestPasswordReset(input: $input)
+	}
+`;
+
+export const RESET_PASSWORD_MUTATION = `
+	mutation ResetPassword($input: ResetPasswordInput!) {
+		resetPassword(input: $input)
+	}
+`;

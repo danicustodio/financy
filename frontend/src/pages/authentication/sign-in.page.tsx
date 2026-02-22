@@ -1,6 +1,6 @@
 import { Lock, Mail, UserRoundPlus } from 'lucide-react';
 import { Controller } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import { Link } from '@/components/link';
@@ -9,6 +9,8 @@ import { useSignInForm } from '@/hooks/forms/use-sign-in-form';
 
 export function SignIn() {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const hasResetSuccess = searchParams.get('reset') === 'success';
 	const {
 		form: {
 			register,
@@ -36,6 +38,12 @@ export function SignIn() {
 					</div>
 
 					<form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
+						{hasResetSuccess && (
+							<p className="rounded-md border border-financy-gray-200 bg-financy-gray-100 px-3 py-2 text-financy-gray-700 text-sm">
+								Senha redefinida com sucesso. Faça login com sua nova senha.
+							</p>
+						)}
+
 						<Input
 							id="email"
 							label="E-mail"
@@ -80,7 +88,7 @@ export function SignIn() {
 									Lembrar-me
 								</label>
 							</div>
-							<Link href="#">Recuperar senha</Link>
+							<Link href="/forgot-password">Recuperar senha</Link>
 						</div>
 
 						<LabelButton

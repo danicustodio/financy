@@ -20,6 +20,21 @@ export const AUTH_SIGN_UP_ERROR_RULES: ErrorRule[] = [
 	},
 ];
 
+export const AUTH_FORGOT_PASSWORD_ERROR_FALLBACK =
+	'Ocorreu um erro ao solicitar a recuperação de senha. Tente novamente.';
+
+export const AUTH_FORGOT_PASSWORD_ERROR_RULES: ErrorRule[] = [];
+
+export const AUTH_RESET_PASSWORD_ERROR_FALLBACK =
+	'Ocorreu um erro ao redefinir sua senha. Tente novamente.';
+
+export const AUTH_RESET_PASSWORD_ERROR_RULES: ErrorRule[] = [
+	{
+		code: 'INVALID_RESET_TOKEN',
+		userMessage: 'Este link de recuperação é inválido ou expirou.',
+	},
+];
+
 export const CREATE_CATEGORY_ERROR_FALLBACK =
 	'Ocorreu um erro ao criar a categoria. Tente novamente.';
 
