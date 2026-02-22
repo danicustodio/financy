@@ -1,7 +1,4 @@
-import type {
-	CategoryColor,
-	CategoryIconName,
-} from '@/types/domain/category';
+import type { CategoryColor, CategoryIconName } from '@/types/domain/category';
 
 export interface CreateCategoryFormData {
 	title: string;

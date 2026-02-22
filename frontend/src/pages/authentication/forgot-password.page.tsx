@@ -29,16 +29,21 @@ export function ForgotPassword() {
 							Recuperar senha
 						</h1>
 						<p className="text-center text-financy-gray-600 text-sm">
-							Informe seu e-mail e enviaremos instruções para redefinir sua senha.
+							Informe seu e-mail e enviaremos instruções para redefinir sua
+							senha.
 						</p>
 					</div>
 
 					{isSuccess ? (
 						<div className="flex flex-col gap-4">
 							<p className="rounded-md border border-financy-gray-200 bg-financy-gray-100 px-3 py-2 text-financy-gray-700 text-sm">
-								Se existir uma conta com este e-mail, enviaremos instruções para redefinir sua senha.
+								Se existir uma conta com este e-mail, enviaremos instruções para
+								redefinir sua senha.
 							</p>
-							<LabelButton className="w-full" onClick={() => navigate('/signin')}>
+							<LabelButton
+								className="w-full"
+								onClick={() => navigate('/signin')}
+							>
 								Voltar para login
 							</LabelButton>
 						</div>
@@ -55,7 +60,12 @@ export function ForgotPassword() {
 								{...register('email')}
 							/>
 
-							<LabelButton type="submit" size="md" loading={isSubmitting} className="w-full">
+							<LabelButton
+								type="submit"
+								size="md"
+								loading={isSubmitting}
+								className="w-full"
+							>
 								Enviar instruções
 							</LabelButton>
 						</form>

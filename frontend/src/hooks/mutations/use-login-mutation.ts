@@ -10,7 +10,10 @@ type LoginMutationInput = SignInInput & {
 
 export function useLoginMutation() {
 	return useMutation({
-		mutationFn: async ({ rememberMe: _rememberMe, ...input }: LoginMutationInput) => {
+		mutationFn: async ({
+			rememberMe: _rememberMe,
+			...input
+		}: LoginMutationInput) => {
 			const data = await publicGraphqlRequest<
 				LoginResponse,
 				{ input: SignInInput }

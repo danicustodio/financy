@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { SquarePen, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { IconButton } from '@/components/icon-button';
 import { IconTile } from '@/components/icon-tile';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,11 @@ import {
 	DELETE_CATEGORY_ERROR_FALLBACK,
 	DELETE_CATEGORY_ERROR_RULES,
 } from '@/mappers/errors/graphql-error-rules';
-import type { Category, CategoryColor, CategoryIconName } from '@/types/domain/category';
+import type {
+	Category,
+	CategoryColor,
+	CategoryIconName,
+} from '@/types/domain/category';
 import { DeleteCategoryDialog } from './delete-category-dialog.component';
 import { EditCategoryModal } from './edit-category-modal.component';
 

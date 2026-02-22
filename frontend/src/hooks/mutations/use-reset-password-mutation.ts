@@ -1,7 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { RESET_PASSWORD_MUTATION } from '@/graphql';
 import { publicGraphqlRequest } from '@/graphql/graphql-client';
-import type { ResetPasswordInput, ResetPasswordResponse } from '@/types/api/operations';
+import type {
+	ResetPasswordInput,
+	ResetPasswordResponse,
+} from '@/types/api/operations';
 
 export function useResetPasswordMutation() {
 	return useMutation({

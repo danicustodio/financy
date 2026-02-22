@@ -37,8 +37,8 @@ O backend precisa estar rodando antes. Consulte [`../backend/README.md`](../back
 
 | Rota                        | Descrição                                          |
 |-----------------------------|----------------------------------------------------|
-| `/sign-in`                  | Login                                              |
-| `/sign-up`                  | Cadastro                                           |
+| `/signin`                   | Login                                              |
+| `/signup`                   | Cadastro                                           |
 | `/forgot-password`          | Solicitação de token para redefinição de senha     |
 | `/reset-password?token=...` | Definição de nova senha com o token recebido       |
 | `/dashboard`                | Cards de resumo e transações recentes              |
@@ -46,4 +46,4 @@ O backend precisa estar rodando antes. Consulte [`../backend/README.md`](../back
 | `/categories`               | Gerenciamento de categorias                        |
 | `/profile`                  | Edição de nome e senha do perfil                   |
 
-As rotas `/dashboard`, `/transactions`, `/categories` e `/profile` são protegidas — usuários não autenticados são redirecionados para `/sign-in`.
+As rotas `/dashboard`, `/transactions`, `/categories` e `/profile` são protegidas — usuários não autenticados são redirecionados para `/signin`.

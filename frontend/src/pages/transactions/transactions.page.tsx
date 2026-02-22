@@ -12,9 +12,9 @@ import {
 	DELETE_TRANSACTION_ERROR_FALLBACK,
 	DELETE_TRANSACTION_ERROR_RULES,
 } from '@/mappers/errors/graphql-error-rules';
-import { TransactionsFilterBar } from './components/transactions-filter-bar.component';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog.component';
 import { EditTransactionModal } from './components/edit-transaction-modal.component';
+import { TransactionsFilterBar } from './components/transactions-filter-bar.component';
 import { TransactionsTable } from './components/transactions-table.component';
 
 const PAGE_SIZE = 10;
@@ -69,8 +69,9 @@ export function Transactions() {
 		[data],
 	);
 	const selectedTransactionForEdit =
-		data?.items.find((transaction) => transaction.id === selectedTransactionIdForEdit) ??
-		null;
+		data?.items.find(
+			(transaction) => transaction.id === selectedTransactionIdForEdit,
+		) ?? null;
 
 	function handleFilterChange(updater: () => void) {
 		updater();
@@ -170,16 +171,16 @@ export function Transactions() {
 				onConfirm={handleDeleteConfirm}
 			/>
 
-				<EditTransactionModal
-					transaction={selectedTransactionForEdit}
-					isOpen={isEditModalOpen}
-					onOpenChange={(open) => {
-						setIsEditModalOpen(open);
-						if (!open) {
-							setSelectedTransactionIdForEdit(null);
-						}
-					}}
-				/>
+			<EditTransactionModal
+				transaction={selectedTransactionForEdit}
+				isOpen={isEditModalOpen}
+				onOpenChange={(open) => {
+					setIsEditModalOpen(open);
+					if (!open) {
+						setSelectedTransactionIdForEdit(null);
+					}
+				}}
+			/>
 		</main>
 	);
 }

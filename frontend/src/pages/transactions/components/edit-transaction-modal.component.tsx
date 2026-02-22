@@ -1,10 +1,10 @@
 import { XIcon } from 'lucide-react';
 import { useEffect } from 'react';
-import { Input } from '@/components/input';
 import {
 	CategoriesSelection,
 	TransactionToggle,
 } from '@/components/create-transaction-modal';
+import { Input } from '@/components/input';
 import { LabelButton } from '@/components/label-button';
 import {
 	Dialog,

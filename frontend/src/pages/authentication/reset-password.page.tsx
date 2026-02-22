@@ -39,7 +39,10 @@ export function ResetPassword() {
 							<p className="rounded-md border border-financy-gray-200 bg-financy-gray-100 px-3 py-2 text-financy-danger text-sm">
 								Link inválido. Solicite uma nova recuperação de senha.
 							</p>
-							<LabelButton className="w-full" onClick={() => navigate('/forgot-password')}>
+							<LabelButton
+								className="w-full"
+								onClick={() => navigate('/forgot-password')}
+							>
 								Solicitar novo link
 							</LabelButton>
 						</div>
@@ -63,11 +66,18 @@ export function ResetPassword() {
 								placeholder="Confirme sua nova senha"
 								prefix={<Lock size={16} />}
 								error={!!errors.confirmPassword || !!formError}
-								helper={errors.confirmPassword?.message ?? formError ?? undefined}
+								helper={
+									errors.confirmPassword?.message ?? formError ?? undefined
+								}
 								{...register('confirmPassword')}
 							/>
 
-							<LabelButton type="submit" size="md" loading={isSubmitting} className="w-full">
+							<LabelButton
+								type="submit"
+								size="md"
+								loading={isSubmitting}
+								className="w-full"
+							>
 								Redefinir senha
 							</LabelButton>
 						</form>

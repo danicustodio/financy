@@ -66,7 +66,9 @@ export function useUpdateTransactionForm(
 		setFormError(null);
 
 		try {
-			await updateTransactionMutation.mutateAsync(toUpdateTransactionInput(data));
+			await updateTransactionMutation.mutateAsync(
+				toUpdateTransactionInput(data),
+			);
 			onSuccess?.();
 		} catch (error) {
 			setFormError(

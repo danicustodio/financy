@@ -104,9 +104,13 @@ export const EditCategoryModal = ({
 											: 'border-financy-gray-300 hover:bg-financy-gray-100',
 									)}
 									onClick={() =>
-										form.setValue('icon', name as UpdateCategoryFormData['icon'], {
-											shouldDirty: true,
-										})
+										form.setValue(
+											'icon',
+											name as UpdateCategoryFormData['icon'],
+											{
+												shouldDirty: true,
+											},
+										)
 									}
 								>
 									<Icon className="h-5 w-5 text-financy-gray-700" />
