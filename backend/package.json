@@ -54,6 +54,7 @@
 		"prisma:seed:transactions": "tsx prisma/seed-transactions.ts",
 		"prisma:reset": "prisma migrate reset --force && pnpm prisma:seed",
 		"start": "node dist/server.js",
+		"pretest": "prisma generate",
 		"test": "vitest run",
 		"typecheck": "tsc"
 	},
