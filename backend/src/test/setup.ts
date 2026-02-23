@@ -1,3 +1,7 @@
-process.env.JWT_SECRET ??= 'test-secret';
-process.env.JWT_EXPIRES_IN ??= '1d';
-process.env.NODE_ENV ??= 'test';
+import { afterEach, vi } from 'vitest';
+
+afterEach(() => {
+	vi.restoreAllMocks();
+	vi.useRealTimers();
+	vi.unstubAllEnvs();
+});
