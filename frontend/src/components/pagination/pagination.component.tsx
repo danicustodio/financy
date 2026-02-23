@@ -32,7 +32,6 @@ export const Pagination = ({
 		}
 	};
 
-	// Generate page numbers to show (simplified: show up to 3 pages)
 	const getVisiblePages = () => {
 		const pages: number[] = [];
 		const maxVisible = 3;
